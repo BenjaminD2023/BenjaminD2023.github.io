@@ -8,6 +8,9 @@
 /* Body styles */
 body {
   font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
   background-color: #f8f8f8;
 }
 
@@ -18,61 +21,73 @@ pre{
 
 /* Header styles */
 header {
-  background-color: #333;
-  color: #fff;
-  padding: 20px;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  padding: 2rem;
   text-align: center;
 }
 
 .title {
-  font-size: 28px;
-  margin-bottom: 10px;
+  font-size: 2.8rem;
+  margin-bottom: 1.5rem;
+  color: #ecf0f1;
 }
 
 .author {
   font-style: italic;
+  margin-bottom: 0.5rem;
 }
 
 /* Main styles */
 main {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 2rem 0;
 }
 
 /* Table of Contents styles */
 .toc {
-  background-color: #fff;
-  padding: 20px;
+  flex: 1;
+  min-width: 250px;
+  margin-right: 2rem;
+  padding: 1.5rem;
   border-radius: 10px;
+  background-color: #fff; /* 恢复白色背景 */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
   font-size: 24px;
   margin-bottom: 15px;
+  color: #2c3e50; /* 恢复原来的深色 */
 }
 
 .toc-items {
-  display: flex;
-  flex-direction: column;
+  list-style-type: none;
+  padding: 0;
+}
+
+.toc-items li {
+  margin-bottom: 0.5rem;
 }
 
 .toc-items a,
 .dropdown-title {
+  font-size: 1.1rem;
   display: block;
-  padding: 10px 15px;
-  margin-bottom: 10px;
+  padding: 0.8rem 1rem;
   border-radius: 5px;
-  background-color: #f5f5f5;
+  background-color: #f5f5f5; /* 恢复浅灰色背景 */
+  color: #333; /* 恢复深色文字 */
   text-decoration: none;
-  color: #333;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .toc-items a:hover,
 .dropdown-title:hover {
-  background-color: #e0e0e0;
+  background-color: #e0e0e0; /* 鼠标悬停时变为稍深的灰色 */
+  color: #333; /* 保持文字颜色不变 */
 }
 
 .dropdown {
@@ -84,9 +99,9 @@ h2 {
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: #fff;
-  padding: 10px;
-  border-radius: 5px;
+  width: 100%;
+  background-color: #fff; /* 恢复白色背景 */
+  border-radius: 0 0 5px 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -95,36 +110,34 @@ h2 {
 }
 
 .submenu a {
-  display: block;
-  padding: 5px 15px;
-  margin-bottom: 5px;
-  border-radius: 5px;
-  background-color: #f5f5f5;
-  text-decoration: none;
-  color: #333;
-  transition: background-color 0.3s ease;
+  color: #333; /* 恢复深色文字 */
 }
 
 .submenu a:hover {
-  background-color: #e0e0e0;
+  background-color: #e0e0e0; /* 鼠标悬停时变为稍深的灰色 */
 }
 
 /* Introduction styles */
 .intro {
+  flex: 2;
+  min-width: 300px;
   background-color: #fff;
-  padding: 20px;
+  padding: 1.5rem;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #000; /* 将所有文字颜色设置为黑色 */
 }
 
 .intro h2 {
   font-size: 24px;
   margin-bottom: 15px;
+  color: #000; /* 确保标题也是黑色 */
 }
 
 .intro p {
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #000; /* 确保段落文字是黑色 */
 }
 
 /* Chapter styles */
@@ -179,23 +192,30 @@ li {
 }
 
 .datasheet-img:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 /* Table CSS */
 table {
-  border-collapse: collapse;
   width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
 }
 
-.table1{
-  border: 1px solid black;
+.table1, .table2 {
+  border: 1px solid #e0e0e0;
   text-align: center;
 }
-.table2 {
-  border: 1px solid black;
-  padding: 8px;
-  text-align: center;
+
+th, td {
+  padding: 1rem;
+  font-size: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+th {
+  font-weight: bold;
+  background-color: #e0e0e0;
 }
 
 /* Additional CSS for buttons */
@@ -209,26 +229,27 @@ table {
 }
 
 .button {
+  font-size: 1rem;
+  font-weight: bold;
   padding: 10px 20px;
-  background-color: #333;
+  background-color: #3498db;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .button:hover {
-  background-color: #555;
+  background-color: #2980b9;
 }
 
 .Matchlock_Gun_Description{
-  color : purple;
+  color : #8e44ad;
   font-style: italic;
-  font-size: x-small;
+  font-size: 0.8rem;
   text-align: center;
 }
-
-
 
 /* Original CSS */ 
 /*
@@ -258,3 +279,78 @@ img {
     width: 50%;
   }
 */
+
+/* 响应式设计 */
+@media screen and (max-width: 768px) {
+  main {
+    flex-direction: column;
+  }
+
+  .toc, .intro {
+    margin: 0 0 1rem 0;
+    width: 100%;
+  }
+  
+  .submenu {
+    position: static;
+    display: block;
+    box-shadow: none;
+    padding-left: 1rem;
+  }
+}
+
+/* 在文件末尾添加以下样式 */
+
+/* 返回顶部按钮样式 */
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 18px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: none;
+  z-index: 1000;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.back-to-top:hover {
+  background-color: #2980b9;
+}
+
+/* 添加文本阴影以提高对比度 */
+header, .toc h2, .intro h2 {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* 响应式设计调整 */
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  .title {
+    font-size: 2.2rem;
+  }
+
+  .toc-items a,
+  .dropdown-title {
+    font-size: 1rem;
+    padding: 0.7rem 0.9rem;
+  }
+
+  .intro p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}
+
+.dark-background {
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  padding-bottom: 2rem;
+}

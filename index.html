@@ -4,126 +4,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>D&D Adventure</title>
+  <title>D&D Adventure - Sengoku Japan History Review</title>
+  <meta name="description" content="A D&D adventure for reviewing Sengoku Japan history, featuring players from China, Japan, and Korea helping Tokugawa Ieyasu establish a new shogunate.">
+  <link rel="stylesheet" href="common.css">
   <link rel="stylesheet" href="style.css">
+  
+  <!-- 添加以下 meta 标签 -->
+  <meta property="og:title" content="D&D Adventure - Sengoku Japan History Review">
+  <meta property="og:description" content="A D&D adventure for reviewing Sengoku Japan history, featuring players from China, Japan, and Korea helping Tokugawa Ieyasu establish a new shogunate.">
+  <meta property="og:image" content="https://example.com/path/to/your/image.jpg">
+  <meta property="og:url" content="https://example.com/your-page-url">
+  <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
-  <!-- Header Section -->
-  <header>
-    <!-- Title of the Page -->
-    <h1 class="title">Q4 History Comp Review D&D</h1>
-    <!-- Author Information -->
-    <p class="author">By: Teresa Jiang, Ashley Huang, Amy Chen, Benjamin Dai, Jacky Zeng</p>
-    <br>
-    <p class="author"><font size = "1">Special Thanks for the following Contributors: Morax Cheng, Bryant Wong, Carson Zhang</font></p>
-  </header>
-  <!-- Main Content Section -->
-  <main>
-    <!-- Table of Contents Section -->
-    <section class="toc">
-      <!-- Title of the Table of Contents -->
-      <h2>Table of Contents</h2>
-      <!-- List of Items in the Table of Contents -->
-      <div class="toc-items">
-        <!-- Individual Table of Contents Items -->
-        <a href="chapter1.html">Chapter 1: Guidance from the Night – the year of 1597 </a>
-        <a href="chapter2.html">Chapter 2: Road to the Shogunate</a>
-        <a href="chapter3.html">Chapter 3: The Hidden Ones</a>
-        <a href="chapter4.html">Chapter 4: The Battle of Seikigahara</a>
-        <a href="FinalDungeon.html">Final Dungeon</a>
-        <a href = "Arsenal1.html">Arsenal 1</a>
-        <a href="appendix.html">Appendix (Map, Player's handout, etc.)</a>
-        <!-- Dropdown Menu for NPC Datasheets -->
-        <div class="dropdown">
-          <!-- Dropdown Title -->
-          <span class="dropdown-title">NPC Datasheet</span>
-          <!-- Submenu for NPC Datasheets -->
-          <div class="submenu">
-            <a href="Ashigaru(No firearm).html">Ashigaru (No Firearm)</a>
-            <a href="Ashigaru(Firearm).html">Ashigaru (Firearm)</a>
-            <a href="TokugawaIeyasu.html">Tokugawa Ieyasu</a>
-            <a href="ToyotomiHideyoshi.html">Toyotomi Hideyoshi</a>
-            <a href="Guide.html">Guide</a>
-            <a href="LightCavalry.html">Light Cavalry</a>
-            <a href="HeavyCavalry.html">Heavy Cavalry</a>
-            <a href="ToyotomiHideyori.html">Toyotomi Hideyori</a>
-            <a href="Samurai.html">Samurai</a>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Introduction Section -->
-    <section class="intro">
-      <!-- Title of the Introduction -->
-      <h2>Introduction</h2>
-      <!-- Introduction Paragraph -->
-      <p>This is a D&D adventure for those who need to review Sengoku Japan. In the adventure, players who come from China,
-        Japan, and Korea will meet each other and try to help Tokugawa Ieyasu to establish a new shogunate. [If anyone can write a better
-        intro for me, I'm okay to paste them here instead of the brief intro above.] Note: During this adventure, if DM will, DM can make
-        players write a letter to Tokugawa Ieyasu about what they find recently. When they send it, they have to succeed on a WIS Saving Throw
-        DC according to the environment. +1 Suspicious Point per fail<br>
-        <table>
-          <thead>
-            <tr>
-              <th class="table1">Suspicious Point</th>
-              <th class="table1">Outcome</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="table1">0</td>
-              <td class="table1">Toyotomi Hideyoshi belives in the players</td>
-            </tr>
-            <tr>
-              <td class="table1">1</td>
-              <td class="table1">Toyotomi Hideyoshi no longer believes in them, they have to succeed on a DC16 Persuation(CHA) to let Toyotomi believe them</td>
-            </tr>
-            <tr>
-              <td class="table1">2</td>
-              <td class="table1">Toyotomi Hideyoshi don't believe them at all. They have to succeed on a DC21 Persusion (CHA) to make Toyotomi Hideyoshi listen to them</td>
-            </tr>
-            <tr>
-              <td class="table1">3</td>
-              <td class="table1">Toyotomi Hideyoshi knows they are not loyal, but don't know who they work for.</td>
-            </tr>
-            <tr>
-              <td class="table1">4</td>
-              <td class="table1">Toyotomi Hideyoshi knows they are working for Tokugawa Ieyasu instead of him</td>
-            </tr>
-            <tr>
-              <td class="table1">5</td>
-              <td class="table1">Toyotomi Hideyoshi will come fight them (Go to Hideyoshi's Basement on the next day.
-                Goes to the <a href = "/FinalDungeon/Level4.html#Boss">Boss Fight Room</a> and a early Boss Fight, skip everything in between. Don't Level Up)</td>
-            </tr>
-          </tbody>
-        </table>
-        </table>
-      </p>
-    </section>
-  </main>
+  <div class="dark-background">
+    <!-- Header Section -->
+    <header>
+      <!-- Title of the Page -->
+      <h1 class="title">Q4 History Comp Review D&D</h1>
+      <!-- Author Information -->
+      <p class="author">By: Teresa Jiang, Ashley Huang, Amy Chen, Benjamin Dai, Jacky Zeng</p>
+      <br>
+      <p class="author"><small>Special Thanks to: Morax Cheng, Bryant Wong, Carson Zhang</small></p>
+    </header>
+    <!-- Main Content Section -->
+    <main class="container">
+      <!-- Table of Contents Section -->
+      <nav class="toc">
+        <!-- Title of the Table of Contents -->
+        <h2>Table of Contents</h2>
+        <!-- List of Items in the Table of Contents -->
+        <ul class="toc-items">
+          <!-- Individual Table of Contents Items -->
+          <li><a href="chapter1.html">Chapter 1: Guidance from the Night – the year of 1597</a></li>
+          <li><a href="chapter2.html">Chapter 2: Road to the Shogunate</a></li>
+          <li><a href="chapter3.html">Chapter 3: The Hidden Ones</a></li>
+          <li><a href="chapter4.html">Chapter 4: The Battle of Seikigahara</a></li>
+          <li class="dropdown">
+            <!-- Dropdown Title -->
+            <span class="dropdown-title">NPC Datasheet</span>
+            <!-- Submenu for NPC Datasheets -->
+            <ul class="submenu">
+              <li><a href="Ashigaru(No firearm).html">Ashigaru (No Firearm)</a></li>
+              <li><a href="Ashigaru(Firearm).html">Ashigaru (Firearm)</a></li>
+              <li><a href="TokugawaIeyasu.html">Tokugawa Ieyasu</a></li>
+              <li><a href="ToyotomiHideyoshi.html">Toyotomi Hideyoshi</a></li>
+              <li><a href="Guide.html">Guide</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <!-- Introduction Section -->
+      <section class="intro card">
+        <!-- Title of the Introduction -->
+        <h2>Introduction</h2>
+        <!-- Introduction Paragraph -->
+        <p>This D&D adventure is designed for those who want to review Sengoku Japan history. Players from China, Japan, and Korea will collaborate to assist Tokugawa Ieyasu in establishing a new shogunate, immersing themselves in the rich historical context of the period.</p>
+      </section>
+    </main>
+  </div>
   <!-- JavaScript File -->
   <script src="script.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var submenuBtn = document.querySelector('.submenu-btn-left');
-      var submenuContent = document.querySelector('.submenu-content-left');
-    
-      submenuBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        submenuContent.style.display = submenuContent.style.display === 'block' ? 'none' : 'block';
-      });
-    
-      // Close the dropdown if the user clicks outside of it
-      window.onclick = function(event) {
-        if (!event.target.matches('.submenu-btn-left')) {
-          if (submenuContent.style.display === 'block') {
-            submenuContent.style.display = 'none';
-          }
-        }
-      };
-    });
-    </script>
-    
 </body>
 </html>
 
