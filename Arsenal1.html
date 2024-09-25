@@ -1,0 +1,888 @@
+<html lang="en">
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- code copyright (c) 2009-2024 drow <donjon@bin.sh>                   -->
+  <!-- https://twitter.com/donjon_bin_sh                                   -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://khazad-cdn.com">
+    <meta name="description" content="A collection of random generators for Dungeons &amp; Dragons and other tabletop role-playing games">
+    <title>Arsenal 1: Level 1</title>
+    <link rel="shortcut icon" data-src="/skin/assets/donjon.ico" href="data:image/vnd.microsoft.icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAHAADgBwAA4AcAAP5/AAD4HwAA+98AAPvfAAD73wAA+98AAPvfAAD73wAA+B8AAP5/AADgBwAA4AcAAOAHAAA=" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" media="all" href="data:text/css;base64,LyogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKi8KLyogZHVuZ2Vvbi9zdHlsZS5jc3MgKi8KCiAgYm9keS5jb2RleCB7CiAgICBtYXJnaW46IDBweDsKICAgIHBhZGRpbmc6IDJleCAyZW07CiAgICBmb250LWZhbWlseTogJ0FzdWwnLCBzYW5zLXNlcmlmOwogIH0KICBib2R5LmNvZGV4IGgxIHsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIGZvbnQtc2l6ZTogMjAwJTsgZm9udC13ZWlnaHQ6IGJvbGQ7CiAgfQogIGJvZHkuY29kZXggaDIgewogICAgdGV4dC1hbGlnbjogY2VudGVyOwogICAgZm9udC1zaXplOiAxNTAlOyBmb250LXdlaWdodDogYm9sZDsKICB9CgogIHRhYmxlLmR1bmdlb24gewogICAgbWFyZ2luOiAyZXggYXV0bzsKICAgIGJvcmRlcjogbm9uZTsgYm9yZGVyLWNvbGxhcHNlOiBjb2xsYXBzZTsKICB9CiAgZGl2LmZvb3Rub3RlcyBwIHsKICAgIG1hcmdpbjogMmV4IDJlbTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICB9CgovKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqLwovKiBkdW5nZW9uIG1hcCAqLwoKICBkaXYuZHVuZ2Vvbl9tYXAgewogICAgbWFyZ2luOiAyZXggMmVtOwogICAgdGV4dC1hbGlnbjogY2VudGVyOwogIH0KICBkaXYuZHVuZ2Vvbl9rZXkgewogICAgbWFyZ2luOiAyZXggMmVtOwogICAgdGV4dC1hbGlnbjogY2VudGVyOwogIH0KCi8qICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICovCi8qIHRhYmxlIG1hcCAqLwoKICB0YWJsZS5tYXAgewogICAgbWFyZ2luOiAyZXggYXV0bzsKICAgIGJvcmRlci1sZWZ0OiAxcHggc29saWQ7IGJvcmRlci10b3A6IDFweCBzb2xpZDsKICAgICAgYm9yZGVyLWNvbG9yOiAjMzMzMzMzOwogIH0KICB0YWJsZS5tYXAgdGQuY2VsbCB7CiAgICBtaW4taGVpZ2h0OiAxMHB4OyBtaW4td2lkdGg6IDEwcHg7CiAgICBib3JkZXItcmlnaHQ6IDFweCBzb2xpZDsgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkOwogICAgICBib3JkZXItY29sb3I6ICNjY2NjY2M7CiAgICBwYWRkaW5nOiAwcHg7CiAgICBiYWNrZ3JvdW5kOiB3aGl0ZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsgdmVydGljYWwtYWxpZ246IG1pZGRsZTsKICAgIGZvbnQtZmFtaWx5OiBIZWx2ZXRpY2EsIEdlbmV2YSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiA5cHg7CiAgfQogIHRhYmxlLm1hcCB0ZC5jZWxsIGEgewogICAgdGV4dC1kZWNvcmF0aW9uOiBub25lOwogIH0KICB0YWJsZS5tYXAgdGQuZmlsbCB7CiAgICBib3JkZXItY29sb3I6ICMzMzMzMzM7CiAgICBiYWNrZ3JvdW5kOiAjMDAwMDAwOwogIH0KCi8qICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICovCi8qIGRldGFpbHMgKi8KCiAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHsKICAgIGJvcmRlci10b3A6IDFweCBzb2xpZDsKICAgIGJvcmRlci1jb2xvcjogI2NjY2NjYzsKICB9CiAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHRyLnNlY3Rpb24gewogICAgcGFkZGluZzogMWV4IDFlbTsKICAgIGJvcmRlci1ib3R0b206IDFweCBzb2xpZDsKICAgIGJvcmRlci1jb2xvcjogI2NjY2NjYzsKICB9CiAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHRyLnNlY3Rpb24gPiB0ZC50aXRsZSB7CiAgICBmb250LXNpemU6IDEyMCU7CiAgICBsaW5lLWhlaWdodDogMjAwJTsKICB9CgogIHRhYmxlLmR1bmdlb24uZGV0YWlscyB0ZCB7CiAgICBwYWRkaW5nOiAxZXggMWVtOwogICAgdmVydGljYWwtYWxpZ246IHRvcDsKICB9CiAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHRkLnRpdGxlIHsKICAgIG1pbi13aWR0aDogMTBlbTsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgZm9udC13ZWlnaHQ6IGJvbGQ7CiAgfQogIHRhYmxlLmR1bmdlb24uZGV0YWlscyB0ZC5kb29yIHsKICAgIG1pbi13aWR0aDogMTBlbTsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgZm9udC1zdHlsZTogaXRhbGljOwogIH0KCi8qIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtICovCi8qIGNvbnRlbnQgKi8KCiAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHRkLmNvbnRlbnQgewogICAgd2lkdGg6IDEwMCU7CiAgfQogIHRhYmxlLmR1bmdlb24uZGV0YWlscyB0ZC5jb250ZW50IHRhYmxlIHsKICAgIGJvcmRlcjogbm9uZTsgYm9yZGVyLWNvbGxhcHNlOiBjb2xsYXBzZTsKICB9CiAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHRkLmNvbnRlbnQgcCB7CiAgICBtYXJnaW46IDBweDsgcGFkZGluZzogMHB4OwogIH0KICB0YWJsZS5kdW5nZW9uLmRldGFpbHMgdGQuY29udGVudCBociB7CiAgICBtYXJnaW46IDBweDsKICAgIGJvcmRlcjogbm9uZTsgYm9yZGVyLXRvcDogMXB4IHNvbGlkOwogICAgYm9yZGVyLWNvbG9yOiAjY2NjY2NjOwogIH0KICB0YWJsZS5kdW5nZW9uLmRldGFpbHMgdGQuY29udGVudCA+ICogKyAqIHsKICAgIG1hcmdpbi10b3A6IDFleCAhaW1wb3J0YW50OwogIH0KCi8qIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtICovCi8qIGhvdmVyIGVmZmVjdHMgKi8KCiAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHRyLnNlY3Rpb246aG92ZXIgPiB0ZCB7CiAgICBiYWNrZ3JvdW5kOiAjZGVkZWRlOwogIH0KICB0YWJsZS5kdW5nZW9uLmRldGFpbHMgdHIucm93OmhvdmVyIHRkIHsKICAgIGJhY2tncm91bmQ6IHdoaXRlOwogIH0KCi8qICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICovCi8qIGR1bmdlb24gYWN0aW9ucyAqLwoKICBkaXYuZHVuZ2Vvbl9hY3Rpb25zIHsKICAgIG1hcmdpbjogMmV4IDRlbTsgbWFyZ2luLXRvcDogNGV4OwogIH0KICBkaXYuZHVuZ2Vvbl9hY3Rpb25zIGRpdi5hY3Rpb25zIHsKICAgIGJhY2tncm91bmQ6ICNkZWRlZGU7CiAgfQogIGRpdi5kdW5nZW9uX2FjdGlvbnMgZGl2LmZpbGVfdHlwZSB7CiAgICBhbGlnbi1pdGVtczogY2VudGVyOwogIH0KICBkaXYuZHVuZ2Vvbl9hY3Rpb25zIGRpdi5maWxlX3R5cGUgZGl2IHsKICAgIGZsZXgtYmFzaXM6IDI1JTsKICAgIGZsZXgtZ3JvdzogMDsKICB9CiAgZGl2LmR1bmdlb25fYWN0aW9ucyBkaXYuZmlsZV90eXBlIGRpdi5pY29uIHsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICB9CiAgZGl2LmR1bmdlb25fYWN0aW9ucyBkaXYuZmlsZV90eXBlIGRpdi5pY29uIGltZyB7CiAgICBtYXgtd2lkdGg6IDI0cHg7IG1heC1oZWlnaHQ6IDI0cHg7CiAgfQogIGRpdi5kdW5nZW9uX2FjdGlvbnMgZGl2LmZpbGVfdHlwZSBkaXYuYnV0dG9uIGlucHV0IHsKICAgIG1pbi13aWR0aDogMTBlbTsKICB9CiAgZGl2LmR1bmdlb25fYWN0aW9ucyBkaXYuZmlsZV90eXBlIGRpdi5kZXNjIHsKICAgIGZsZXgtZ3JvdzogMTsKICB9CgovKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqLwovKiBtb2JpbGUgKi8KCiAgQG1lZGlhIHNjcmVlbiBhbmQgKGhvdmVyOiBub25lKSB7CiAgICB0YWJsZS5kdW5nZW9uLmRldGFpbHMgdHIuc2VjdGlvbiB7IGRpc3BsYXk6IGJsb2NrOyB9CiAgICB0YWJsZS5kdW5nZW9uLmRldGFpbHMgdHIuc2VjdGlvbiA+IHRkIHsgZGlzcGxheTogYmxvY2s7IH0KICAgIHRhYmxlLmR1bmdlb24uZGV0YWlscyB0ci5zZWN0aW9uID4gdGQudGl0bGUgeyB0ZXh0LWFsaWduOiBsZWZ0OyB9CiAgICB0YWJsZS5kdW5nZW9uLmRldGFpbHMgdHIuc2VjdGlvbiA+IHRkLmNvbnRlbnQgeyB3aWR0aDogYXV0bzsgfQogICAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHRkLnRpdGxlIHsgbWluLXdpZHRoOiA1ZW07IH0KICAgIHRhYmxlLmR1bmdlb24uZGV0YWlscyB0ZC5kb29yIHsgbWluLXdpZHRoOiA1ZW07IH0KICAgIGRpdi5kdW5nZW9uX2FjdGlvbnMgZGl2LmZpbGVfdHlwZSBkaXYuaWNvbiB7IGRpc3BsYXk6IG5vbmU7IH0KICB9CgovKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqLwovKiBwcmludCAqLwoKICBAbWVkaWEgcHJpbnQgewogICAgYm9keS5jb2RleCB7IHBhZGRpbmc6IDBweCAxZXg7IGZvbnQtc2l6ZTogNjAlOyB9CiAgICBkaXYuZHVuZ2Vvbl9tYXAgaW1nIHsgbWF4LXdpZHRoOiAxMDAlOyB9CiAgICBkaXYuZHVuZ2Vvbl9rZXkgaW1nIHsgbWF4LXdpZHRoOiAxMDAlOyB9CiAgICBkaXYuZHVuZ2Vvbl9hY3Rpb25zIHsgZGlzcGxheTogbm9uZTsgfQogIH0KCi8qICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICovCg==">
+    <style>
+      /* Style the dropdown button */
+      .dropbtn-left {
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
+      }
+  
+      /* The container <div> - needed to position the dropdown content */
+      .dropdown-left {
+        position: fixed;
+        left: 0;
+        top: 50px;
+        width: 200px;
+        z-index: 1;
+      }
+  
+      /* Dropdown Content (hidden by default) */
+      .dropdown-content-left {
+        display: none;
+        position: relative;
+        background-color: #f9f9f9;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+      }
+  
+      /* Links inside the dropdown */
+      .dropdown-content-left .toc-link {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+  
+      /* Change color of dropdown links on hover */
+      .dropdown-content-left .toc-link:hover {
+        background-color: #f1f1f1;
+      }
+  
+      /* Show the dropdown menu on hover */
+      .dropdown-left:hover .dropdown-content-left {
+        display: block;
+      }
+  
+      /* Style the submenu button */
+      .submenu-btn-left {
+        background-color: #f9f9f9;
+        color: black;
+        padding: 12px 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        display: block;
+        width: 100%;
+        text-align: left;
+      }
+  
+      /* The container <div> - needed to position the submenu content */
+      .dropdown-submenu-left {
+        position: relative;
+      }
+  
+      /* Submenu Content (hidden by default) */
+      .submenu-content-left {
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: 0;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+      }
+  
+      /* Links inside the submenu */
+      .submenu-content-left .toc-link {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+  
+      /* Change color of submenu links on hover */
+      .submenu-content-left .toc-link:hover {
+        background-color: #f1f1f1;
+      }
+  
+      /* Show the submenu on hover */
+      .dropdown-submenu-left:hover .submenu-content-left {
+        display: block;
+      }
+    </style>
+    <style>
+      .candleorder{
+        color: red;
+      }
+    
+      @font-face {
+        font-family: 'monica-ext-font_YIBBBFG';
+        src: url('chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/static/fonts/Hind-Light.otf');
+        font-weight: 300;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'monica-ext-font_YIBBBFG';
+        src: url('chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/static/fonts/Hind-Regular.otf');
+        font-weight: 400;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'monica-ext-font_YIBBBFG';
+        src: url('chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/static/fonts/Hind-Medium.otf');
+        font-weight: 500;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'monica-ext-font_YIBBBFG';
+        src: url('chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/static/fonts/Hind-SemiBold.otf');
+        font-weight: 600;
+        font-display: swap;
+      }
+    </style>
+    <style id="monica-reading-highlight-style">
+      .monica-reading-highlight {
+        animation: fadeInOut 2s ease-in-out;
+      }
+
+      @keyframes fadeInOut {
+
+        0%,
+        100% {
+          background-color: rgba(2, 118, 255, 0);
+        }
+
+        50% {
+          background-color: rgba(2, 118, 255, 0.20);
+        }
+      }
+    </style>
+    <style>
+      pre{
+        font-family: Arial, Helvetica, sans-serif1;
+      }
+      @font-face {
+        font-family: 'monica-ext-font_YIBBBFG';
+        src: url('chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/static/fonts/Hind-Light.otf');
+        font-weight: 300;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'monica-ext-font_YIBBBFG';
+        src: url('chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/static/fonts/Hind-Regular.otf');
+        font-weight: 400;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'monica-ext-font_YIBBBFG';
+        src: url('chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/static/fonts/Hind-Medium.otf');
+        font-weight: 500;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'monica-ext-font_YIBBBFG';
+        src: url('chrome-extension://ofpnmcalabcbjgholdjcjblkibolbppb/static/fonts/Hind-SemiBold.otf');
+        font-weight: 600;
+        font-display: swap;
+      }
+    </style>
+  </head>
+  <body class="codex" monica-version="5.2.3" monica-id="ofpnmcalabcbjgholdjcjblkibolbppb" monica-locale="zh_CN">
+    <h1>Rebellion Army's Arsenal</h1>
+    <!-- BEGIN OF CONTENT -->
+    <section class="toc">
+      <div class="dropdown dropdown-left">
+        <button class="dropbtn dropbtn-left">Table of Contents</button>
+        <div class="dropdown-content dropdown-content-left">
+          <a class="toc-link" href="chapter1.html">Chapter 1: Guidance from the Night – the year of 1597 </a>
+          <a class="toc-link" href="chapter2.html">Chapter 2: Road to the Shogunate</a>
+          <a class="toc-link" href="chapter3.html">Chapter 3: The Hidden Ones</a>
+          <a class="toc-link" href="chapter4.html">Chapter 4: The Battle of Seikigahara</a>
+          <a class="toc-link" href="FinalDungeon.html">Final Dungeon</a>
+          <a class="toc-link" href="Arsenal1.html">Arsenal 1</a>
+          <a class="toc-link" href="appendix.html">Appendix (Map, Player's handout, etc.)</a>
+          <div class="dropdown-submenu dropdown-submenu-left">
+            <button class="submenu-btn submenu-btn-left">NPC Datasheet</button>
+            <div class="submenu-content submenu-content-left">
+              <a class="toc-link" href="Ashigaru(No firearm).html">Ashigaru (No Firearm)</a>
+              <a class="toc-link" href="Ashigaru(Firearm).html">Ashigaru (Firearm)</a>
+              <a class="toc-link" href="TokugawaIeyasu.html">Tokugawa Ieyasu</a>
+              <a class="toc-link" href="ToyotomiHideyoshi.html">Toyotomi Hideyoshi</a>
+              <a class="toc-link" href="Guide.html">Guide</a>
+              <a class="toc-link" href="LightCavalry.html">Light Cavalry</a>
+              <a class="toc-link" href="HeavyCavalry.html">Heavy Cavalry</a>
+              <a class="toc-link" href="ToyotomiHideyori.html">Toyotomi Hideyori</a>
+              <a class="toc-link" href="Samurai.html">Samurai</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div id="dungeon_map" class="dungeon_map">
+      <img src="Maps (DM)/arsenal1map.png"" alt="[ dungeon map ]" usemap="#dungeon_areas">
+    </div>
+    <div class="dungeon_key">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAAAhCAIAAAB/ZAteAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowMTgwMTE3NDA3MjA2ODExODcxRkVBNTg2RjMxQjI3OCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo4RUVBMTQ3NEExOTAxMUVCQUFFMDgyMjQzNDM0QUNCQSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo4RUVBMTQ3M0ExOTAxMUVCQUFFMDgyMjQzNDM0QUNCQSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjAyODAxMTc0MDcyMDY4MTE4OEM2RTAyNTI4NjZFNzZDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjAxODAxMTc0MDcyMDY4MTE4NzFGRUE1ODZGMzFCMjc4Ii8+IDwvcmRmOkRlc2NyaXB0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" alt="[ map key ]">
+    </div>
+    <div>
+      <map name="dungeon_areas" id="dungeon_areas">
+        <area href="#room_1" alt="Room #1, 130' x 130', 2 x Wight" title="Room #1, 130' x 130', 2 x Wight" shape="poly" coords="408,112,506,183,469,300,346,300,309,183">
+        <area title="Room #2, 30' x 30', Ogre Chain Brute and 1 x Ogre" alt="Room #2, 30' x 30', Ogre Chain Brute and 1 x Ogre" href="#room_2" coords="496,368,544,416" shape="rect">
+        <area href="#room_3" alt="Room #3, 30' x 30', Ogre Zombie and 3 x Zombie" title="Room #3, 30' x 30', Ogre Zombie and 3 x Zombie" shape="rect" coords="80,144,128,192">
+        <area shape="rect" coords="16,496,96,608" href="#room_4" title="Room #4, 50' x 70', Goblin Boss and 7 x Goblin" alt="Room #4, 50' x 70', Goblin Boss and 7 x Goblin">
+        <area title="Room #5, 30' x 30', Ogre Battering Ram and 1 x Ogre" alt="Room #5, 30' x 30', Ogre Battering Ram and 1 x Ogre" href="#room_5" coords="528,464,576,512" shape="rect">
+        <area shape="rect" coords="176,208,288,256" href="#room_6" title="Room #6, 70' x 30', Hobgoblin Captain and 2 x Hobgoblin" alt="Room #6, 70' x 30', Hobgoblin Captain and 2 x Hobgoblin">
+        <area alt="Stuck Good Wooden Door (DC 15 to break; 15 hp)" title="Stuck Good Wooden Door (DC 15 to break; 15 hp)" shape="rect" coords="400,320,416,336">
+        <area shape="rect" coords="336,320,352,336" title="Locked Good Wooden Door (DC 10 to open, DC 15 to break; 15 hp)" alt="Locked Good Wooden Door (DC 10 to open, DC 15 to break; 15 hp)">
+        <area coords="288,176,304,192" shape="rect" title="Archway" alt="Archway">
+        <area alt="Unlocked Good Wooden Door (15 hp)" title="Unlocked Good Wooden Door (15 hp)" shape="rect" coords="288,240,304,256">
+        <area alt="Archway" title="Archway" coords="512,208,528,224" shape="rect">
+        <area coords="368,96,384,112" shape="rect" title="Unlocked Strong Wooden Door (20 hp)" alt="Unlocked Strong Wooden Door (20 hp)">
+        <area shape="rect" coords="400,96,416,112" title="Unlocked Strong Wooden Door (20 hp)" alt="Unlocked Strong Wooden Door (20 hp)">
+        <area shape="rect" coords="528,352,544,368" alt="Stuck Iron Door (DC 25 to break; 60 hp)" title="Stuck Iron Door (DC 25 to break; 60 hp)">
+        <area title="Stuck Strong Wooden Door (DC 15 to break; 20 hp)" alt="Stuck Strong Wooden Door (DC 15 to break; 20 hp)" coords="496,416,512,432" shape="rect">
+        <area alt="Unlocked Strong Wooden Door (20 hp)" title="Unlocked Strong Wooden Door (20 hp)" coords="80,128,96,144" shape="rect">
+        <area shape="rect" coords="112,192,128,208" alt="Stuck Iron Door (DC 25 to break; 60 hp)" title="Stuck Iron Door (DC 25 to break; 60 hp)">
+        <area coords="64,176,80,192" shape="rect" alt="Unlocked Good Wooden Door (15 hp)" title="Unlocked Good Wooden Door (15 hp)">
+        <area shape="rect" coords="96,592,112,608" title="Locked Strong Wooden Door (DC 10 to open, DC 20 to break; 20 hp)" alt="Locked Strong Wooden Door (DC 10 to open, DC 20 to break; 20 hp)">
+        <area coords="96,528,112,544" shape="rect" title="Locked Stone Door (DC 15 to open, DC 25 to break; 60 hp)" alt="Locked Stone Door (DC 15 to open, DC 25 to break; 60 hp)">
+        <area alt="Archway" title="Archway" coords="560,448,576,464" shape="rect">
+        <area shape="rect" coords="528,448,544,464" title="Locked Good Wooden Door (DC 25 to open, DC 15 to break; 15 hp) (slides down)" alt="Locked Good Wooden Door (DC 25 to open, DC 15 to break; 15 hp) (slides down)">
+        <area shape="rect" coords="176,256,192,272" alt="Stuck Strong Wooden Door (DC 15 to break; 20 hp)" title="Stuck Strong Wooden Door (DC 15 to break; 20 hp)">
+        <area alt="Someone has scrawled &quot;Sharpen thy spear and ready thy shield&quot; here" title="Someone has scrawled &quot;Sharpen thy spear and ready thy shield&quot; here" href="#mark_m" coords="176,176,192,192" shape="rect">
+        <area shape="rect" coords="464,144,480,160" href="#mark_i" alt="Arrow Trap" title="Arrow Trap">
+        <area shape="rect" coords="208,80,224,96" href="#mark_a" alt="Falling Block" title="Falling Block">
+        <area alt="Falling Block" title="Falling Block" href="#mark_a" coords="592,656,608,672" shape="rect">
+        <area href="#mark_u" title="Part of the ceiling has collapsed into the corridor" alt="Part of the ceiling has collapsed into the corridor" shape="rect" coords="400,464,416,480">
+        <area href="#mark_r" title="A group of demonic faces have been carved into the walls" alt="A group of demonic faces have been carved into the walls" shape="rect" coords="80,336,96,352">
+        <area coords="272,592,288,608" shape="rect" title="Net Trap" alt="Net Trap" href="#mark_x">
+        <area coords="80,368,96,384" shape="rect" title="Scythe Blade" alt="Scythe Blade" href="#mark_s">
+        <area shape="rect" coords="624,496,640,512" href="#mark_v" alt="Net Trap" title="Net Trap">
+        <area coords="592,304,608,320" shape="rect" title="A fountain of water sits in an alcove here" alt="A fountain of water sits in an alcove here" href="#mark_n">
+        <area alt="Falling Block" title="Falling Block" href="#mark_z" coords="560,656,576,672" shape="rect">
+        <area shape="rect" coords="240,80,256,96" href="#mark_c" alt="A fountain of water sits in an alcove here" title="A fountain of water sits in an alcove here">
+        <area coords="112,528,128,544" shape="rect" title="A chute falls into the corridor from above" alt="A chute falls into the corridor from above" href="#mark_w">
+        <area alt="Burning torches in iron sconces line the corridor" title="Burning torches in iron sconces line the corridor" href="#mark_e" coords="432,144,448,160" shape="rect">
+      </map>
+    </div>
+    <table class="dungeon details">
+      <tbody>
+        <tr class="section">
+          <td class="title">General</td>
+          <td class="content">
+            <table>
+              <tbody>
+                <tr class="row">
+                  <td class="title"></td>
+                  <td class="content"></td>
+                </tr>
+                <tr class="row">
+                  <td class="title">Size</td>
+                  <td class="content">Small (39 x 39)</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">Walls</td>
+                  <td class="content">Reinforced Masonry (DC 15 to climb)</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">Floor</td>
+                  <td class="content">Uneven Flagstone (DC 10 to charge or run)</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">Temperature</td>
+                  <td class="content">Warm</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">Illumination</td>
+                  <td class="content">Shadowy (phosphorescent fungus or candles every 20 ft.)</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr class="section">
+          <td class="title">Corridor Features</td>
+          <td class="content">
+            <table>
+              <tbody>
+                <tr class="row">
+                  <td class="title">
+                    <span id="mark_a">a</span>
+                  </td>
+                  <td class="content">Falling Block: DC 15 to find, DC 10 to disable; affects all targets within a 10 ft. square area, DC 16 save or take 4d10 damage</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">
+                    <span id="mark_c">c</span>
+                  </td>
+                  <td class="content">A fountain of water sits in an alcove here</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">
+                    <span id="mark_e">e</span>
+                  </td>
+                  <td class="content">Burning torches in iron sconces line the corridor</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">
+                    <span id="mark_i">i</span>
+                  </td>
+                  <td class="content">Arrow Trap: DC 10 to find, DC 10 to disable; +3 to hit against one target, 1d10 piercing damage</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">
+                    <span id="mark_m">m</span>
+                  </td>
+                  <td class="content">
+
+                  <strong>“Takeda Shingen” written on the wall using some red ink</strong>
+                  <br>
+                  <br>
+                  The wall was very old, and you can hardly recognize any other writing on it 
+                  <br>
+                  Seems like this old fortress has some deep relationship with Takeda Shingen and his clan...... 
+
+                </td>
+                </tr>
+                <tr class="row">
+                  <td class="title">
+                    <span id="mark_n">n</span>
+                  </td>
+                  <td class="content">A fountain of water sits in an alcove here</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">
+                    <span id="mark_r">r</span>
+                  </td>
+                  <td class="content">A group of shinto godess faces have been carved into the walls</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">
+                    <span id="mark_s">s</span>
+                  </td>
+                  <td class="content">Scythe Blade: DC 10 to find, DC 15 to disable; +7 to hit against all targets within a 5 ft. arc, 1d10 slashing damage</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">
+                    <span id="mark_u">u</span>
+                  </td>
+                  <td class="content">Part of the ceiling has beautiful carvings about how Toyotomi Hideyoshi created the shogunates</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">
+                    <span id="mark_v">v</span>
+                  </td>
+                  <td class="content">Net Trap: DC 10 to find, DC 10 to disable; affects all targets within a 10 ft. square area, DC 11 save or become restrained</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">
+                    <span id="mark_w">w</span>
+                  </td>
+                  <td class="content">A chute falls into the corridor from above</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">
+                    <span id="mark_x">x</span>
+                  </td>
+                  <td class="content">Net Trap: DC 10 to find, DC 10 to disable; affects all targets within a 10 ft. square area, DC 10 save or become restrained</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">
+                    <span id="mark_z">z</span>
+                  </td>
+                  <td class="content">Falling Block: DC 15 to find, DC 15 to disable; affects all targets within a 10 ft. square area, DC 13 save or take 2d10 damage</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr class="section">
+          <td class="title">Wandering Monsters</td>
+          <td class="content">
+            <table>
+              <tbody>
+                <tr class="row">
+                  <td class="title">1</td>
+                  <td class="content"><a href = "/Samurai.html">Wandering Samurai, lost and desperate, won't attack players unless players attack it</a></td>
+                </tr>
+                <tr class="row">
+                  <td class="title">2</td>
+                  <td class="content">Guard (damage: hit dice:+4 Longsword 1d10+2 hp: 30); easy, 1100 xp, investigating a strange noise</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">3</td>
+                  <td class="content">Old Guard (damage: hit dice:+2 Longsword 1d8 hp: 23 AC:12(Damaged metal armor)); easy, 1100 xp, consumed by disease and madness</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">4</td>
+                  <td class="content">Lamplighter x 2(damage: hit dice:+1 Lantern 2d4+2 fire damage AC:10(natural armor) hp:30); easy, 900xp</td>
+                </tr>
+                <tr class="row">
+                  <td class="title">5</td>
+                  <td class="content"><a href = "Samurai.html">Samurai, he is mad</a></td>
+                </tr>
+                <tr class="row">
+                  <td class="title">6</td>
+                  <td class="content">Patrol Leader(damage: hit dice:+5 Longsword 1d10+2 Attack twice AC:15(metal armor) hp:42) status: Patrolling (Players have advantage on their first round attack)</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr class="section">
+          <td class="title">
+            <span id="room_1">Gunpower Storage</span>
+          </td>
+          <td class="content">
+            <table>
+              <tbody>
+                <tr class="row">
+                  <td class="door">North Entry #1</td>
+                  <td class="content">
+                    <p>Unlocked Strong Wooden Door (20 hp)</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="door">North Entry #2</td>
+                  <td class="content">
+                    <p>Unlocked Strong Wooden Door (20 hp)</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="door">West Entry #1</td>
+                  <td class="content">
+                    <p>Archway</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="door">West Entry #2</td>
+                  <td class="content">
+                    <p>Unlocked Good Wooden Door (15 hp)</p>
+                    <p class="icon">→ &nbsp; Leads to <a href="#room_6">room #6</a>
+                    </p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="door">East Entry</td>
+                  <td class="content">
+                    <p>Archway</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="door">South Entry #1</td>
+                  <td class="content">
+                    <p>Locked Good Wooden Door (DC 10 to open, DC 15 to break; 15 hp)</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="door">South Entry #2</td>
+                  <td class="content">
+                    <p>Stuck Good Wooden Door (DC 15 to break; 15 hp)</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="title">Room Features</td>
+                  <td class="content">
+                    <p>Boxes of Gunpowder in placed neatly in piles, there's only 2 candles far away from the boxes, guarded by samurai</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="title">Monster</td>
+                  <td class="content">
+                    <p>Guard x 4(damage: hit dice:+5 Longsword 1d10+2 AC:15(metal armor) hp:40); deadly, 1150 xp</p>
+                    <hr>
+                    <p>Treasure: 13 gp; 19 cp</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr class="section">
+          <td class="title">
+            <span id="room_2">Rest room</span>
+          </td>
+          <td class="content">
+            <table>
+              <tbody>
+                <tr class="row">
+                  <td class="door">North Entry</td>
+                  <td class="content">
+                    <p>Stuck Iron Door (DC 25 to break; 60 hp)</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="door">South Entry</td>
+                  <td class="content">
+                    <p>Stuck Strong Wooden Door (DC 15 to break; 20 hp)</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="title">Guard</td>
+                  <td class="content">
+                    <p>Guard x 2(damage: hit dice:+5 Longsword 1d10+2 AC:15(metal armor) hp:40); hard, 1150 xp</p>
+                    <hr>
+                    <p>Treasure: 16 sp; 13 gp</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr class="section">
+          <td class="title">
+            <span id="room_3">Rest room #2</span>
+          </td>
+          <td class="content">
+            <table>
+              <tbody>
+                <tr class="row">
+                  <td class="door">North Entry</td>
+                  <td class="content">
+                    <p>Unlocked Strong Wooden Door (20 hp)</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="door">West Entry</td>
+                  <td class="content">
+                    <p>Unlocked Good Wooden Door (15 hp)</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="door">South Entry</td>
+                  <td class="content">
+                    <p>Stuck Iron Door (DC 25 to break; 60 hp)</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="title">Monster</td>
+                  <td class="content">
+                    <p>Samurai Guard (damage: hit dice:+5 Longsword 1d10+2 AC:13(metal armor) hp:40) and 3 x new soldiers (damage: hit dice:+3 Longsword 1d8+2 AC:11(natural armor) hp:30); hard, 600 xp</p>
+                    <hr>
+                    <p>Treasure:Nothing...</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr class="section">
+          <td class="title">
+            <span id="room_4">Treasure storage</span>
+          </td>
+          <td class="content">
+            <table>
+              <tbody>
+                <tr class="row">
+                  <td class="door">East Entry #1</td>
+                  <td class="content">
+                    <p>Locked Stone Door (DC 15 to open, DC 25 to break; 60 hp)</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="door">East Entry #2</td>
+                  <td class="content">
+                    <p>Locked Strong Wooden Door (DC 10 to open, DC 20 to break; 20 hp)</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="title">Room Features</td>
+                  <td class="content">
+                    <p>The south and east walls have been engraved with glowing gold decorations, and the south and east walls are covered with veins of green crystal</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="title">Guard</td>
+                  <td class="content">
+                    <p>Guard x2 (damage: hit dice:+5 Longsword 1d10+2 AC:11(metal armor) hp:40); hard, 1150 xp</p>
+                    <hr>
+                    <p>Treasure:2700 cp, 1000 sp, 100 gp, 2 x diamond (50 gp), bloodstone (50 gp), citrine (50 gp), jasper (50 gp), quartz (50 gp), sardonyx (50 gp), star rose quartz (50 gp)</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr class="section">
+          <td class="title">
+            <span id="room_5">Rest room #3</span>
+          </td>
+          <td class="content">
+            <table>
+              <tbody>
+                <tr class="row">
+                  <td class="door">North Entry #1</td>
+                  <td class="content">
+                    <p>Locked Good Wooden Door (DC 25 to open, DC 15 to break; 15 hp) (slides down)</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="door">North Entry #2</td>
+                  <td class="content">
+                    <p>Doorknobs covered with slippery moss – Sleight of Hand (DEX) DC 10 to open 
+                      <br>
+                      <br>
+                      Can try several times to open 
+                      <br>
+                      <br>
+                      If fail, character’s hand will be covered with moss and will have disadvantage on saving throws, ability checks and attack rolls (To Hit) involving hands until they clean it</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="title"><font size = "6">Puzzle</font></td>
+                  <td class="content">
+                    <p><strong>Environment</strong>:  Dim light, Humid, Plants growing in the corners, Vines stretching down from ceiling</p>
+                    <br>
+                    There are 6 samurai helmets (Helmet can’t be moved around or picked up, they are part of the ground) surrounding in a circle on the ground, each of them is hallow and made of rusty iron, there are candles inside the helmets 
+                    <br>
+                    In the middle of the circle, there’s a piece of paper <a href = "#r3clue">[Paper]</a> 
+                    <br>
+                    <br>
+                    <strong>Helmets</strong>
+                    <br>
+                    <br>
+                    <pre>
+                        <font size = "4.5"><strong>1st Helmet:</strong></font>
+
+                        Description: “Earliest owner of Soza Samonji” 
+                        Players can do a History (INT) check to know more information:
+
+                              1. 0~9: you didn’t remember anything of this so-called “Soza Samonji”  
+                              
+                              2. 10~16: you successfully remember “Soza Samonji” was a famous sword that was owned by several famous daimyos. Unfortunately, you only knew all the daimyos’ names who once owned this sword but didn’t remember the sequence:  
+                              Imagawa Yoshimoto, Oda Nobunaga, Takeda Nobutora, Toyotomi Hideyoshi, and Tokugawa Ieyasu 
+                              
+                              3. 17~20: you successfully remember “Soza Samonji” was a famous sword that was owned by several famous daimyos, and you also remember the sequence that this sword was given to these daimyos 
+                              “Takeda Nobutora was a previous owner of a famous sword named ‘Soza Samonji’, although he gave that sword to Imagawa Yoshimoto as a gift to secure an alliance. After Yoshimoto’s death at the Okehazama, the sword came into possession of Oda Nobunaga. After the incident of Honnoji, Toyotomi Hideyoshi recovered the sword, which he later gave to Tokugawa Ieyasu as a gift. 
+                        
+                        
+                        <font size = "4.5"><strong>2nd Helmet:</strong></font>     
+                                Has a tiger head scarved at the back of the helmet  
+                                On the tiger’s head, “Shingen” was written on it 
+
+                        <font size = "4.5"><strong>3rd Helmet:</strong></font>
+                                Has “Ieyasu” written on it 
+
+                        <font size = "4.5"><strong>4th Helmet:</strong></font>
+                                Has “Leyasu” written on it  
+                                
+                        <font size = "4.5"><strong>5th Helmet:</strong></font>
+                                Has “Nobunaga” written on it 
+
+                        <font size = "4.5"><strong>6th Helmet:</strong></font>
+                                Has “Hideyoshi” written on it  
+                    </pre>
+
+                    <section id = "r3clue">
+                      <pre>
+                        <strong>The Paper in the center circle comtains the following: (Read the indented section to the players)</strong>
+                        
+                                        The paper is wet with moss growing on it, the paper saids:
+
+
+                                        -----------------------------------------------------------------------------------
+                                        " The Tiger of Kai surpassed his dad [1540] 
+
+                                        In Hamamatsu he defeated Matsudaira Takechiyo [1573] 
+                                        
+                                        Though he was glorius, many extinguished his flame 
+                                        
+                                        The unifier and his past sandal-bearer had erased Takeda clan from history  
+                                        
+                                        In Battle of Nagashino the cavalry was defeated [1548] 
+                                        
+                                        But all of these had past, may the lights vanish to unlock the future. " 
+                                        -----------------------------------------------------------------------------------
+
+
+                          Extinguish flame means that “extinguish the candle flame” 
+
+
+                      
+                      <strong><font size = "5">The Correct Solving for this puzzle: (The door won't open until they solve this puzzle):</font></strong>
+                      <strong>Decoding the paper:</strong> 
+
+                      Takeda Shingen rebelled and surpassed his father Takeda Nobutora. Later he defeated Tokugawa Ieyasu who had the name Matsudaira Takechiyo before in 1573. At last, Takeda Shingen was defeated by Toyotomi Hideyoshi and Oda Nobunaga in Battle of Nagashino in 1548. 
+                      
+                      1st helmet: Takeda Shingen’s father, Takeda Nobutora 
+                      
+                      2nd helmet: Takeda Shingen 
+                      
+                      3rd helmet: Tokugawa Ieyasu 
+                      
+                      4th helmet: Just for confusing the party misunderstanding “Ieyasu” and “Leyasu” 
+                      
+                      5th helmet: Oda Nobunaga 
+                      
+                      6th helmet: Toyotomi Hideyoshi 
+                        
+                      <strong>Extinguish the candle lights in this sequence: </strong>
+                      <p class = "candleorder">
+                      1.  Extinguish candle fire in 1st helmet 
+
+                      2.  Extinguish candle fire in 3rd helmet 
+                        
+                      3.  Extinguish candle fire in 2nd helmet 
+                        
+                      4.  The candle fire which was still lit up is in the 4th helmet and 5th helmet, representing Toyotomi Hideyoshi and Oda Nobunaga had the ultimate victory 
+                      </p>
+
+                      Result: the exit door of room 3 opened 
+                      
+                      Passage (from room 3 to room 1 upper one) 
+                      </pre>
+                    </section>
+
+                    <hr>
+                    <p>Treasure: 16 sp; 13 gp</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr class="section">
+          <td class="title">
+            <span id="room_6">Hall to Gunpowder Storage Room</span>
+          </td>
+          <td class="content">
+            <table>
+              <tbody>
+                <tr class="row">
+                  <td class="door">East Entry</td>
+                  <td class="content">
+                    <p>Unlocked Good Wooden Door (15 hp)</p>
+                    <p class="icon">→ &nbsp; Leads to <a href="#room_1">room #1</a>
+                    </p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="door">South Entry</td>
+                  <td class="content">
+                    <p>Stuck Strong Wooden Door (DC 15 to break; 20 hp)</p>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="title">Gaurd</td>
+                  <td class="content">
+                    <p>Lamplighter x 2(damage: hit dice:+1 Lantern 1d4+2 fire damage AC:10(natural armor) hp:22)Guard x 2(damage: hit dice:+5 Longsword 1d8+2 AC:15(metal armor) hp:30); hard, 1150 xp</p>
+                    <hr>
+                    <p>Treasure: 180 cp, 110 sp, 45 gp, a Keicho-koban gold coin (125 gp), a cloth gown trimmed with fur (25 gp), a fine leather merchant's cap tooled with crocodile scales (45 gp)</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- END OF CONTENT -->
+    <div class="footnotes">
+      <p>Random Dungeon Generator <br>http://donjon.bin.sh/ </p>
+      <p>Some content used under the terms of the <a href="https://donjon.bin.sh/d20/ogl.html">Open Gaming License</a>
+      </p>
+    </div>
+    <!-- Code injected by live-server -->
+    <script>
+      // 
+      < ![CDATA[ < --For SVG support
+          if ('WebSocket' in window) {
+            (function() {
+              function refreshCSS() {
+                var sheets = [].slice.call(document.getElementsByTagName("link"));
+                var head = document.getElementsByTagName("head")[0];
+                for (var i = 0; i < sheets.length; ++i) {
+                  var elem = sheets[i];
+                  var parent = elem.parentElement || head;
+                  parent.removeChild(elem);
+                  var rel = elem.rel;
+                  if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+                    var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+                    elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+                  }
+                  parent.appendChild(elem);
+                }
+              }
+              var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+              var address = protocol + window.location.host + window.location.pathname + '/ws';
+              var socket = new WebSocket(address);
+              socket.onmessage = function(msg) {
+                if (msg.data == 'reload') window.location.reload();
+                else if (msg.data == 'refreshcss') refreshCSS();
+              };
+              if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+                console.log('Live reload enabled.');
+                sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+              }
+            })();
+          } else {
+            console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+          }
+          // ]]>
+    </script>
+    <!-- Code injected by live-server -->
+    <script>
+      // 
+      < ![CDATA[ < --For SVG support
+          if ('WebSocket' in window) {
+            (function() {
+              function refreshCSS() {
+                var sheets = [].slice.call(document.getElementsByTagName("link"));
+                var head = document.getElementsByTagName("head")[0];
+                for (var i = 0; i < sheets.length; ++i) {
+                  var elem = sheets[i];
+                  var parent = elem.parentElement || head;
+                  parent.removeChild(elem);
+                  var rel = elem.rel;
+                  if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+                    var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+                    elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+                  }
+                  parent.appendChild(elem);
+                }
+              }
+              var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+              var address = protocol + window.location.host + window.location.pathname + '/ws';
+              var socket = new WebSocket(address);
+              socket.onmessage = function(msg) {
+                if (msg.data == 'reload') window.location.reload();
+                else if (msg.data == 'refreshcss') refreshCSS();
+              };
+              if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+                console.log('Live reload enabled.');
+                sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+              }
+            })();
+          } else {
+            console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+          }
+          // ]]>
+    </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+  var submenuBtn = document.querySelector('.submenu-btn-left');
+  var submenuContent = document.querySelector('.submenu-content-left');
+
+  submenuBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    submenuContent.style.display = submenuContent.style.display === 'block' ? 'none' : 'block';
+  });
+
+  // Close the dropdown if the user clicks outside of it
+  window.onclick = function(event) {
+    if (!event.target.matches('.submenu-btn-left')) {
+      if (submenuContent.style.display === 'block') {
+        submenuContent.style.display = 'none';
+      }
+    }
+  };
+});
+</script>
+
+    <div id="monica-content-root" class="monica-widget"></div>
+  </body>
+</html>

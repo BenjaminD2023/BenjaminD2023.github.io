@@ -1,0 +1,260 @@
+/* Reset styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
+}
+
+/* <pre> style */
+pre{
+  font-family: Arial, Helvetica, sans-serif1;
+}
+
+/* Header styles */
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.title {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.author {
+  font-style: italic;
+}
+
+/* Main styles */
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Table of Contents styles */
+.toc {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.toc-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.toc-items a,
+.dropdown-title {
+  display: block;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  text-decoration: none;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+
+.toc-items a:hover,
+.dropdown-title:hover {
+  background-color: #e0e0e0;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown:hover .submenu {
+  display: block;
+}
+
+.submenu a {
+  display: block;
+  padding: 5px 15px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  text-decoration: none;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+
+.submenu a:hover {
+  background-color: #e0e0e0;
+}
+
+/* Introduction styles */
+.intro {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.intro h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.intro p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Chapter styles */
+.chapter {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.part {
+  font-weight: bold;
+}
+
+ol {
+  list-style-type: none;
+}
+
+ul {
+  list-style-type: disc;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+/* Datasheet styles */
+.datasheet {
+  max-width: 600px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.datasheet h1 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.datasheet-img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.datasheet-img:hover {
+  transform: scale(1.1);
+}
+
+/* Table CSS */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table1{
+  border: 1px solid black;
+  text-align: center;
+}
+.table2 {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+}
+
+/* Additional CSS for buttons */
+.button-wrapper {
+  position: fixed;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #555;
+}
+
+.Matchlock_Gun_Description{
+  color : purple;
+  font-style: italic;
+  font-size: x-small;
+  text-align: center;
+}
+
+
+
+/* Original CSS */ 
+/*
+h1{
+    color:aqua;
+    text-align: center;
+}
+.author{
+    color: red;
+    text-align: center;
+}
+.title{
+    color:blue;
+    text-align: center;
+}
+p{
+    font-family: cursive;
+}
+.part{
+    font-weight: bold;
+    color: blueviolet;
+}
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+*/

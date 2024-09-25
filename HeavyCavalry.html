@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heavy Cavalry's Data Sheet</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Style the dropdown button */
+    .dropbtn-left {
+      background-color: #4CAF50;
+      color: white;
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+    }
+
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown-left {
+      position: fixed;
+      left: 0;
+      top: 50px;
+      width: 200px;
+      z-index: 1;
+    }
+
+    /* Dropdown Content (hidden by default) */
+    .dropdown-content-left {
+      display: none;
+      position: relative;
+      background-color: #f9f9f9;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    /* Links inside the dropdown */
+    .dropdown-content-left .toc-link {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    /* Change color of dropdown links on hover */
+    .dropdown-content-left .toc-link:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* Show the dropdown menu on hover */
+    .dropdown-left:hover .dropdown-content-left {
+      display: block;
+    }
+
+    /* Style the submenu button */
+    .submenu-btn-left {
+      background-color: #f9f9f9;
+      color: black;
+      padding: 12px 16px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+      text-align: left;
+    }
+
+    /* The container <div> - needed to position the submenu content */
+    .dropdown-submenu-left {
+      position: relative;
+    }
+
+    /* Submenu Content (hidden by default) */
+    .submenu-content-left {
+      display: none;
+      position: absolute;
+      left: 100%;
+      top: 0;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    /* Links inside the submenu */
+    .submenu-content-left .toc-link {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    /* Change color of submenu links on hover */
+    .submenu-content-left .toc-link:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* Show the submenu on hover */
+    .dropdown-submenu-left:hover .submenu-content-left {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h3 class="title">Q4 History Comp Review D&D</h3>
+    <p class="author">By: Teresa Jiang, Ashley Huang, Amy Chen, Benjamin Dai, Jacky Zeng</p>  
+    <br>
+    <p class="author"><font size = "1">Special Thanks for the following Contributors: Bryant Wong, Carson Zhang</font></p>
+  </header>
+  <section class="toc">
+    <div class="dropdown dropdown-left">
+      <button class="dropbtn dropbtn-left">Table of Contents</button>
+      <div class="dropdown-content dropdown-content-left">
+        <a class="toc-link" href="chapter1.html">Chapter 1: Guidance from the Night – the year of 1597 </a>
+        <a class="toc-link" href="chapter2.html">Chapter 2: Road to the Shogunate</a>
+        <a class="toc-link" href="chapter3.html">Chapter 3: The Hidden Ones</a>
+        <a class="toc-link" href="chapter4.html">Chapter 4: The Battle of Seikigahara</a>
+        <a class="toc-link" href="FinalDungeon.html">Final Dungeon</a>
+        <a class="toc-link" href="Arsenal1.html">Arsenal 1</a>
+        <a class="toc-link" href="appendix.html">Appendix (Map, Player's handout, etc.)</a>
+        <div class="dropdown-submenu dropdown-submenu-left">
+          <button class="submenu-btn submenu-btn-left">NPC Datasheet</button>
+          <div class="submenu-content submenu-content-left">
+            <a class="toc-link" href="Ashigaru(No firearm).html">Ashigaru (No Firearm)</a>
+            <a class="toc-link" href="Ashigaru(Firearm).html">Ashigaru (Firearm)</a>
+            <a class="toc-link" href="TokugawaIeyasu.html">Tokugawa Ieyasu</a>
+            <a class="toc-link" href="ToyotomiHideyoshi.html">Toyotomi Hideyoshi</a>
+            <a class="toc-link" href="Guide.html">Guide</a>
+            <a class="toc-link" href="LightCavalry.html">Light Cavalry</a>
+            <a class="toc-link" href="HeavyCavalry.html">Heavy Cavalry</a>
+            <a class="toc-link" href="ToyotomiHideyori.html">Toyotomi Hideyori</a>
+            <a class="toc-link" href="Samurai.html">Samurai</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <main>
+    <section class="datasheet">
+      <h1>Heavy Cavalry's Data Sheet</h1>
+      <img src="Datasheet/HeavyCavalry.png" alt="Heavy Cavalry's Data Sheet" class="datasheet-img">
+    </section>
+  </main>
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var submenuBtn = document.querySelector('.submenu-btn-left');
+      var submenuContent = document.querySelector('.submenu-content-left');
+    
+      submenuBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        submenuContent.style.display = submenuContent.style.display === 'block' ? 'none' : 'block';
+      });
+    
+      // Close the dropdown if the user clicks outside of it
+      window.onclick = function(event) {
+        if (!event.target.matches('.submenu-btn-left')) {
+          if (submenuContent.style.display === 'block') {
+            submenuContent.style.display = 'none';
+          }
+        }
+      };
+    });
+    </script>
+    
+</body>
+</html>
+
+

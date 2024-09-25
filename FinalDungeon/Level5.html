@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- code copyright (c) 2009-2024 drow <donjon@bin.sh>                   -->
+  <!-- https://twitter.com/donjon_bin_sh                                   -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <head>
+    <style>
+      /* Style the dropdown button */
+      .dropbtn-left {
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
+      }
+  
+      /* The container <div> - needed to position the dropdown content */
+      .dropdown-left {
+        position: fixed;
+        left: 0;
+        top: 50px;
+        width: 200px;
+        z-index: 1;
+      }
+  
+      /* Dropdown Content (hidden by default) */
+      .dropdown-content-left {
+        display: none;
+        position: relative;
+        background-color: #f9f9f9;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+      }
+  
+      /* Links inside the dropdown */
+      .dropdown-content-left .toc-link {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+  
+      /* Change color of dropdown links on hover */
+      .dropdown-content-left .toc-link:hover {
+        background-color: #f1f1f1;
+      }
+  
+      /* Show the dropdown menu on hover */
+      .dropdown-left:hover .dropdown-content-left {
+        display: block;
+      }
+  
+      /* Style the submenu button */
+      .submenu-btn-left {
+        background-color: #f9f9f9;
+        color: black;
+        padding: 12px 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        display: block;
+        width: 100%;
+        text-align: left;
+      }
+  
+      /* The container <div> - needed to position the submenu content */
+      .dropdown-submenu-left {
+        position: relative;
+      }
+  
+      /* Submenu Content (hidden by default) */
+      .submenu-content-left {
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: 0;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+      }
+  
+      /* Links inside the submenu */
+      .submenu-content-left .toc-link {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+  
+      /* Change color of submenu links on hover */
+      .submenu-content-left .toc-link:hover {
+        background-color: #f1f1f1;
+      }
+  
+      /* Show the submenu on hover */
+      .dropdown-submenu-left:hover .submenu-content-left {
+        display: block;
+      }
+    </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://khazad-cdn.com" />
+    <meta name="description" content="A collection of random generators for Dungeons &amp; Dragons and other tabletop role-playing games">
+    <title>donjon; Random Dungeon Generator</title>
+    <link rel="shortcut icon" data-src="/skin/assets/donjon.ico" href="data:image/vnd.microsoft.icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAHAADgBwAA4AcAAP5/AAD4HwAA+98AAPvfAAD73wAA+98AAPvfAAD73wAA+B8AAP5/AADgBwAA4AcAAOAHAAA=" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" media="all" href="data:text/css;base64,LyogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKi8KLyogZHVuZ2Vvbi9zdHlsZS5jc3MgKi8KCiAgYm9keS5jb2RleCB7CiAgICBtYXJnaW46IDBweDsKICAgIHBhZGRpbmc6IDJleCAyZW07CiAgICBmb250LWZhbWlseTogJ0FzdWwnLCBzYW5zLXNlcmlmOwogIH0KICBib2R5LmNvZGV4IGgxIHsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIGZvbnQtc2l6ZTogMjAwJTsgZm9udC13ZWlnaHQ6IGJvbGQ7CiAgfQogIGJvZHkuY29kZXggaDIgewogICAgdGV4dC1hbGlnbjogY2VudGVyOwogICAgZm9udC1zaXplOiAxNTAlOyBmb250LXdlaWdodDogYm9sZDsKICB9CgogIHRhYmxlLmR1bmdlb24gewogICAgbWFyZ2luOiAyZXggYXV0bzsKICAgIGJvcmRlcjogbm9uZTsgYm9yZGVyLWNvbGxhcHNlOiBjb2xsYXBzZTsKICB9CiAgZGl2LmZvb3Rub3RlcyBwIHsKICAgIG1hcmdpbjogMmV4IDJlbTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICB9CgovKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqLwovKiBkdW5nZW9uIG1hcCAqLwoKICBkaXYuZHVuZ2Vvbl9tYXAgewogICAgbWFyZ2luOiAyZXggMmVtOwogICAgdGV4dC1hbGlnbjogY2VudGVyOwogIH0KICBkaXYuZHVuZ2Vvbl9rZXkgewogICAgbWFyZ2luOiAyZXggMmVtOwogICAgdGV4dC1hbGlnbjogY2VudGVyOwogIH0KCi8qICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICovCi8qIHRhYmxlIG1hcCAqLwoKICB0YWJsZS5tYXAgewogICAgbWFyZ2luOiAyZXggYXV0bzsKICAgIGJvcmRlci1sZWZ0OiAxcHggc29saWQ7IGJvcmRlci10b3A6IDFweCBzb2xpZDsKICAgICAgYm9yZGVyLWNvbG9yOiAjMzMzMzMzOwogIH0KICB0YWJsZS5tYXAgdGQuY2VsbCB7CiAgICBtaW4taGVpZ2h0OiAxMHB4OyBtaW4td2lkdGg6IDEwcHg7CiAgICBib3JkZXItcmlnaHQ6IDFweCBzb2xpZDsgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkOwogICAgICBib3JkZXItY29sb3I6ICNjY2NjY2M7CiAgICBwYWRkaW5nOiAwcHg7CiAgICBiYWNrZ3JvdW5kOiB3aGl0ZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsgdmVydGljYWwtYWxpZ246IG1pZGRsZTsKICAgIGZvbnQtZmFtaWx5OiBIZWx2ZXRpY2EsIEdlbmV2YSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiA5cHg7CiAgfQogIHRhYmxlLm1hcCB0ZC5jZWxsIGEgewogICAgdGV4dC1kZWNvcmF0aW9uOiBub25lOwogIH0KICB0YWJsZS5tYXAgdGQuZmlsbCB7CiAgICBib3JkZXItY29sb3I6ICMzMzMzMzM7CiAgICBiYWNrZ3JvdW5kOiAjMDAwMDAwOwogIH0KCi8qICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICovCi8qIGRldGFpbHMgKi8KCiAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHsKICAgIGJvcmRlci10b3A6IDFweCBzb2xpZDsKICAgIGJvcmRlci1jb2xvcjogI2NjY2NjYzsKICB9CiAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHRyLnNlY3Rpb24gewogICAgcGFkZGluZzogMWV4IDFlbTsKICAgIGJvcmRlci1ib3R0b206IDFweCBzb2xpZDsKICAgIGJvcmRlci1jb2xvcjogI2NjY2NjYzsKICB9CiAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHRyLnNlY3Rpb24gPiB0ZC50aXRsZSB7CiAgICBmb250LXNpemU6IDEyMCU7CiAgICBsaW5lLWhlaWdodDogMjAwJTsKICB9CgogIHRhYmxlLmR1bmdlb24uZGV0YWlscyB0ZCB7CiAgICBwYWRkaW5nOiAxZXggMWVtOwogICAgdmVydGljYWwtYWxpZ246IHRvcDsKICB9CiAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHRkLnRpdGxlIHsKICAgIG1pbi13aWR0aDogMTBlbTsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgZm9udC13ZWlnaHQ6IGJvbGQ7CiAgfQogIHRhYmxlLmR1bmdlb24uZGV0YWlscyB0ZC5kb29yIHsKICAgIG1pbi13aWR0aDogMTBlbTsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgZm9udC1zdHlsZTogaXRhbGljOwogIH0KCi8qIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtICovCi8qIGNvbnRlbnQgKi8KCiAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHRkLmNvbnRlbnQgewogICAgd2lkdGg6IDEwMCU7CiAgfQogIHRhYmxlLmR1bmdlb24uZGV0YWlscyB0ZC5jb250ZW50IHRhYmxlIHsKICAgIGJvcmRlcjogbm9uZTsgYm9yZGVyLWNvbGxhcHNlOiBjb2xsYXBzZTsKICB9CiAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHRkLmNvbnRlbnQgcCB7CiAgICBtYXJnaW46IDBweDsgcGFkZGluZzogMHB4OwogIH0KICB0YWJsZS5kdW5nZW9uLmRldGFpbHMgdGQuY29udGVudCBociB7CiAgICBtYXJnaW46IDBweDsKICAgIGJvcmRlcjogbm9uZTsgYm9yZGVyLXRvcDogMXB4IHNvbGlkOwogICAgYm9yZGVyLWNvbG9yOiAjY2NjY2NjOwogIH0KICB0YWJsZS5kdW5nZW9uLmRldGFpbHMgdGQuY29udGVudCA+ICogKyAqIHsKICAgIG1hcmdpbi10b3A6IDFleCAhaW1wb3J0YW50OwogIH0KCi8qIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtICovCi8qIGhvdmVyIGVmZmVjdHMgKi8KCiAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHRyLnNlY3Rpb246aG92ZXIgPiB0ZCB7CiAgICBiYWNrZ3JvdW5kOiAjZGVkZWRlOwogIH0KICB0YWJsZS5kdW5nZW9uLmRldGFpbHMgdHIucm93OmhvdmVyIHRkIHsKICAgIGJhY2tncm91bmQ6IHdoaXRlOwogIH0KCi8qICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICovCi8qIGR1bmdlb24gYWN0aW9ucyAqLwoKICBkaXYuZHVuZ2Vvbl9hY3Rpb25zIHsKICAgIG1hcmdpbjogMmV4IDRlbTsgbWFyZ2luLXRvcDogNGV4OwogIH0KICBkaXYuZHVuZ2Vvbl9hY3Rpb25zIGRpdi5hY3Rpb25zIHsKICAgIGJhY2tncm91bmQ6ICNkZWRlZGU7CiAgfQogIGRpdi5kdW5nZW9uX2FjdGlvbnMgZGl2LmZpbGVfdHlwZSB7CiAgICBhbGlnbi1pdGVtczogY2VudGVyOwogIH0KICBkaXYuZHVuZ2Vvbl9hY3Rpb25zIGRpdi5maWxlX3R5cGUgZGl2IHsKICAgIGZsZXgtYmFzaXM6IDI1JTsKICAgIGZsZXgtZ3JvdzogMDsKICB9CiAgZGl2LmR1bmdlb25fYWN0aW9ucyBkaXYuZmlsZV90eXBlIGRpdi5pY29uIHsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICB9CiAgZGl2LmR1bmdlb25fYWN0aW9ucyBkaXYuZmlsZV90eXBlIGRpdi5pY29uIGltZyB7CiAgICBtYXgtd2lkdGg6IDI0cHg7IG1heC1oZWlnaHQ6IDI0cHg7CiAgfQogIGRpdi5kdW5nZW9uX2FjdGlvbnMgZGl2LmZpbGVfdHlwZSBkaXYuYnV0dG9uIGlucHV0IHsKICAgIG1pbi13aWR0aDogMTBlbTsKICB9CiAgZGl2LmR1bmdlb25fYWN0aW9ucyBkaXYuZmlsZV90eXBlIGRpdi5kZXNjIHsKICAgIGZsZXgtZ3JvdzogMTsKICB9CgovKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqLwovKiBtb2JpbGUgKi8KCiAgQG1lZGlhIHNjcmVlbiBhbmQgKGhvdmVyOiBub25lKSB7CiAgICB0YWJsZS5kdW5nZW9uLmRldGFpbHMgdHIuc2VjdGlvbiB7IGRpc3BsYXk6IGJsb2NrOyB9CiAgICB0YWJsZS5kdW5nZW9uLmRldGFpbHMgdHIuc2VjdGlvbiA+IHRkIHsgZGlzcGxheTogYmxvY2s7IH0KICAgIHRhYmxlLmR1bmdlb24uZGV0YWlscyB0ci5zZWN0aW9uID4gdGQudGl0bGUgeyB0ZXh0LWFsaWduOiBsZWZ0OyB9CiAgICB0YWJsZS5kdW5nZW9uLmRldGFpbHMgdHIuc2VjdGlvbiA+IHRkLmNvbnRlbnQgeyB3aWR0aDogYXV0bzsgfQogICAgdGFibGUuZHVuZ2Vvbi5kZXRhaWxzIHRkLnRpdGxlIHsgbWluLXdpZHRoOiA1ZW07IH0KICAgIHRhYmxlLmR1bmdlb24uZGV0YWlscyB0ZC5kb29yIHsgbWluLXdpZHRoOiA1ZW07IH0KICAgIGRpdi5kdW5nZW9uX2FjdGlvbnMgZGl2LmZpbGVfdHlwZSBkaXYuaWNvbiB7IGRpc3BsYXk6IG5vbmU7IH0KICB9CgovKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqLwovKiBwcmludCAqLwoKICBAbWVkaWEgcHJpbnQgewogICAgYm9keS5jb2RleCB7IHBhZGRpbmc6IDBweCAxZXg7IGZvbnQtc2l6ZTogNjAlOyB9CiAgICBkaXYuZHVuZ2Vvbl9tYXAgaW1nIHsgbWF4LXdpZHRoOiAxMDAlOyB9CiAgICBkaXYuZHVuZ2Vvbl9rZXkgaW1nIHsgbWF4LXdpZHRoOiAxMDAlOyB9CiAgICBkaXYuZHVuZ2Vvbl9hY3Rpb25zIHsgZGlzcGxheTogbm9uZTsgfQogIH0KCi8qICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICogKiAqICovCg==" />
+  </head>
+  <body class="codex">
+    <h1>The Hidden Treasure</h1>
+    <h2>Level 5</h2>
+    <!-- BEGIN OF CONTENT -->
+    <div id="dungeon_map" class="dungeon_map">
+      <img src="/Maps (DM)/Level5d.jpg" alt="[ dungeon map ]" usemap="#dungeon_areas" />
+    </div>
+    <div cass="dungeon_key">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAAAhCAIAAAB/ZAteAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowMTgwMTE3NDA3MjA2ODExODcxRkVBNTg2RjMxQjI3OCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo4RUVBMTQ3NEExOTAxMUVCQUFFMDgyMjQzNDM0QUNCQSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo4RUVBMTQ3M0ExOTAxMUVCQUFFMDgyMjQzNDM0QUNCQSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjAyODAxMTc0MDcyMDY4MTE4OEM2RTAyNTI4NjZFNzZDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjAxODAxMTc0MDcyMDY4MTE4NzFGRUE1ODZGMzFCMjc4Ii8+IDwvcmRmOkRlc2NyaXB0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" alt="[ map key ]" />
+    </div>
+    <div>
+      <map name="dungeon_areas" id="dungeon_areas">
+        <area shape="rect" coords="368,112,480,224" href="#room_1" title="Room #1, 70' x 70', Orc Eye of Gruumsh and 4 x Orc" alt="Room #1, 70' x 70', Orc Eye of Gruumsh and 4 x Orc" />
+        <area coords="176,304,320,416" shape="rect" title="Room #2, 90' x 70', Hobgoblin Captain and 3 x Hobgoblin" href="#room_2" alt="Room #2, 90' x 70', Hobgoblin Captain and 3 x Hobgoblin" />
+        <area title="Room #3, 90' x 90', Empty" alt="Room #3, 90' x 90', Empty" href="#room_3" shape="rect" coords="144,112,288,256" />
+        <area alt="Room #4, 70' x 70', Empty" title="Room #4, 70' x 70', Empty" href="#room_4" coords="368,400,480,512" shape="rect" />
+        <area coords="432,96,448,112" shape="rect" title="Trapped and Locked Stone Door (DC 10 to open, DC 25 to break; 60 hp)" alt="Trapped and Locked Stone Door (DC 10 to open, DC 25 to break; 60 hp)" />
+        <area alt="Secret (DC 15 to find) Stuck Good Wooden Door (DC 15 to break; 15 hp)" title="Secret (DC 15 to find) Stuck Good Wooden Door (DC 15 to break; 15 hp)" shape="rect" coords="160,304,176,320" />
+        <area title="Secret (DC 25 to find) Stuck Strong Wooden Door (DC 15 to break; 20 hp)" alt="Secret (DC 25 to find) Stuck Strong Wooden Door (DC 15 to break; 20 hp)" coords="176,416,192,432" shape="rect" />
+        <area shape="rect" coords="272,416,288,432" title="Trapped and Locked Good Wooden Door (DC 10 to open, DC 15 to break; 15 hp)" alt="Trapped and Locked Good Wooden Door (DC 10 to open, DC 15 to break; 15 hp)" />
+        <area title="Secret (DC 20 to find) Locked Good Wooden Door (DC 10 to open, DC 15 to break; 15 hp)" alt="Secret (DC 20 to find) Locked Good Wooden Door (DC 10 to open, DC 15 to break; 15 hp)" coords="128,176,144,192" shape="rect" />
+        <area shape="rect" coords="288,208,304,224" alt="Locked Simple Wooden Door (DC 10 to open, DC 15 to break; 10 hp)" title="Locked Simple Wooden Door (DC 10 to open, DC 15 to break; 10 hp)" />
+        <area alt="Trapped and Unlocked Simple Wooden Door (10 hp)" title="Trapped and Unlocked Simple Wooden Door (10 hp)" shape="rect" coords="480,432,496,448" />
+        <area alt="Secret (DC 15 to find) Stuck Strong Wooden Door (DC 15 to break; 20 hp)" title="Secret (DC 15 to find) Stuck Strong Wooden Door (DC 15 to break; 20 hp)" coords="352,464,368,480" shape="rect" />
+        <area alt="Locked Simple Wooden Door (DC 15 to open, DC 15 to break; 10 hp)" title="Locked Simple Wooden Door (DC 15 to open, DC 15 to break; 10 hp)" coords="432,512,448,528" shape="rect" />
+        <area alt="A group of demonic faces have been carved into the walls" title="A group of demonic faces have been carved into the walls" href="#mark_m" shape="rect" coords="496,400,512,416" />
+        <area coords="336,208,352,224" shape="rect" href="#mark_a" title="A tile labyrinth covers the floor" alt="A tile labyrinth covers the floor" />
+        <area title="A fountain of water sits in an alcove here" alt="A fountain of water sits in an alcove here" href="#mark_c" coords="464,336,480,352" shape="rect" />
+        <area alt="Someone has scrawled &quot;The elf will betray you&quot; in blood here" title="Someone has scrawled &quot;The elf will betray you&quot; in blood here" href="#mark_e" coords="144,368,160,384" shape="rect" />
+        <area shape="rect" coords="432,368,448,384" title="Several square holes are cut into the walls here" href="#mark_i" alt="Several square holes are cut into the walls here" />
+      </map>
+    </div>
+    <section class="toc">
+      <div class="dropdown dropdown-left">
+        <button class="dropbtn dropbtn-left">Table of Contents</button>
+        <div class="dropdown-content dropdown-content-left">
+          <a class="toc-link" href="/chapter1.html">Chapter 1: Guidance from the Night – the year of 1597 </a>
+          <a class="toc-link" href="/chapter2.html">Chapter 2: Road to the Shogunate</a>
+          <a class="toc-link" href="/chapter3.html">Chapter 3: The Hidden Ones</a>
+          <a class="toc-link" href="/chapter4.html">Chapter 4: The Battle of Seikigahara</a>
+          <a class="toc-link" href="/FinalDungeon.html">Final Dungeon</a>
+          <a class="toc-link" href="/Arsenal1.html">Arsenal 1</a>
+          <a class="toc-link" href="/appendix.html">Appendix (Map, Player's handout, etc.)</a>
+          <div class="dropdown-submenu dropdown-submenu-left">
+            <button class="submenu-btn submenu-btn-left">NPC Datasheet</button>
+            <div class="submenu-content submenu-content-left">
+              <a class="toc-link" href="/Ashigaru(No firearm).html">Ashigaru (No Firearm)</a>
+              <a class="toc-link" href="/Ashigaru(Firearm).html">Ashigaru (Firearm)</a>
+              <a class="toc-link" href="/TokugawaIeyasu.html">Tokugawa Ieyasu</a>
+              <a class="toc-link" href="/ToyotomiHideyoshi.html">Toyotomi Hideyoshi</a>
+              <a class="toc-link" href="/Guide.html">Guide</a>
+              <a class="toc-link" href="/LightCavalry.html">Light Cavalry</a>
+              <a class="toc-link" href="/HeavyCavalry.html">Heavy Cavalry</a>
+              <a class="toc-link" href="/ToyotomiHideyori.html">Toyotomi Hideyori</a>
+              <a class="toc-link" href="/Samurai.html">Samurai</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <table class="dungeon details">
+      <tr class="section">
+        <td class="title">General</td>
+        <td class="content">
+          <table>
+            <tbody>
+              <tr class="row">
+                <td class="title">History</td>
+                <td class="content"> The dungeon was created by Toyotomi Hideyoshi as a basement to hide secrets. Toyotomi is currently inside so there's a lot of guards here recently. </td>
+              </tr>
+              <tr class="row">
+                <td class="title">Size</td>
+                <td class="content">Medium (51 x 45)</td>
+              </tr>
+              <tr class="row">
+                <td class="title">Walls</td>
+                <td class="content">Masonry (DC 15 to climb)</td>
+              </tr>
+              <tr class="row">
+                <td class="title">Floor</td>
+                <td class="content">Smooth Stone</td>
+              </tr>
+              <tr class="row">
+                <td class="title">Temperature</td>
+                <td class="content">Cool</td>
+              </tr>
+              <tr class="row">
+                <td class="title">Illumination</td>
+                <td class="content"> Shadowy (phosphorescent fungus or candles every 20 ft.) </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr class="section">
+        <td class="title">Corridor Features</td>
+        <td class="content">
+          <table>
+            <tr class="row">
+              <td class="title">
+                <span id="mark_a">a</span>
+              </td>
+              <td class="content">A carved Joker face, DC21 Wisdom Saving Throw or get frightened by the Joker Face (Fear Condition against the Joker Face)</td>
+            </tr>
+            <tr class="row">
+              <td class="title">
+                <span id="mark_c">c</span>
+              </td>
+              <td class="content">A carved Joker face, DC21 Wisdom Saving Throw or get frightened by the Joker Face (Fear Condition against the Joker Face)</td>
+            </tr>
+            <tr class="row">
+              <td class="title">
+                <span id="mark_e">e</span>
+              </td>
+              <td class="content">A carved Joker face, DC21 Wisdom Saving Throw or get frightened by the Joker Face (Fear Condition against the Joker Face)</td>
+            </tr>
+            <tr class="row">
+              <td class="title">
+                <span id="mark_i">i</span>
+              </td>
+              <td class="content">A carved Joker face, DC21 Wisdom Saving Throw or get frightened by the Joker Face (Fear Condition against the Joker Face)</td>
+            </tr>
+            <tr class="row">
+              <td class="title">
+                <span id="mark_m">m</span>
+              </td>
+              <td class="content">A carved Joker face, DC21 Wisdom Saving Throw or get frightened by the Joker Face (Fear Condition against the Joker Face)</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr class="section">
+        <td class="title">
+          <span id="room_1">Room #1</span>
+        </td>
+        <td class="content">
+          <table>
+            <tr class="row">
+              <td class="door">North Entry</td>
+              <td class="content">
+                <p>Trapped and Locked Stone Door (DC 10 to open, DC 25 to break; 60 hp)</p>
+                <p class="icon">&#9417; &nbsp; Element: (Defalt Metal, can be changed with the wheel in Level 4)<br></p>
+                <table>
+                  <thead>
+                      <tr>
+                          <th>Elements</th>
+                          <th>Trap</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>Metal</td>
+                          <td>Mercery Coming out of the door, DC21 CON Saving Throw or take 2d10 damage (Half on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Water</td>
+                          <td>The room gets flooded, everyone has to succeed on a DC21 STR Saving Throw or take 2d10 Damage and get pushed on to the wall (Fall Prone)</td>
+                      </tr>
+                      <tr>
+                          <td>Wood</td>
+                          <td>Plants will grow out from the wall. DC21 WIS Saving Throw or take 1d10 Piercing Damage and take another 1d10 Poison Damage</td>
+                      </tr>
+                      <tr>
+                          <td>Fire</td>
+                          <td>Fire will come out of the wall and burn the players. DC21 DEX Saving Throw or take 2d10 Fire Damage (Half Damage on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Earth</td>
+                          <td>DC15 STR/DEX Saving throw to attempt to get out of the soil that buries the players. 1 Exhaustion Level per fail</td>
+                      </tr>
+                  </tbody>
+              </table>
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="title">Room Features</td>
+              <td class="content">
+                <p>A +1 Wand is placed in the center of the room (Give +1 Bonus to all Spell Damage from the user)</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr class="section">
+        <td class="title">
+          <span id="room_2">Room #2</span>
+        </td>
+        <td class="content">
+          <table>
+            <tr class="row">
+              <td class="door">West Entry</td>
+              <td class="content">
+                <p>Secret (DC 15 to find) Stuck Good Wooden Door (DC 15 to break; 15 hp)</p>
+                <p>Trapped and Locked Stone Door (DC 10 to open, DC 25 to break; 60 hp)</p>
+                <p class="icon">&#9417; &nbsp; Element: (Defalt Water, can be changed with the wheel in Level 4)<br></p>
+                <table>
+                  <thead>
+                      <tr>
+                          <th>Elements</th>
+                          <th>Trap</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>Metal</td>
+                          <td>Mercery Coming out of the door, DC21 CON Saving Throw or take 2d10 damage (Half on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Water</td>
+                          <td>The room gets flooded, everyone has to succeed on a DC21 STR Saving Throw or take 2d10 Damage and get pushed on to the wall (Fall Prone)</td>
+                      </tr>
+                      <tr>
+                          <td>Wood</td>
+                          <td>Plants will grow out from the wall. DC21 WIS Saving Throw or take 1d10 Piercing Damage and take another 1d10 Poison Damage</td>
+                      </tr>
+                      <tr>
+                          <td>Fire</td>
+                          <td>Fire will come out of the wall and burn the players. DC21 DEX Saving Throw or take 2d10 Fire Damage (Half Damage on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Earth</td>
+                          <td>DC15 STR/DEX Saving throw to attempt to get out of the soil that buries the players. 1 Exhaustion Level per fail</td>
+                      </tr>
+                  </tbody>
+              </table>
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="door">South Entry #1</td>
+              <td class="content">
+                <p>Secret (DC 25 to find) Stuck Strong Wooden Door (DC 15 to break; 20 hp)</p>
+                <p class="icon">&#9417; &nbsp; Element: (Defalt Water, can be changed with the wheel in Level 4)<br></p>
+                <table>
+                  <thead>
+                      <tr>
+                          <th>Elements</th>
+                          <th>Trap</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>Metal</td>
+                          <td>Mercery Coming out of the door, DC21 CON Saving Throw or take 2d10 damage (Half on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Water</td>
+                          <td>The room gets flooded, everyone has to succeed on a DC21 STR Saving Throw or take 2d10 Damage and get pushed on to the wall (Fall Prone)</td>
+                      </tr>
+                      <tr>
+                          <td>Wood</td>
+                          <td>Plants will grow out from the wall. DC21 WIS Saving Throw or take 1d10 Piercing Damage and take another 1d10 Poison Damage</td>
+                      </tr>
+                      <tr>
+                          <td>Fire</td>
+                          <td>Fire will come out of the wall and burn the players. DC21 DEX Saving Throw or take 2d10 Fire Damage (Half Damage on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Earth</td>
+                          <td>DC15 STR/DEX Saving throw to attempt to get out of the soil that buries the players. 1 Exhaustion Level per fail</td>
+                      </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="door">South Entry #2</td>
+              <td class="content">
+                <p>Trapped and Locked Good Wooden Door (DC 10 to open, DC 15 to break; 15 hp)</p>
+                <p class="icon">&#9417; &nbsp; Element: (Defalt Water, can be changed with the wheel in Level 4)<br></p>
+                <table>
+                  <thead>
+                      <tr>
+                          <th>Elements</th>
+                          <th>Trap</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>Metal</td>
+                          <td>Mercery Coming out of the door, DC21 CON Saving Throw or take 2d10 damage (Half on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Water</td>
+                          <td>The room gets flooded, everyone has to succeed on a DC21 STR Saving Throw or take 2d10 Damage and get pushed on to the wall (Fall Prone)</td>
+                      </tr>
+                      <tr>
+                          <td>Wood</td>
+                          <td>Plants will grow out from the wall. DC21 WIS Saving Throw or take 1d10 Piercing Damage and take another 1d10 Poison Damage</td>
+                      </tr>
+                      <tr>
+                          <td>Fire</td>
+                          <td>Fire will come out of the wall and burn the players. DC21 DEX Saving Throw or take 2d10 Fire Damage (Half Damage on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Earth</td>
+                          <td>DC15 STR/DEX Saving throw to attempt to get out of the soil that buries the players. 1 Exhaustion Level per fail</td>
+                      </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="title">Room Features</td>
+              <td class="content">
+                <p>A special necklace is placed in the center of the room (Give +1 Bonus to all Melee Weapon Attack damage from the user) </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr class="section">
+        <td class="title">
+          <span id="room_3">Room #3</span>
+        </td>
+        <td class="content">
+          <table>
+            <tr class="row">
+              <td class="door">West Entry</td>
+              <td class="content">
+                <p>Secret (DC 20 to find) Locked Good Wooden Door (DC 10 to open, DC 15 to break; 15 hp)</p>
+                <p class="icon">&#9417; &nbsp; Element: (Defalt Wood, can be changed with the wheel in Level 4)<br></p>
+                <table>
+                  <thead>
+                      <tr>
+                          <th>Elements</th>
+                          <th>Trap</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>Metal</td>
+                          <td>Mercery Coming out of the door, DC21 CON Saving Throw or take 2d10 damage (Half on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Water</td>
+                          <td>The room gets flooded, everyone has to succeed on a DC21 STR Saving Throw or take 2d10 Damage and get pushed on to the wall (Fall Prone)</td>
+                      </tr>
+                      <tr>
+                          <td>Wood</td>
+                          <td>Plants will grow out from the wall. DC21 WIS Saving Throw or take 1d10 Piercing Damage and take another 1d10 Poison Damage</td>
+                      </tr>
+                      <tr>
+                          <td>Fire</td>
+                          <td>Fire will come out of the wall and burn the players. DC21 DEX Saving Throw or take 2d10 Fire Damage (Half Damage on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Earth</td>
+                          <td>DC15 STR/DEX Saving throw to attempt to get out of the soil that buries the players. 1 Exhaustion Level per fail</td>
+                      </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="door">East Entry</td>
+              <td class="content">
+                <p class="icon">&#9417; &nbsp; Element: (Defalt Wood, can be changed with the wheel in Level 4)<br></p>
+                <table>
+                  <thead>
+                      <tr>
+                          <th>Elements</th>
+                          <th>Trap</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>Metal</td>
+                          <td>Mercery Coming out of the door, DC21 CON Saving Throw or take 2d10 damage (Half on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Water</td>
+                          <td>The room gets flooded, everyone has to succeed on a DC21 STR Saving Throw or take 2d10 Damage and get pushed on to the wall (Fall Prone)</td>
+                      </tr>
+                      <tr>
+                          <td>Wood</td>
+                          <td>Plants will grow out from the wall. DC21 WIS Saving Throw or take 1d10 Piercing Damage and take another 1d10 Poison Damage</td>
+                      </tr>
+                      <tr>
+                          <td>Fire</td>
+                          <td>Fire will come out of the wall and burn the players. DC21 DEX Saving Throw or take 2d10 Fire Damage (Half Damage on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Earth</td>
+                          <td>DC15 STR/DEX Saving throw to attempt to get out of the soil that buries the players. 1 Exhaustion Level per fail</td>
+                      </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="title">Room Features</td>
+              <td class="content">
+                <p>A +1 ring is placed in the center of the room (Gives +1 Bonus to Spell Save DC for the User)</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr class="section">
+        <td class="title">
+          <span id="room_4">Room #4</span>
+        </td>
+        <td class="content">
+          <table>
+            <tr class="row">
+              <td class="door">West Entry</td>
+              <td class="content">
+                <p>Secret (DC 15 to find) Stuck Strong Wooden Door (DC 15 to break; 20 hp)</p>
+                <p class="icon">&#9417; &nbsp; Element: (Defalt Fire, can be changed with the wheel in Level 4)<br></p>
+                <table>
+                  <thead>
+                      <tr>
+                          <th>Elements</th>
+                          <th>Trap</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>Metal</td>
+                          <td>Mercery Coming out of the door, DC21 CON Saving Throw or take 2d10 damage (Half on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Water</td>
+                          <td>The room gets flooded, everyone has to succeed on a DC21 STR Saving Throw or take 2d10 Damage and get pushed on to the wall (Fall Prone)</td>
+                      </tr>
+                      <tr>
+                          <td>Wood</td>
+                          <td>Plants will grow out from the wall. DC21 WIS Saving Throw or take 1d10 Piercing Damage and take another 1d10 Poison Damage</td>
+                      </tr>
+                      <tr>
+                          <td>Fire</td>
+                          <td>Fire will come out of the wall and burn the players. DC21 DEX Saving Throw or take 2d10 Fire Damage (Half Damage on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Earth</td>
+                          <td>DC15 STR/DEX Saving throw to attempt to get out of the soil that buries the players. 1 Exhaustion Level per fail </td>
+                      </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="door">East Entry</td>
+              <td class="content">
+                <p>Trapped and Unlocked Simple Wooden Door (10 hp)</p>
+                <p class="icon">&#9417; &nbsp; Element: (Defalt Fire, can be changed with the wheel in Level 4)<br></p>
+                <table>
+                  <thead>
+                      <tr>
+                          <th>Elements</th>
+                          <th>Trap</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>Metal</td>
+                          <td>Mercery Coming out of the door, DC21 CON Saving Throw or take 2d10 damage (Half on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Water</td>
+                          <td>The room gets flooded, everyone has to succeed on a DC21 STR Saving Throw or take 2d10 Damage and get pushed on to the wall (Fall Prone)</td>
+                      </tr>
+                      <tr>
+                          <td>Wood</td>
+                          <td>Plants will grow out from the wall. DC21 WIS Saving Throw or take 1d10 Piercing Damage and take another 1d10 Poison Damage</td>
+                      </tr>
+                      <tr>
+                          <td>Fire</td>
+                          <td>Fire will come out of the wall and burn the players. DC21 DEX Saving Throw or take 2d10 Fire Damage (Half Damage on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Earth</td>
+                          <td>DC15 STR/DEX Saving throw to attempt to get out of the soil that buries the players. 1 Exhaustion Level per fail </td>
+                      </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="door">South Entry</td>
+              <td class="content">
+                <p>Locked Simple Wooden Door (DC 15 to open, DC 15 to break; 10 hp)</p>
+                <p class="icon">&#9417; &nbsp; Element: (Defalt Fire, can be changed with the wheel in Level 4)<br></p>
+                <table>
+                  <thead>
+                      <tr>
+                          <th>Elements</th>
+                          <th>Trap</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>Metal</td>
+                          <td>Mercery Coming out of the door, DC21 CON Saving Throw or take 2d10 damage (Half on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Water</td>
+                          <td>The room gets flooded, everyone has to succeed on a DC21 STR Saving Throw or take 2d10 Damage and get pushed on to the wall (Fall Prone)</td>
+                      </tr>
+                      <tr>
+                          <td>Wood</td>
+                          <td>Plants will grow out from the wall. DC21 WIS Saving Throw or take 1d10 Piercing Damage and take another 1d10 Poison Damage</td>
+                      </tr>
+                      <tr>
+                          <td>Fire</td>
+                          <td>Fire will come out of the wall and burn the players. DC21 DEX Saving Throw or take 2d10 Fire Damage (Half Damage on succeed)</td>
+                      </tr>
+                      <tr>
+                          <td>Earth</td>
+                          <td>DC15 STR/DEX Saving throw to attempt to get out of the soil that buries the players. 1 Exhaustion Level per fail </td>
+                      </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="title">Room Features</td>
+              <td class="content">
+                <p>A +1 wristband is placed in the center of the room (Gives +1 Bonus to "To Hit" rolls made by the user)</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <!-- END OF CONTENT -->
+    <div class="footnotes">
+      <p>Random Dungeon Generator <br />http://donjon.bin.sh/ </p>
+      <p>Some content used under the terms of the <a href="https://donjon.bin.sh/d20/ogl.html">Open Gaming License</a>
+      </p>
+    </div>
+  </body>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var submenuBtn = document.querySelector('.submenu-btn-left');
+      var submenuContent = document.querySelector('.submenu-content-left');
+    
+      submenuBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        submenuContent.style.display = submenuContent.style.display === 'block' ? 'none' : 'block';
+      });
+    
+      // Close the dropdown if the user clicks outside of it
+      window.onclick = function(event) {
+        if (!event.target.matches('.submenu-btn-left')) {
+          if (submenuContent.style.display === 'block') {
+            submenuContent.style.display = 'none';
+          }
+        }
+      };
+    });
+    </script>
+    
+</html>
