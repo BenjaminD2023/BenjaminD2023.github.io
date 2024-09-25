@@ -27,4 +27,17 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+// New code block
+document.addEventListener('DOMContentLoaded', function() {
+  var submenuBtn = document.querySelector('.submenu-btn-left');
+  var submenuContent = document.querySelector('.submenu-content-left');
+
+  submenuBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    submenuContent.style.display = submenuContent.style.display === 'block' ? 'none' : 'block';
+  });
+
+  // 其他代码...
+});
+
 

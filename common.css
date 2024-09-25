@@ -1,0 +1,13 @@
+/* 提取公共样式到common.css */
+.dropbtn-left {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+/* 其他公共样式... */
