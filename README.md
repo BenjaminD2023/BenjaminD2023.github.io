@@ -13,4 +13,3 @@ This is a website that allows you to review the East Asian History Comp Review (
 2. Run `pnpm install`
 3. Run `pnpm run dev`
 4. Open `http://localhost:5173/` in your browser
-
