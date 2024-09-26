@@ -140,12 +140,35 @@ h2 {
   color: #000; /* 确保段落文字是黑色 */
 }
 
-/* Chapter styles */
+/* 全屏样式 */
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* 防止滚动条出现 */
+}
+
+/* 章节样式 */
 .chapter {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%; /* 确保章节内容宽度为100% */
+  height: 100%; /* 使章节内容占满全屏 */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* 从顶部开始排列内容 */
+  align-items: flex-start; /* 左对齐内容 */
+  padding: 20px; /* 添加内边距以避免内容紧贴边缘 */
+  box-sizing: border-box; /* 确保内边距不会影响宽度 */
+}
+
+/* 使段落和标题全宽 */
+h1, h2, h3, p, ul, ol, li {
+  width: 100%; /* 使标题、段落和列表宽度为100% */
+  margin: 0; /* 去掉默认外边距 */
+  padding: 0; /* 去掉默认内边距 */
+}
+
+/* 使 .chapter 内的所有直接子元素全宽 */
+.chapter > * {
+  width: 100%;
 }
 
 h1 {
@@ -251,34 +274,6 @@ th {
   text-align: center;
 }
 
-/* Original CSS */ 
-/*
-h1{
-    color:aqua;
-    text-align: center;
-}
-.author{
-    color: red;
-    text-align: center;
-}
-.title{
-    color:blue;
-    text-align: center;
-}
-p{
-    font-family: cursive;
-}
-.part{
-    font-weight: bold;
-    color: blueviolet;
-}
-img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-  }
-*/
 
 /* 响应式设计 */
 @media screen and (max-width: 768px) {
