@@ -144,7 +144,7 @@ h2 {
 html, body {
   height: 100%;
   margin: 0;
-  overflow: hidden; /* 防止滚动条出现 */
+  overflow: auto; /* 修改为 auto 以允许滚动 */
 }
 
 /* 章节样式 */
