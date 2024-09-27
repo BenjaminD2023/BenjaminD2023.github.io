@@ -251,6 +251,42 @@
 
     }
 
+
+    /* Ensure text does not overlap with images when zoomed */
+
+    .text-section::after {
+      content: "";
+
+      display: table;
+
+      clear: both;
+
+    }
+
+
+    /* Add a clearfix to ensure text does not overlap with images */
+
+    .clearfix::after {
+      content: "";
+
+      display: table;
+
+      clear: both;
+
+    }
+
+    .map-container {
+      display: inline-block;
+      vertical-align: top;
+      width: 48%;
+      margin: 1%;
+    }
+
+    .map-container h3 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+
   </style>
 
 </head>
@@ -261,9 +297,7 @@
 
     <h3 class="title">Q4 History Comp Review D&D</h3>
 
-    <p class="author">By: Teresa Jiang, Ashley Huang, Amy Chen, Benjamin Dai, Jacky Zeng</p>  
-
-    <br>
+    <p class="author">By: Teresa Jiang, Ashley Huang, Amy Chen, Benjamin Dai, Jacky Zeng</p>  <br>
 
     <p class="author"><font size = "1">Special Thanks for the following Contributors: Bryant Wong, Carson Zhang</font></p>
 
@@ -304,6 +338,7 @@
             <a class="toc-link" href="TokugawaIeyasu.html">Tokugawa Ieyasu</a>
 
             <a class="toc-link" href="ToyotomiHideyoshi.html">Toyotomi Hideyoshi</a>
+
             <a class="toc-link" href="Guide.html">Guide</a>
 
             <a class="toc-link" href="LightCavalry.html">Light Cavalry</a>
@@ -330,7 +365,7 @@
 
       <h1>Apppendix</h1>
 
-      <section id="Matchlock_Gun" class="text-section">
+      <section id="Matchlock_Gun" class="text-section clearfix">
 
       <h3>Matchlock Gun Stats for Players</h3>
 
@@ -346,7 +381,7 @@
 
       <br>
 
-      <section id="Japanese_Hiragana" class="text-section">
+      <section id="Japanese_Hiragana" class="text-section clearfix">
 
         <h3>Japanese Hiragana Chart for Players</h3>
 
@@ -362,7 +397,7 @@
 
       <br>
 
-      <section id="Killer_Armor" class="text-section">
+      <section id="Killer_Armor" class="text-section clearfix">
 
         <h3>Killer Armor Stats for DM</h3>
 
@@ -372,7 +407,7 @@
 
         will still remain after gaining the next level of attunement. <br>
 
-        <strong>If the players get negative ability scores, the following will happen:</strong>  
+        <strong>If the players get negative ability scores, the following will happen:</strong>  <br>
 
         </p>
 
@@ -404,7 +439,7 @@
 
       <br>
 
-      <section id="Stone_Pebbles_Key" class="text-section">
+      <section id="Stone_Pebbles_Key" class="text-section clearfix">
 
         <h3>Stone Pebbles Key for players</h3>
 
@@ -425,20 +460,21 @@
 
       <br>
 
-      <section id="Attention" class="text-section">
+      <section id="Attention" class="text-section clearfix">
 
         <h3>Attention Spell Card for players</h3>
 
         <img src="Appendix/Attention.png" alt="Attention" class="datasheet-img">
 
       </section>
-      <br>
 
       <br>
 
       <br>
 
-      <section id="Shield_of_TH" class="text-section">
+      <br>
+
+      <section id="Shield_of_TH" class="text-section clearfix">
 
         <h3>Shield of Toyotomi Hideyoshi Card for players</h3>
 
@@ -452,7 +488,7 @@
 
       <br>
 
-      <section id="ASK" class="text-section">
+      <section id="ASK" class="text-section clearfix">
 
         <h3>Ancient Samurai Knife Card for players</h3>
 
@@ -465,11 +501,11 @@
 
       <br>
 
-      <section id="Hideyoshi’s_Warning" class="text-section">
+      <section id="Hideyoshi's_Warning" class="text-section clearfix">
 
-        <h3>Ancient Hideyoshi’s for players at Lv. 1 Dungeon</h3>
+        <h3>Ancient Hideyoshi's for players at Lv. 1 Dungeon</h3>
 
-        <img src="Appendix/Hideyoshi's Warning.png" alt="Hideyoshi’s Warning" class="datasheet-img">
+        <img src="Appendix/Hideyoshi's Warning.png" alt="Hideyoshi's Warning" class="datasheet-img">
 
       </section>
 
@@ -479,13 +515,17 @@
 
       <br>
 
-      <section id="A&NB" class="text-section">
+      <section id="A&NB" class="text-section clearfix">
 
+      <div style="display: inline-block; width: 48%; vertical-align: top;">
         <h3>Bright Map for Asuka & Nara for players</h3>
-
         <img src="Appendix/Asuka&NaraBright.png" alt="Asuka&NaraBright" class="datasheet-img small-img">
+      </div>
 
+      <div style="display: inline-block; width: 48%; vertical-align: top;">
+        <h3>Dark Map for Asuka & Nara for players</h3>
         <img src="Appendix/Asuka&NaraDark.png" alt="Asuka&NaraDark" class="datasheet-img small-img">
+      </div>
 
       </section>
 
@@ -494,26 +534,24 @@
       <br>
 
       <br>
-      <section id="Player's_Warning" class="text-section">
-
-        <h3>Player's Warning before Boss Fight</h3>
-
-        <img src="Appendix/Player's_Warning.png" alt="Player's Warning" class="datasheet-img small-img">
-
-        <img src="Appendix/Stone_Tablet.png" alt="Stone Tablet" class="datasheet-img small-img">
-
-      </section>
-      <br>
-
-      <br>
-      <br>
-
-      <section id="Stone_Tablet" class="text-section">
+      <section id="Stone_Tablet" class="text-section clearfix">
 
         <h3>Stone Tablet for players</h3>
         <img src="Appendix/Stone_Tablet.png" alt="Stone Tablet" class="datasheet-img small-img">
 
         <img src="Appendix/Result.png" alt="Result" class="datasheet-img small-img">
+
+      </section>
+      <br>
+
+      <br>
+      <br>
+
+      <section id="Player's_Warning" class="text-section clearfix">
+
+        <h3>Player's Warning before Boss Fight</h3>
+
+        <img src="Appendix/Player's_Warning.png" alt="Player's Warning" class="datasheet-img small-img">
 
       </section>
     </section>
