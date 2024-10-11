@@ -7,21 +7,22 @@
 
 /* Body styles */
 body {
-  font-family: Arial, sans-serif;
-  font-size: 16px;
+  font-family: 'Arial', sans-serif;
   line-height: 1.6;
   color: #333;
+  margin: 0;
+  padding: 0;
   background-color: #f8f8f8;
 }
 
 /* <pre> style */
 pre{
-  font-family: Arial, Helvetica, sans-serif1;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Header styles */
 header {
-  background-color: #2c3e50;
+  background-color: #2c3e50; /* 辅助色调 */
   color: #ecf0f1;
   padding: 2rem;
   text-align: center;
@@ -53,14 +54,14 @@ main {
   margin-right: 2rem;
   padding: 1.5rem;
   border-radius: 10px;
-  background-color: #fff; /* 恢复白色背景 */
+  background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
   font-size: 24px;
   margin-bottom: 15px;
-  color: #2c3e50; /* 恢复原来的深色 */
+  color: #2c3e50; /* 辅助色调 */
 }
 
 .toc-items {
@@ -78,16 +79,16 @@ h2 {
   display: block;
   padding: 0.8rem 1rem;
   border-radius: 5px;
-  background-color: #f5f5f5; /* 恢复浅灰色背景 */
-  color: #333; /* 恢复深色文字 */
+  background-color: #f5f5f5;
+  color: #333;
   text-decoration: none;
   transition: all 0.3s ease;
 }
 
 .toc-items a:hover,
 .dropdown-title:hover {
-  background-color: #e0e0e0; /* 鼠标悬停时变为稍深的灰色 */
-  color: #333; /* 保持文字颜色不变 */
+  background-color: #e0e0e0;
+  color: #333;
 }
 
 .dropdown {
@@ -100,7 +101,7 @@ h2 {
   top: 100%;
   left: 0;
   width: 100%;
-  background-color: #fff; /* 恢复白色背景 */
+  background-color: #fff;
   border-radius: 0 0 5px 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -110,11 +111,11 @@ h2 {
 }
 
 .submenu a {
-  color: #333; /* 恢复深色文字 */
+  color: #333;
 }
 
 .submenu a:hover {
-  background-color: #e0e0e0; /* 鼠标悬停时变为稍深的灰色 */
+  background-color: #e0e0e0;
 }
 
 /* Introduction styles */
@@ -125,45 +126,45 @@ h2 {
   padding: 1.5rem;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  color: #000; /* 将所有文字颜色设置为黑色 */
+  color: #000;
 }
 
 .intro h2 {
   font-size: 24px;
   margin-bottom: 15px;
-  color: #000; /* 确保标题也是黑色 */
+  color: #000;
 }
 
 .intro p {
   font-size: 1.1rem;
   line-height: 1.8;
-  color: #000; /* 确保段落文字是黑色 */
+  color: #000;
 }
 
 /* 全屏样式 */
 html, body {
   height: 100%;
   margin: 0;
-  overflow: auto; /* 修改为 auto 以允许滚动 */
+  overflow: auto;
 }
 
 /* 章节样式 */
 .chapter {
-  width: 100%; /* 确保章节内容宽度为100% */
-  height: 100%; /* 使章节内容占满全屏 */
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* 从顶部开始排列内容 */
-  align-items: flex-start; /* 左对齐内容 */
-  padding: 20px; /* 添加内边距以避免内容紧贴边缘 */
-  box-sizing: border-box; /* 确保内边距不会影响宽度 */
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 /* 使段落和标题全宽 */
 h1, h2, h3, p, ul, ol, li {
-  width: 100%; /* 使标题、段落和列表宽度为100% */
-  margin: 0; /* 去掉默认外边距 */
-  padding: 0; /* 去掉默认内边距 */
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /* 使 .chapter 内的所有直接子元素全宽 */
@@ -255,7 +256,7 @@ th {
   font-size: 1rem;
   font-weight: bold;
   padding: 10px 20px;
-  background-color: #3498db;
+  background-color: #3498db; /* 主色调 */
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -302,7 +303,7 @@ th {
   bottom: 20px;
   right: 20px;
   padding: 12px 18px;
-  background-color: #3498db;
+  background-color: #3498db; /* 主色调 */
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -345,13 +346,13 @@ header, .toc h2, .intro h2 {
 }
 
 .dark-background {
-  background-color: #2c3e50;
+  background-color: #2c3e50; /* 辅助色调 */
   color: #ecf0f1;
   padding-bottom: 2rem;
 }
 
 .dropbtn-left {
-  background-color: #3498db;
+  background-color: #3498db; /* 主色调 */
   color: white;
   padding: 16px;
   font-size: 16px;
@@ -381,12 +382,12 @@ body {
 /* 标题样式 */
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: 15px;
-  color: #2c3e50;
+  color: #2c3e50; /* 辅助色调 */
 }
 
 /* 链接样式 */
 a {
-  color: #3498db;
+  color: #3498db; /* 主色调 */
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -400,7 +401,7 @@ a:hover {
 .btn {
   display: inline-block;
   padding: 10px 15px;
-  background-color: #3498db;
+  background-color: #3498db; /* 主色调 */
   color: white;
   border: none;
   border-radius: 5px;
@@ -497,3 +498,35 @@ input, textarea, select {
 }
 
 /* 其他通用样式... */
+
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2c3e50;
+  --text-color: #333;
+  --background-color: #f8f8f8;
+  --font-family: 'Arial', sans-serif;
+}
+
+body {
+  font-family: var(--font-family);
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+.header {
+  background-color: var(--secondary-color);
+  color: #ecf0f1;
+  padding: 2rem;
+  text-align: center;
+}
+
+.btn {
+  background-color: var(--primary-color);
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: darken(var(--primary-color), 10%);
+}

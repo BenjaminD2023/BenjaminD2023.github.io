@@ -15,32 +15,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Additional JavaScript
 
-// Add event listener to toggle dropdown menu
+// 合并 DOMContentLoaded 事件监听器
 document.addEventListener('DOMContentLoaded', function () {
+  // 目录项悬停效果
+  const tocItems = document.querySelectorAll('.toc a, .dropdown-title');
+  tocItems.forEach(item => {
+    item.addEventListener('mouseenter', () => item.style.backgroundColor = '#3498db');
+    item.addEventListener('mouseleave', () => item.style.backgroundColor = '');
+  });
+
+  // 下拉菜单切换
   const dropdowns = document.querySelectorAll('.dropdown');
   dropdowns.forEach(dropdown => {
     const title = dropdown.querySelector('.dropdown-title');
     const submenu = dropdown.querySelector('.submenu');
-    title.addEventListener('click', function () {
-      submenu.classList.toggle('active');
+    title.addEventListener('click', () => {
+      submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
     });
-  });
-});
-
-// 目录项悬停效果
-const tocItems = document.querySelectorAll('.toc-items a, .dropdown-title');
-tocItems.forEach(item => {
-  item.addEventListener('mouseenter', () => item.style.backgroundColor = '#3498db');
-  item.addEventListener('mouseleave', () => item.style.backgroundColor = '');
-});
-
-// 下拉菜单切换
-const dropdowns = document.querySelectorAll('.dropdown');
-dropdowns.forEach(dropdown => {
-  const title = dropdown.querySelector('.dropdown-title');
-  const submenu = dropdown.querySelector('.submenu');
-  title.addEventListener('click', () => {
-    submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
   });
 });
 
@@ -96,5 +87,42 @@ window.addEventListener('scroll', () => {
     backToTopButton.style.display = 'none';
   }
 });
+
+// 使用模块化代码
+import { toggleMenu } from './menu.js';
+import { smoothScroll } from './scroll.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+  toggleMenu();
+  smoothScroll();
+});
+
+// menu.js
+export function toggleMenu() {
+  const dropdowns = document.querySelectorAll('.dropdown');
+  dropdowns.forEach(dropdown => {
+    const title = dropdown.querySelector('.dropdown-title');
+    const submenu = dropdown.querySelector('.submenu');
+    title.addEventListener('click', () => {
+      submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+    });
+  });
+}
+
+// scroll.js
+export function smoothScroll() {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+}
 
 
