@@ -8,6 +8,7 @@
   <meta name="description" content="A D&D adventure for reviewing Sengoku Japan history, featuring players from China, Japan, and Korea helping Tokugawa Ieyasu establish a new shogunate.">
   <link rel="stylesheet" href="common.css">
   <link rel="stylesheet" href="style.css">
+
   
   <!-- 添加以下 meta 标签 -->
   <meta property="og:title" content="D&D Adventure - Sengoku Japan History Review">
@@ -21,7 +22,9 @@
     <!-- Header Section -->
     <header>
       <!-- Title of the Page -->
-      <h1 class="title">Q4 History Comp Review D&D</h1>
+      <h1 class="header center orange-text" id="project-title" style="font-size: 2.5em;">
+        Q4 Comp Review DnD Project
+      </h1>
       <!-- Author Information -->
       <p class="author">By: Teresa Jiang, Ashley Huang, Amy Chen, Benjamin Dai, Jacky Zeng</p>
       <br>
@@ -64,8 +67,12 @@
       </section>
     </main>
   </div>
-  <!-- JavaScript File -->
   <script src="script.js"></script>
+  <script>
+    document.getElementById('project-title').addEventListener('click', function() {
+      window.location.href = 'index.html';
+    });
+  </script>
 </body>
 </html>
 
