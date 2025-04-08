@@ -237,5 +237,5 @@ Each wizard has a **Spell Casting DC**, which is equal to their Intelligence sco
 **To be Considered:**
 
 1. Fighting Styles for Fighters  
-2. 
+2. Action Surge Rework?
 
