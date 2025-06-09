@@ -1,0 +1,393 @@
+:root {
+    --bg-color: #2c3e50;
+    --main-color: #ecf0f1;
+    --card-bg: #34495e;
+    --accent-color: #3498db;
+    --accent-hover: #2980b9;
+    --danger-color: #e74c3c;
+    --success-color: #2ecc71;
+    --disabled-color: #7f8c8d;
+    --warning-color: #f1c40f;
+    --header-font: 'Georgia', serif;
+    --body-font: 'Arial', sans-serif;
+}
+
+body {
+    font-family: var(--body-font);
+    background-color: var(--bg-color);
+    color: var(--main-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+h1, h2, h3 {
+    font-family: var(--header-font);
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+}
+h1 { text-align: center; }
+
+h4 {
+    font-family: var(--header-font);
+    color: var(--main-color);
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.section {
+    background: rgba(0,0,0,0.1);
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 5px;
+}
+
+button:hover {
+    background-color: var(--accent-hover);
+}
+
+button:disabled {
+    background-color: var(--disabled-color);
+    cursor: not-allowed;
+}
+
+input[type="number"], select, input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid var(--disabled-color);
+    background-color: var(--bg-color);
+    color: var(--main-color);
+    box-sizing: border-box;
+}
+
+.stat-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.stat-box label {
+    font-weight: bold;
+    flex-basis: 40px;
+}
+.stat-box input {
+    flex-grow: 1;
+    margin: 0 10px;
+}
+.stat-box .modifier {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-weight: bold;
+    min-width: 40px;
+    text-align: center;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--disabled-color);
+    margin: 15px 0;
+}
+
+/* --- ABILITY & UPGRADE STYLES --- */
+.ability-card {
+    background: #2c3e50;
+    border-left: 4px solid var(--accent-color);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 0 5px 5px 0;
+}
+#shared-abilities-container .ability-card {
+    border-left-color: #f39c12; /* Unique color for shared abilities */
+}
+.ability-card h4 {
+    margin-top: 0;
+    color: var(--main-color);
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.ability-card p {
+    font-size: 0.9em;
+    color: #bdc3c7;
+    margin-bottom: 10px;
+}
+.ability-card .cost-info {
+    font-style: italic;
+    color: var(--accent-color);
+    margin-bottom: 10px;
+}
+#class-abilities-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+#class-abilities-grid.multiclass-2 { grid-template-columns: 1fr 1fr; }
+#class-abilities-grid.multiclass-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.class-column {
+    background: rgba(0,0,0,0.2);
+    padding: 15px;
+    border-radius: 5px;
+}
+.class-column h3 {
+    margin-top: 0;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+/* --- STAT ASSIGNMENT STYLES --- */
+#stat-assignment-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
+}
+.stat-roll-card {
+    display: flex;
+    align-items: center;
+    background: #2c3e50;
+    padding: 5px 10px;
+    border-radius: 5px;
+    gap: 5px;
+}
+.stat-roll-card.assigned {
+    opacity: 0.5;
+    background: #1e2b38;
+}
+.stat-roll-card .score {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--success-color);
+    flex-basis: 40px;
+}
+.stat-roll-card .assign-buttons {
+    display: flex;
+    gap: 5px;
+    flex-grow: 1;
+}
+.stat-roll-card .assign-buttons button {
+    flex-grow: 1;
+    padding: 5px;
+    font-size: 0.8em;
+    margin: 0;
+}
+
+/* --- SL ADJUSTMENT STYLES --- */
+.sl-adjuster {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+.sl-adjuster button {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5em;
+    padding: 0;
+    line-height: 40px;
+    flex-shrink: 0;
+}
+.sl-adjuster .sl-display {
+    font-weight: bold;
+    font-size: 1.1em;
+    background: #2c3e50;
+    padding: 5px 15px;
+    border-radius: 5px;
+    flex-grow: 1;
+    text-align: center;
+}
+.sl-adjuster button.plus-btn { background-color: var(--success-color); }
+.sl-adjuster button.plus-btn:hover { background-color: #27ae60; }
+.sl-adjuster button.minus-btn { background-color: var(--danger-color); }
+.sl-adjuster button.minus-btn:hover { background-color: #c0392b; }
+
+/* --- MULTICLASS STYLES --- */
+#multiclass-section {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--disabled-color);
+}
+.prereq-text {
+    font-size: 0.8em;
+    color: var(--warning-color);
+    display: block;
+    margin-top: -5px;
+    margin-bottom: 5px;
+    min-height: 1.2em;
+}
+
+/* --- CHARACTER SHEET STYLES --- */
+#character-sheet-container {
+    background: #2c3e50;
+    border: 1px solid var(--accent-color);
+    border-radius: 5px;
+    padding: 20px;
+    font-family: 'Georgia', serif;
+}
+.sheet-header {
+    text-align: center;
+    border-bottom: 2px solid var(--accent-hover);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+}
+.sheet-header h3 {
+    margin: 0;
+    color: var(--main-color);
+    border-bottom: none;
+    font-size: 1.8em;
+}
+.sheet-header p {
+    margin: 5px 0 0;
+    color: var(--disabled-color);
+    font-size: 1.1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.xp-input-sheet {
+    width: 70px !important;
+    padding: 4px !important;
+    margin: 0 !important;
+    text-align: center;
+    font-size: 1em !important;
+    font-family: 'Georgia', serif;
+}
+.sheet-main-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 15px;
+}
+.sheet-stats, .sheet-combat, .sheet-abilities, .sheet-equipment, .sheet-levelup-path {
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 5px;
+}
+.sheet-stats h4, .sheet-combat h4, .sheet-abilities h4, .sheet-equipment h4, .sheet-levelup-path h4 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--disabled-color);
+    padding-bottom: 5px;
+    color: var(--main-color);
+    font-family: var(--header-font);
+}
+.stat-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #2c3e50;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+    overflow: hidden;
+}
+.stat-name { padding: 10px; font-weight: bold; flex-basis: 60px; }
+.stat-score { font-size: 2em; padding: 10px 20px; flex-grow: 1; }
+.stat-mod { background: var(--accent-color); color: white; font-size: 1.2em; padding: 10px 15px; align-self: stretch; display: flex; align-items: center; justify-content: center; min-width: 50px; }
+.combat-item { display: flex; justify-content: space-between; padding: 8px 5px; border-bottom: 1px dashed var(--disabled-color); align-items: center;}
+.combat-item:last-of-type { border-bottom: none; }
+.combat-item label { font-weight: bold; }
+.combat-item .hp-display { font-size: 1.5em; font-weight: bold; color: var(--success-color); }
+.combat-item .hp-rolls-display { font-size: 0.8em; color: var(--disabled-color); align-self: center; }
+#reroll-hp-btn { margin-top: 15px; background-color: var(--danger-color); }
+#reroll-hp-btn:hover { background-color: #c0392b; }
+.sheet-abilities ul, .sheet-equipment ul, .sheet-levelup-path ul { list-style: none; padding: 0; margin: 0; }
+.sheet-abilities li, .sheet-equipment li, .sheet-levelup-path li { background: #2c3e50; padding: 10px; border-radius: 3px; margin-bottom: 5px; font-size: 0.9em; }
+
+.sheet-class-entry { display: inline-flex; align-items: center; gap: 5px; margin: 0 5px; }
+.remove-class-btn { background: var(--danger-color) !important; color: white !important; width: auto !important; padding: 1px 6px !important; font-size: 0.8em !important; line-height: 1; margin: 0 0 0 5px !important; border-radius: 50%; }
+
+/* HP Tracker */
+.hp-tracker { display: flex; align-items: center; gap: 5px; }
+.hp-tracker input {
+    width: 60px !important;
+    padding: 5px !important;
+    text-align: center;
+    font-size: 1.2em !important;
+    font-weight: bold;
+    margin: 0 !important;
+}
+.hp-tracker span { font-size: 1.5em; color: var(--disabled-color); }
+
+/* Level-up Path styles */
+.sheet-levelup-path li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sheet-levelup-path .log-cost {
+    font-style: italic;
+    color: var(--disabled-color);
+}
+.sheet-levelup-path .log-remove-btn {
+    background-color: var(--danger-color) !important;
+    width: auto !important;
+    padding: 2px 8px !important;
+    font-size: 0.8em !important;
+    line-height: 1.2 !important;
+    margin: 0 0 0 10px !important;
+    flex-shrink: 0;
+}
+
+/* --- Universal Tracker Styles --- */
+.tracker-group {
+    background: #2c3e50;
+    padding: 10px;
+    border-radius: 3px;
+    margin-bottom: 8px;
+}
+.tracker-group-header {
+    margin: 0 0 10px 0;
+    font-family: var(--header-font);
+    color: var(--main-color);
+    font-size: 1em;
+    border-bottom: 1px solid var(--disabled-color);
+    padding-bottom: 5px;
+}
+.tracker-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.tracker-dot {
+    width: 20px;
+    height: 20px;
+    background: var(--disabled-color);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.tracker-dot.available {
+    background: var(--success-color);
+}

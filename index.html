@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sea Dragon Adventures - Character Creator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Sea Dragon Adventures Character Creator</h1>
+
+        <div class="grid-container">
+            <!-- Character Basics -->
+            <div class="section">
+                <h3>Character Name</h3>
+                <input type="text" id="char-name" placeholder="Enter character name">
+                
+                <h3>Primary Class</h3>
+                <select id="class-select">
+                    <option value="">-- Select a class --</option>
+                </select>
+                
+                <!-- Multiclass Section (hidden initially) -->
+                <div id="multiclass-section" style="display: none;">
+                    <h4>Multiclass</h4>
+                    <select id="multiclass-select">
+                        <option value="">-- Select a new class --</option>
+                    </select>
+                    <p class="prereq-text" id="multiclass-prereq-display"></p>
+                    <button id="multiclass-btn">Add Multiclass</button>
+                </div>
+            </div>
+
+            <!-- XP Management -->
+            <div class="section">
+                <h3>Experience Points</h3>
+                <label for="total-xp">Total XP:</label>
+                <input type="number" id="total-xp" value="5" min="0">
+                <p>Spent XP: <span id="spent-xp">0</span> | Available XP: <span id="available-xp">5</span></p>
+            </div>
+            
+            <!-- Statistics -->
+            <div class="section">
+                <h3>Statistics</h3>
+                <button id="roll-stats-btn">Roll for Stats</button>
+                <div id="stat-assignment-container"></div>
+                <hr>
+                <div class="stat-box">
+                    <label for="stat-str">STR</label>
+                    <input type="number" id="stat-str" value="10" min="1" max="30">
+                    <span class="modifier" id="mod-str">+0</span>
+                </div>
+                <div class="stat-box">
+                    <label for="stat-int">INT</label>
+                    <input type="number" id="stat-int" value="10" min="1" max="30">
+                    <span class="modifier" id="mod-int">+0</span>
+                </div>
+                <div class="stat-box">
+                    <label for="stat-ath">ATH</label>
+                    <input type="number" id="stat-ath" value="10" min="1" max="30">
+                    <span class="modifier" id="mod-ath">+0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Upgrades -->
+        <div id="abilities-container" class="section" style="display: none;">
+            <h2>Available Upgrades</h2>
+            <div id="shared-abilities-container"></div>
+            <div id="class-abilities-grid">
+                <!-- Columns for primary and multiclass abilities will be generated here -->
+            </div>
+        </div>
+
+        <!-- Character Sheet Summary -->
+        <div class="section">
+            <h2>Character Sheet</h2>
+            <div id="character-sheet-container">
+                <div class="sheet-header">
+                    <h3 id="character-name-sheet">Unnamed Character</h3>
+                    <p>
+                        <span id="character-class-sheet">No Class</span> | XP: <span id="sheet-spent-xp">0</span> / <input type="number" id="sheet-total-xp" value="5" min="0" class="xp-input-sheet">
+                    </p>
+                </div>
+                <div class="sheet-main-grid">
+                    <div class="sheet-stats">
+                        <h4>Attributes</h4>
+                        <div class="stat-block"><div class="stat-name">STR</div><div class="stat-score" id="sheet-str-score">10</div><div class="stat-mod" id="sheet-str-mod">+0</div></div>
+                        <div class="stat-block"><div class="stat-name">INT</div><div class="stat-score" id="sheet-int-score">10</div><div class="stat-mod" id="sheet-int-mod">+0</div></div>
+                        <div class="stat-block"><div class="stat-name">ATH</div><div class="stat-score" id="sheet-ath-score">10</div><div class="stat-mod" id="sheet-ath-mod">+0</div></div>
+                    </div>
+                    <div class="sheet-combat">
+                        <h4>Combat</h4>
+                        <div class="combat-item">
+                            <label>Hit Points</label>
+                            <div class="hp-tracker">
+                                <input type="number" id="sheet-current-hp">
+                                <span>/</span>
+                                <span id="sheet-max-hp" class="hp-display">0</span>
+                            </div>
+                        </div>
+                        <div class="combat-item"><label>HP Formula</label><span id="sheet-hp-rolls" class="hp-rolls-display">(None)</span></div>
+                        <div class="combat-item"><label>Armor</label><span id="sheet-armor">0</span></div>
+                        <button id="reroll-hp-btn">Reroll All HP</button>
+                    </div>
+                </div>
+                <div class="sheet-abilities">
+                    <h4>Abilities, Skills & Spells</h4>
+                    <div id="sheet-abilities-content">
+                        <ul id="sheet-abilities-list"><li>No abilities purchased.</li></ul>
+                    </div>
+                </div>
+                 <div class="sheet-equipment"><h4>Equipment</h4><ul id="sheet-equipment-list"><li>Nothing</li></ul></div>
+                 <div class="sheet-levelup-path">
+                     <h4>Level-Up Path</h4>
+                     <ul id="sheet-levelup-list"><li>No XP spent.</li></ul>
+                 </div>
+            </div>
+        </div>
+    </div>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
