@@ -49,17 +49,15 @@
     }
     #character-list {
       display: flex;
-      gap: 1rem;
+      flex-direction: column;
+      gap: 0.5rem;
       height: 100vh;
       width: 100vw;
       padding: 1rem;
       box-sizing: border-box;
     }
     .column {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+      display: contents;
     }
     .hp-change {
       margin-left: 0.5rem;
@@ -134,6 +132,7 @@
       font-size: 0.75rem;
       cursor: pointer;
       transition: background 0.2s;
+      white-space: nowrap;
     }
     .wild-shape-btn:hover {
       background: #059669;
@@ -469,37 +468,45 @@
 
     // Dynamically size portraits and health bar heights to fill the window nicely
     function resizeLayout() {
-      const columns = document.querySelectorAll('.column');
-      columns.forEach((column) => {
-        const containers = column.querySelectorAll('.character-container');
-        if (!containers.length) return;
+      const characterList = document.getElementById('character-list');
+      const allContainers = characterList.querySelectorAll('.character-container');
+      if (!allContainers.length) return;
 
-        const cs = getComputedStyle(column);
-        // rowGap is supported; fallback to gap
-        const gapPx = parseFloat(cs.rowGap || cs.gap || '0') || 0;
-        const totalGap = gapPx * Math.max(0, containers.length - 1);
-        const columnHeight = column.clientHeight;
-        const available = Math.max(0, columnHeight - totalGap);
-        const perItem = containers.length ? available / containers.length : 0;
+      const listStyle = getComputedStyle(characterList);
+      const gapPx = parseFloat(listStyle.gap || '0') || 0;
+      const totalGap = gapPx * Math.max(0, allContainers.length - 1);
+      const listHeight = characterList.clientHeight;
+      const available = Math.max(0, listHeight - totalGap);
+      const perItem = allContainers.length ? available / allContainers.length : 0;
 
-        containers.forEach((container) => {
-          // Portrait size scales with item height
-          const portrait = container.querySelector('.portrait');
-          if (portrait) {
-            const size = Math.round(Math.max(48, Math.min(200, perItem * 0.65)));
-            portrait.style.width = size + 'px';
-            portrait.style.height = size + 'px';
-            const bw = Math.max(2, Math.min(6, Math.round(size * 0.03)));
-            portrait.style.borderWidth = bw + 'px';
-          }
+      allContainers.forEach((container) => {
+        // Portrait size scales with item height
+        const portrait = container.querySelector('.portrait');
+        if (portrait) {
+          const size = Math.round(Math.max(48, Math.min(200, perItem * 0.65)));
+          portrait.style.width = size + 'px';
+          portrait.style.height = size + 'px';
+          const bw = Math.max(2, Math.min(6, Math.round(size * 0.03)));
+          portrait.style.borderWidth = bw + 'px';
+        }
 
-          // Health bar wrapper height scales with item height
-          const barWrapper = container.querySelector('.bg-gray-700');
-          if (barWrapper) {
-            const barH = Math.round(Math.max(6, Math.min(28, perItem * 0.18)));
+        // Health bar wrapper height scales with item height
+        const barWrappers = container.querySelectorAll('.bg-gray-700');
+        if (barWrappers.length) {
+          const barH = Math.round(Math.max(6, Math.min(28, perItem * 0.18)));
+          barWrappers.forEach(barWrapper => {
             barWrapper.style.height = barH + 'px';
-          }
-        });
+          });
+        }
+
+        // Wild Shape button font size
+        const wildShapeBtn = container.querySelector('.wild-shape-btn');
+        if (wildShapeBtn) {
+          const btnFontSize = Math.round(Math.max(8, Math.min(14, perItem * 0.1)));
+          wildShapeBtn.style.fontSize = btnFontSize + 'px';
+          const btnPadding = Math.round(Math.max(2, Math.min(8, perItem * 0.05)));
+          wildShapeBtn.style.padding = `${btnPadding}px ${btnPadding * 1.5}px`;
+        }
       });
     }
 
