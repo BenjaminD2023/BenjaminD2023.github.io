@@ -20,6 +20,7 @@ if __name__ == "__main__":
         print(f"📊 Main Display: http://localhost:{PORT}/index.html")
         print(f"🎛️  Control Panel: http://localhost:{PORT}/server.html")
         print(f"💀 Acererak Display: http://localhost:{PORT}/acererak.html")
+        print(f"🎲 Dice Cam: http://localhost:{PORT}/dicecam.html")
         print(f"\nPress Ctrl+C to stop the server")
         try:
             httpd.serve_forever()

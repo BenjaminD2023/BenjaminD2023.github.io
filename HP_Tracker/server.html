@@ -76,6 +76,13 @@
       border-radius: 8px;
       border: 2px solid #dc2626;
     }
+    .dicecam-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #1f2937;
+      border-radius: 8px;
+      border: 2px solid #3b82f6;
+    }
     .action-buttons {
       display: flex;
       gap: 0.5rem;
@@ -210,6 +217,105 @@
       </div>
     </div>
 
+    <div class="dicecam-section">
+      <h2 class="text-xl font-semibold mb-3">🎲 Dice Cam Control</h2>
+      
+      <label class="text-sm text-gray-300">Camera Control</label>
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+        <button class="action-btn activate" id="dicecam-enable-btn" style="flex: 1;">Enable Camera</button>
+        <button class="action-btn deactivate" id="dicecam-disable-btn" style="flex: 1;">Disable Camera</button>
+      </div>
+      
+      <label class="text-sm text-gray-300">Video Source</label>
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+        <select id="dicecam-source-select" class="input-field" style="margin: 0; flex: 1;">
+          <option value="">Loading cameras...</option>
+        </select>
+        <button class="action-btn" id="refresh-cameras-btn" style="margin: 0; padding: 0.5rem 1rem; background: #6b7280; white-space: nowrap;">🔄 Refresh</button>
+      </div>
+      
+      <label class="text-sm text-gray-300">Roll Type</label>
+      <select id="dicecam-type-select" class="input-field">
+        <option value="ready">Ready...</option>
+        <option value="save">Saving Throw</option>
+        <option value="check">Ability Check</option>
+        <option value="attack">Attack Roll</option>
+        <option value="damage">Damage Roll</option>
+      </select>
+      
+      <div id="dicecam-save-controls" style="display: none;">
+        <label class="text-sm text-gray-300 mt-3">Difficulty Class (DC)</label>
+        <input type="number" id="dicecam-dc" class="input-field" placeholder="Enter DC (e.g., 15)" value="15">
+        
+        <label class="text-sm text-gray-300 mt-3">Save Results (per character)</label>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 0.5rem;">
+          <div style="text-align: center;">
+            <div style="font-size: 0.7rem; color: #9ca3af; margin-bottom: 0.25rem;">Zendith</div>
+            <select id="save-result-0" class="input-field" style="padding: 0.25rem; font-size: 0.8rem;">
+              <option value="pending">-</option>
+              <option value="success">✓</option>
+              <option value="fail">✗</option>
+            </select>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 0.7rem; color: #9ca3af; margin-bottom: 0.25rem;">Terra</div>
+            <select id="save-result-1" class="input-field" style="padding: 0.25rem; font-size: 0.8rem;">
+              <option value="pending">-</option>
+              <option value="success">✓</option>
+              <option value="fail">✗</option>
+            </select>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 0.7rem; color: #9ca3af; margin-bottom: 0.25rem;">Feathers</div>
+            <select id="save-result-2" class="input-field" style="padding: 0.25rem; font-size: 0.8rem;">
+              <option value="pending">-</option>
+              <option value="success">✓</option>
+              <option value="fail">✗</option>
+            </select>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 0.7rem; color: #9ca3af; margin-bottom: 0.25rem;">Immeral</div>
+            <select id="save-result-3" class="input-field" style="padding: 0.25rem; font-size: 0.8rem;">
+              <option value="pending">-</option>
+              <option value="success">✓</option>
+              <option value="fail">✗</option>
+            </select>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 0.7rem; color: #9ca3af; margin-bottom: 0.25rem;">Batula</div>
+            <select id="save-result-4" class="input-field" style="padding: 0.25rem; font-size: 0.8rem;">
+              <option value="pending">-</option>
+              <option value="success">✓</option>
+              <option value="fail">✗</option>
+            </select>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 0.7rem; color: #dc2626; margin-bottom: 0.25rem; font-weight: bold;">Tomb Builder</div>
+            <select id="save-result-5" class="input-field" style="padding: 0.25rem; font-size: 0.8rem; border-color: #dc2626;">
+              <option value="pending">-</option>
+              <option value="success">✓</option>
+              <option value="fail">✗</option>
+            </select>
+          </div>
+        </div>
+        <button class="action-btn activate" id="dicecam-update-save-btn" style="margin-top: 1rem;">Update Save Results</button>
+      </div>
+      
+      <div id="dicecam-roll-controls">
+        <label class="text-sm text-gray-300 mt-3">Roll Result</label>
+        <input type="number" id="dicecam-result" class="input-field" placeholder="Enter roll result (e.g., 15)" value="">
+        
+        <label class="text-sm text-gray-300">Modifier</label>
+        <input type="number" id="dicecam-modifier" class="input-field" placeholder="Enter modifier (e.g., +3)" value="0">
+        
+        <button class="action-btn activate" id="dicecam-update-result-btn" style="margin-top: 1rem;">Update Roll Result</button>
+      </div>
+      
+      <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+        <button class="action-btn reset-action" id="dicecam-reset-btn" style="flex: 1;">Reset Dice Cam</button>
+      </div>
+    </div>
+
     <div class="status">
       <p id="status-message">Ready...</p>
       <p class="text-sm text-gray-400 mt-2">Selected: <span id="selected-char">None</span></p>
@@ -245,8 +351,10 @@
   <script>
     const STORAGE_KEY = 'hp-tracker-control';
     const ACERERAK_KEY = 'acererak-control';
+    const DICECAM_KEY = 'dicecam-control';
     let selectedCharacter = null;
     let acererakHpDeducted = 0;
+    let dicecamCurrentType = 'save';
 
     // Display current port in status message
     function updatePortDisplay() {
@@ -259,6 +367,49 @@
     // Initialize port display on load
     updatePortDisplay();
     
+    // Enumerate available cameras
+    async function getCameraDevices() {
+      try {
+        // Request permission first
+        await navigator.mediaDevices.getUserMedia({ video: true });
+        
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+        return videoDevices;
+      } catch (err) {
+        console.error('Error enumerating cameras:', err);
+        showStatus('Camera permission required to list devices', 'error');
+        return [];
+      }
+    }
+    
+    // Populate camera dropdown
+    async function populateCameraList() {
+      const select = document.getElementById('dicecam-source-select');
+      select.innerHTML = '<option value="">Loading cameras...</option>';
+      
+      const cameras = await getCameraDevices();
+      select.innerHTML = '';
+      
+      if (cameras.length === 0) {
+        select.innerHTML = '<option value="">No cameras found</option>';
+        return;
+      }
+      
+      cameras.forEach((camera, index) => {
+        const option = document.createElement('option');
+        option.value = camera.deviceId;
+        // Use label if available, otherwise use generic name
+        option.textContent = camera.label || `Camera ${index + 1}`;
+        select.appendChild(option);
+      });
+      
+      showStatus(`Found ${cameras.length} camera(s)`, 'success');
+    }
+    
+    // Initialize camera list on load
+    populateCameraList();
+
     // Initialize Acererak HP display from localStorage if available
     const storedAcererakData = localStorage.getItem(ACERERAK_KEY);
     if (storedAcererakData) {
@@ -382,6 +533,89 @@
       }, 3000);
     }
 
+    // Dice Cam functions
+    function sendDiceCamCommand(command) {
+      const commandWithTime = { ...command, timestamp: Date.now() };
+      localStorage.setItem(DICECAM_KEY, JSON.stringify(commandWithTime));
+      
+      // Also dispatch a storage event for same-origin communication
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: DICECAM_KEY,
+        newValue: JSON.stringify(commandWithTime),
+        url: window.location.href,
+        storageArea: localStorage
+      }));
+    }
+
+    function updateDiceCamType() {
+      const type = document.getElementById('dicecam-type-select').value;
+      dicecamCurrentType = type;
+      
+      // Show/hide controls based on type
+      const saveControls = document.getElementById('dicecam-save-controls');
+      const rollControls = document.getElementById('dicecam-roll-controls');
+      
+      if (type === 'ready') {
+        saveControls.style.display = 'none';
+        rollControls.style.display = 'none';
+      } else if (type === 'save') {
+        saveControls.style.display = 'block';
+        rollControls.style.display = 'none';
+        // Send DC when switching to save type
+        const dc = parseInt(document.getElementById('dicecam-dc').value) || 15;
+        sendDiceCamCommand({ type: 'setType', rollType: type, dc: dc });
+      } else {
+        saveControls.style.display = 'none';
+        rollControls.style.display = 'block';
+        sendDiceCamCommand({ type: 'setType', rollType: type });
+      }
+      
+      showStatus(`Dice Cam: ${type.charAt(0).toUpperCase() + type.slice(1)} mode`, 'success');
+    }
+
+    function updateDiceCamSaveResults() {
+      const dc = parseInt(document.getElementById('dicecam-dc').value) || 15;
+      const results = [];
+      for (let i = 0; i < 6; i++) {
+        const result = document.getElementById(`save-result-${i}`).value;
+        results.push(result);
+      }
+      sendDiceCamCommand({ type: 'setResult', rollType: 'save', saveResults: results, dc: dc });
+      showStatus(`Dice Cam: Save results updated (DC ${dc})`, 'success');
+    }
+
+    function updateDiceCamRollResult() {
+      const result = document.getElementById('dicecam-result').value;
+      const modifier = parseInt(document.getElementById('dicecam-modifier').value) || 0;
+      
+      if (result === '' || result === null) {
+        showStatus('Please enter a roll result', 'error');
+        return;
+      }
+      
+      sendDiceCamCommand({ 
+        type: 'setResult', 
+        rollType: dicecamCurrentType,
+        result: result,
+        modifier: modifier 
+      });
+      
+      showStatus(`Dice Cam: Roll ${result} (${modifier >= 0 ? '+' : ''}${modifier})`, 'success');
+    }
+
+    function resetDiceCam() {
+      sendDiceCamCommand({ type: 'reset' });
+      document.getElementById('dicecam-type-select').value = 'save';
+      document.getElementById('dicecam-result').value = '';
+      document.getElementById('dicecam-modifier').value = '0';
+      for (let i = 0; i < 5; i++) {
+        document.getElementById(`save-result-${i}`).value = 'pending';
+      }
+      dicecamCurrentType = 'save';
+      updateDiceCamType();
+      showStatus('Dice Cam: Reset', 'success');
+    }
+
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
       const key = e.key.toLowerCase();
@@ -467,8 +701,12 @@
           document.getElementById('damage-btn').click();
         }
       } else if (e.key === '-' || e.key === '_') {
-        e.preventDefault(); // Prevent minus from appearing in input
         const activeElement = document.activeElement;
+        // Skip if focused on Dice Cam inputs
+        if (activeElement.id === 'dicecam-result' || activeElement.id === 'dicecam-modifier') {
+          return;
+        }
+        e.preventDefault(); // Prevent minus from appearing in input
         if (activeElement.id === 'acererak-hp-amount') {
           // Apply damage to Acererak
           document.getElementById('acererak-damage-btn').click();
@@ -477,8 +715,12 @@
           document.getElementById('damage-btn').click();
         }
       } else if (e.key === '+' || e.key === '=') {
-        e.preventDefault(); // Prevent plus from appearing in input
         const activeElement = document.activeElement;
+        // Skip if focused on Dice Cam inputs
+        if (activeElement.id === 'dicecam-result' || activeElement.id === 'dicecam-modifier') {
+          return;
+        }
+        e.preventDefault(); // Prevent plus from appearing in input
         if (activeElement.id === 'acererak-hp-amount') {
           // Apply heal to Acererak
           document.getElementById('acererak-heal-btn').click();
@@ -573,6 +815,41 @@
         showStatus('Acererak HP reset', 'success');
       }
     });
+
+    // Dice Cam Controls
+    document.getElementById('dicecam-enable-btn').addEventListener('click', () => {
+      sendDiceCamCommand({ type: 'enableCamera' });
+      showStatus('Dice Cam: Camera enabled', 'success');
+    });
+    
+    document.getElementById('dicecam-disable-btn').addEventListener('click', () => {
+      sendDiceCamCommand({ type: 'disableCamera' });
+      showStatus('Dice Cam: Camera disabled', 'success');
+    });
+    
+    document.getElementById('dicecam-source-select').addEventListener('change', (e) => {
+      const deviceId = e.target.value;
+      const deviceName = e.target.options[e.target.selectedIndex].text;
+      if (deviceId) {
+        sendDiceCamCommand({ type: 'changeSource', deviceId: deviceId });
+        showStatus(`Dice Cam: Switched to ${deviceName}`, 'success');
+      }
+    });
+    
+    document.getElementById('refresh-cameras-btn').addEventListener('click', () => {
+      populateCameraList();
+    });
+    
+    document.getElementById('dicecam-type-select').addEventListener('change', updateDiceCamType);
+    
+    document.getElementById('dicecam-update-save-btn').addEventListener('click', updateDiceCamSaveResults);
+    
+    document.getElementById('dicecam-update-result-btn').addEventListener('click', updateDiceCamRollResult);
+    
+    document.getElementById('dicecam-reset-btn').addEventListener('click', resetDiceCam);
+    
+    // Initialize Dice Cam with default type
+    updateDiceCamType();
   </script>
 </body>
 </html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dice Cam</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #000;
+    }
+    .main-container {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+    }
+    .camera-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a1a1a;
+      position: relative;
+    }
+    #video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .camera-placeholder {
+      text-align: center;
+      color: #666;
+      padding: 2rem;
+    }
+    .camera-placeholder button {
+      background: #3b82f6;
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    .camera-placeholder button:hover {
+      background: #2563eb;
+    }
+    .info-panel {
+      width: 400px;
+      background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      gap: 1.5rem;
+      box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
+    }
+    .info-bar {
+      background: rgba(0, 0, 0, 0.6);
+      border: 3px solid #4b5563;
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .info-bar.active {
+      border-color: #3b82f6;
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    }
+    .bar-label {
+      font-size: 0.9rem;
+      color: #9ca3af;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .bar-content {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #e5e7eb;
+      min-height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Type-specific styling */
+    .bar-content.type-save { color: #3b82f6; }
+    .bar-content.type-check { color: #10b981; }
+    .bar-content.type-attack { color: #dc2626; }
+    .bar-content.type-damage { color: #f59e0b; }
+    
+    /* Save Results Grid */
+    .save-results {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+    .save-result-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.5rem;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 6px;
+    }
+    .save-result-item.tomb-builder {
+      border: 2px solid #dc2626;
+      background: rgba(220, 38, 38, 0.1);
+    }
+    .save-result-name {
+      font-size: 0.7rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+    .save-result-icon {
+      font-size: 2rem;
+    }
+    .save-result-icon.success {
+      color: #10b981;
+    }
+    .save-result-icon.fail {
+      color: #dc2626;
+    }
+    .save-result-icon.pending {
+      color: #4b5563;
+    }
+    
+    /* Roll Result Display */
+    .roll-result {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .roll-number {
+      font-size: 3rem;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+    .roll-modifier {
+      font-size: 1.5rem;
+      color: #9ca3af;
+    }
+    
+    /* Modifier Display */
+    .modifier-display {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #f59e0b;
+    }
+    .modifier-display.positive {
+      color: #10b981;
+    }
+    .modifier-display.negative {
+      color: #dc2626;
+    }
+    
+    /* Title */
+    .dice-cam-title {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #3b82f6;
+      text-align: center;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+      font-family: 'Georgia', serif;
+    }
+    
+    @media (max-width: 1024px) {
+      .info-panel {
+        width: 300px;
+        padding: 1rem;
+      }
+      .bar-content {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <!-- Camera Section -->
+    <div class="camera-section">
+      <video id="video" autoplay playsinline style="display: none;"></video>
+      <div id="camera-placeholder" class="camera-placeholder">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🎲📹</div>
+        <h2 style="font-size: 2rem; color: #e5e7eb; margin-bottom: 0.5rem;">Dice Camera</h2>
+        <p style="font-size: 1.2rem;">Click below to enable camera access</p>
+        <button id="enable-camera-btn">Enable Camera</button>
+        <p id="error-message" style="color: #dc2626; margin-top: 1rem; display: none;"></p>
+      </div>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="info-panel">
+      <div class="dice-cam-title">🎲 Dice Cam</div>
+      
+      <!-- Bar 1: Type -->
+      <div class="info-bar" id="type-bar">
+        <div class="bar-label">Roll Type</div>
+        <div class="bar-content" id="type-content">Ready</div>
+      </div>
+      
+      <!-- Bar 2: Status/Result -->
+      <div class="info-bar" id="status-bar">
+        <div class="bar-label" id="status-label">Status</div>
+        <div class="bar-content" id="status-content">
+          <span style="color: #9ca3af;">Awaiting Roll...</span>
+        </div>
+      </div>
+      
+      <!-- Bar 3: Modifier (hidden when type is Save) -->
+      <div class="info-bar" id="modifier-bar">
+        <div class="bar-label" id="modifier-label">Modifier</div>
+        <div class="bar-content" id="modifier-content">
+          <span class="modifier-display">+0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'dicecam-control';
+    let lastProcessedTimestamp = 0;
+    let stream = null;
+    let currentFacingMode = 'environment';
+    let currentDeviceId = null;
+
+    const video = document.getElementById('video');
+    const placeholder = document.getElementById('camera-placeholder');
+    const enableCameraBtn = document.getElementById('enable-camera-btn');
+    const errorMessage = document.getElementById('error-message');
+    
+    const typeBar = document.getElementById('type-bar');
+    const typeContent = document.getElementById('type-content');
+    const statusBar = document.getElementById('status-bar');
+    const statusLabel = document.getElementById('status-label');
+    const statusContent = document.getElementById('status-content');
+    const modifierBar = document.getElementById('modifier-bar');
+    const modifierLabel = document.getElementById('modifier-label');
+    const modifierContent = document.getElementById('modifier-content');
+
+    // Character names for save display
+    const characterNames = ['Zendith', 'Terra', 'Feathers', 'Immeral', 'Batula', 'Tomb Builder'];
+
+    // Enable camera with specific device or facing mode
+    async function enableCamera(options = {}) {
+      try {
+        // Stop existing stream if any
+        if (stream) {
+          stream.getTracks().forEach(track => track.stop());
+        }
+        
+        const constraints = { 
+          video: { 
+            width: { ideal: 1920 },
+            height: { ideal: 1080 }
+          } 
+        };
+        
+        // Use deviceId if provided, otherwise use facingMode
+        if (options.deviceId) {
+          constraints.video.deviceId = { exact: options.deviceId };
+          currentDeviceId = options.deviceId;
+        } else if (options.facingMode) {
+          constraints.video.facingMode = options.facingMode;
+          currentFacingMode = options.facingMode;
+          currentDeviceId = null;
+        } else if (currentDeviceId) {
+          constraints.video.deviceId = { exact: currentDeviceId };
+        } else {
+          constraints.video.facingMode = currentFacingMode;
+        }
+        
+        stream = await navigator.mediaDevices.getUserMedia(constraints);
+        video.srcObject = stream;
+        video.style.display = 'block';
+        placeholder.style.display = 'none';
+        errorMessage.style.display = 'none';
+      } catch (err) {
+        console.error('Error accessing camera:', err);
+        errorMessage.textContent = `Camera Error: ${err.message}`;
+        errorMessage.style.display = 'block';
+      }
+    }
+
+    // Disable camera
+    function disableCamera() {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+      }
+      video.srcObject = null;
+      video.style.display = 'none';
+      placeholder.style.display = 'flex';
+      errorMessage.style.display = 'none';
+    }
+
+    // Change camera source
+    async function changeSource(options) {
+      if (stream) {
+        // If camera is already active, restart with new source
+        await enableCamera(options);
+      } else {
+        // Just update the preference for next enable
+        if (options.deviceId) {
+          currentDeviceId = options.deviceId;
+        } else if (options.facingMode) {
+          currentFacingMode = options.facingMode;
+          currentDeviceId = null;
+        }
+      }
+    }
+
+    enableCameraBtn.addEventListener('click', () => enableCamera());
+
+    // Update Type Bar
+    function updateType(type, dc) {
+      const typeMap = {
+        'ready': { text: 'Ready', class: '' },
+        'save': { text: 'Saving Throw', class: 'type-save' },
+        'check': { text: 'Ability Check', class: 'type-check' },
+        'attack': { text: 'Attack Roll', class: 'type-attack' },
+        'damage': { text: 'Damage Roll', class: 'type-damage' }
+      };
+      
+      const typeInfo = typeMap[type] || { text: 'Ready', class: '' };
+      typeContent.textContent = typeInfo.text;
+      typeContent.className = `bar-content ${typeInfo.class}`;
+      typeBar.classList.add('active');
+      
+      // Handle Bar 2 and Bar 3 visibility based on type
+      if (type === 'ready') {
+        statusLabel.textContent = 'Status';
+        statusContent.innerHTML = '<span style="color: #9ca3af;">Awaiting Roll...</span>';
+        modifierBar.style.display = 'block';
+        modifierContent.innerHTML = '<span class="modifier-display">+0</span>';
+      } else if (type === 'save') {
+        statusLabel.textContent = 'Save Results';
+        modifierBar.style.display = 'block';
+        // Display DC instead of modifier
+        updateDC(dc || 15);
+        displaySaveResults([]);
+      } else {
+        statusLabel.textContent = type === 'damage' ? 'Damage' : 'Roll Result';
+        modifierBar.style.display = 'block';
+        statusContent.innerHTML = '<span style="color: #9ca3af;">Awaiting Roll...</span>';
+      }
+      
+      setTimeout(() => typeBar.classList.remove('active'), 300);
+    }
+
+    // Update Status Bar (for Save Results)
+    function displaySaveResults(results) {
+      statusContent.innerHTML = '';
+      const grid = document.createElement('div');
+      grid.className = 'save-results';
+      
+      characterNames.forEach((name, index) => {
+        const item = document.createElement('div');
+        item.className = 'save-result-item';
+        
+        // Add special styling for Tomb Builder (last item)
+        if (index === 5) {
+          item.classList.add('tomb-builder');
+        }
+        
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'save-result-name';
+        nameDiv.textContent = name;
+        
+        // Make Tomb Builder name red
+        if (index === 5) {
+          nameDiv.style.color = '#dc2626';
+          nameDiv.style.fontWeight = 'bold';
+        }
+        
+        const icon = document.createElement('div');
+        icon.className = 'save-result-icon pending';
+        
+        const result = results[index];
+        if (result === 'success') {
+          icon.textContent = '✓';
+          icon.className = 'save-result-icon success';
+        } else if (result === 'fail') {
+          icon.textContent = '✗';
+          icon.className = 'save-result-icon fail';
+        } else {
+          icon.textContent = '○';
+          icon.className = 'save-result-icon pending';
+        }
+        
+        item.appendChild(nameDiv);
+        item.appendChild(icon);
+        grid.appendChild(item);
+      });
+      
+      statusContent.appendChild(grid);
+    }
+
+    // Update Status Bar (for Roll Results)
+    function displayRollResult(result, modifier) {
+      statusBar.classList.add('active');
+      statusContent.innerHTML = '';
+      
+      const resultDiv = document.createElement('div');
+      resultDiv.className = 'roll-result';
+      
+      const number = document.createElement('div');
+      number.className = 'roll-number';
+      number.textContent = result;
+      
+      resultDiv.appendChild(number);
+      
+      if (modifier !== undefined && modifier !== null && modifier !== 0) {
+        const modSpan = document.createElement('div');
+        modSpan.className = 'roll-modifier';
+        modSpan.textContent = `${modifier >= 0 ? '+' : ''}${modifier}`;
+        resultDiv.appendChild(modSpan);
+      }
+      
+      statusContent.appendChild(resultDiv);
+      setTimeout(() => statusBar.classList.remove('active'), 300);
+    }
+
+    // Update Modifier Bar
+    function updateModifier(modifier) {
+      modifierBar.classList.add('active');
+      const modValue = parseInt(modifier) || 0;
+      const modSpan = document.createElement('span');
+      modSpan.className = 'modifier-display';
+      
+      if (modValue > 0) {
+        modSpan.classList.add('positive');
+        modSpan.textContent = `+${modValue}`;
+      } else if (modValue < 0) {
+        modSpan.classList.add('negative');
+        modSpan.textContent = `${modValue}`;
+      } else {
+        modSpan.textContent = '+0';
+      }
+      
+      modifierContent.innerHTML = '';
+      modifierContent.appendChild(modSpan);
+      setTimeout(() => modifierBar.classList.remove('active'), 300);
+    }
+
+    // Update DC (Difficulty Class) for saving throws
+    function updateDC(dc) {
+      modifierBar.classList.add('active');
+      modifierLabel.textContent = 'Difficulty Class';
+      const dcValue = parseInt(dc) || 15;
+      const dcSpan = document.createElement('span');
+      dcSpan.className = 'modifier-display';
+      dcSpan.textContent = `DC ${dcValue}`;
+      
+      modifierContent.innerHTML = '';
+      modifierContent.appendChild(dcSpan);
+      setTimeout(() => modifierBar.classList.remove('active'), 300);
+    }
+
+    // Process commands from server.html
+    function processCommand(command) {
+      if (!command || command.timestamp <= lastProcessedTimestamp) return;
+      lastProcessedTimestamp = command.timestamp;
+
+      if (command.type === 'setType') {
+        // Reset modifier label to default
+        modifierLabel.textContent = 'Modifier';
+        updateType(command.rollType, command.dc);
+      } else if (command.type === 'setResult') {
+        if (command.rollType === 'save') {
+          displaySaveResults(command.saveResults || []);
+          // Update DC for saving throws
+          if (command.dc !== undefined && command.dc !== null) {
+            updateDC(command.dc);
+          }
+        } else {
+          displayRollResult(command.result, command.modifier);
+          // Also update the modifier bar when setting result
+          if (command.modifier !== undefined && command.modifier !== null) {
+            modifierLabel.textContent = 'Modifier';
+            updateModifier(command.modifier);
+          }
+        }
+      } else if (command.type === 'setModifier') {
+        modifierLabel.textContent = 'Modifier';
+        updateModifier(command.modifier);
+      } else if (command.type === 'enableCamera') {
+        enableCamera();
+      } else if (command.type === 'disableCamera') {
+        disableCamera();
+      } else if (command.type === 'changeSource') {
+        const options = {};
+        if (command.deviceId) {
+          options.deviceId = command.deviceId;
+        } else if (command.facingMode) {
+          options.facingMode = command.facingMode;
+        }
+        changeSource(options);
+      } else if (command.type === 'reset') {
+        typeContent.textContent = 'Ready';
+        typeContent.className = 'bar-content';
+        statusContent.innerHTML = '<span style="color: #9ca3af;">Awaiting Roll...</span>';
+        modifierContent.innerHTML = '<span class="modifier-display">+0</span>';
+        modifierBar.style.display = 'block';
+        statusLabel.textContent = 'Status';
+      }
+    }
+
+    // Listen for storage events from server.html
+    window.addEventListener('storage', (e) => {
+      if (e.key === STORAGE_KEY && e.newValue) {
+        try {
+          const command = JSON.parse(e.newValue);
+          processCommand(command);
+        } catch (err) {
+          console.error('Failed to parse command:', err);
+        }
+      }
+    });
+
+    // Also check localStorage periodically (for same-window testing)
+    setInterval(() => {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          const command = JSON.parse(stored);
+          processCommand(command);
+        } catch (err) {
+          console.error('Failed to parse stored command:', err);
+        }
+      }
+    }, 100);
+
+    // Auto-enable camera on load (optional - comment out if you prefer manual enable)
+    // window.addEventListener('load', enableCamera);
+  </script>
+</body>
+</html>
