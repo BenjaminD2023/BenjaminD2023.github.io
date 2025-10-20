@@ -142,7 +142,7 @@
     </div>
 
     <div class="status">
-      <p id="status-message">Ready. Listening on port 8888...</p>
+      <p id="status-message">Ready...</p>
       <p class="text-sm text-gray-400 mt-2">Selected: <span id="selected-char">None</span></p>
     </div>
 
@@ -170,6 +170,17 @@
   <script>
     const STORAGE_KEY = 'hp-tracker-control';
     let selectedCharacter = null;
+
+    // Display current port in status message
+    function updatePortDisplay() {
+      const port = window.location.port || (window.location.protocol === 'https:' ? '443' : '80');
+      const host = window.location.hostname;
+      const statusEl = document.getElementById('status-message');
+      statusEl.textContent = `Ready. Running on ${host}:${port}`;
+    }
+
+    // Initialize port display on load
+    updatePortDisplay();
 
     // Character buttons
     const characterBtns = document.querySelectorAll('.character-btn');
@@ -250,7 +261,7 @@
       statusEl.style.color = type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : 'white';
       
       setTimeout(() => {
-        statusEl.textContent = 'Ready. Listening on port 8888...';
+        updatePortDisplay();
         statusEl.style.color = 'white';
       }, 3000);
     }
