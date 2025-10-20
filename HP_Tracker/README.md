@@ -5,6 +5,7 @@ A D&D 5e HP tracking system with remote control capabilities.
 ## Features
 - **Main Display** (`index.html`): Full-screen HP tracker with character portraits and health bars
 - **Control Panel** (`server.html`): Remote control interface for managing HP from a different window/device
+- **Acererak Display** (`acererak.html`): Special display for boss enemy "The Tomb Builder"
 - **Wild Shape Support**: Special mechanics for Druid's Wild Shape (Batula)
 - **Auto-scaling**: UI automatically adjusts to window size
 - **Keyboard Shortcuts**: Fast character selection and HP changes
@@ -29,6 +30,12 @@ Open in another window/tab/device (for DM control):
 http://localhost:8888/server.html
 ```
 
+### Step 4: Open Acererak Display (Optional)
+Open in another window/screen (for boss display):
+```
+http://localhost:8888/acererak.html
+```
+
 ## Control Panel Usage
 
 ### HP Changes
@@ -42,6 +49,12 @@ http://localhost:8888/server.html
 3. When active, HP changes apply to Wild Shape HP first
 4. Wild Shape auto-deactivates when HP reaches 0
 5. Click "Deactivate" to manually end Wild Shape
+
+### Acererak Controls
+1. Enter damage amount in "HP Damage Amount" field
+2. Click "Deal Damage" to add HP deducted (displayed on acererak.html)
+3. Click action buttons (Melee/Ranged/Skill) to highlight actions on display
+4. Click "Reset HP" to reset HP deducted counter to 0
 
 ## Keyboard Shortcuts
 
@@ -75,3 +88,5 @@ http://localhost:8888/server.html
 - Both windows must be open in the same browser for communication to work
 - Refresh the main display if it gets out of sync
 - Wild Shape HP is temporary and resets when deactivated
+- Acererak display shows HP deducted (not total HP) to keep mystery
+- Action highlights on Acererak display auto-clear after 3 seconds

@@ -7,7 +7,7 @@ import http.server
 import socketserver
 import os
 
-PORT = 3001
+PORT = 8888
 DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 
 class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
@@ -19,6 +19,7 @@ if __name__ == "__main__":
         print(f"🎮 HP Tracker Server Running!")
         print(f"📊 Main Display: http://localhost:{PORT}/index.html")
         print(f"🎛️  Control Panel: http://localhost:{PORT}/server.html")
+        print(f"💀 Acererak Display: http://localhost:{PORT}/acererak.html")
         print(f"\nPress Ctrl+C to stop the server")
         try:
             httpd.serve_forever()

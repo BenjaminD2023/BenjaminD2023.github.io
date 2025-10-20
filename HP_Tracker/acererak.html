@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Tomb Builder</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+    .poster-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out;
+    }
+    .poster-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .poster-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      padding: 2rem;
+      box-sizing: border-box;
+      gap: 2rem;
+      opacity: 0;
+      transition: opacity 0.5s ease-in 0.3s;
+    }
+    .main-container.active {
+      opacity: 1;
+    }
+    .portrait-section {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .portrait {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 8px solid #8b0000;
+      box-shadow: 0 0 40px rgba(139, 0, 0, 0.8), 0 0 80px rgba(139, 0, 0, 0.4);
+      transition: all 0.3s ease;
+    }
+    .portrait:hover {
+      box-shadow: 0 0 60px rgba(139, 0, 0, 1), 0 0 100px rgba(139, 0, 0, 0.6);
+      transform: scale(1.05);
+    }
+    .name {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #dc2626;
+      text-shadow: 0 0 20px rgba(220, 38, 38, 0.8);
+      margin-top: 1.5rem;
+      font-family: 'Georgia', serif;
+      letter-spacing: 2px;
+    }
+    .hp-section {
+      background: rgba(0, 0, 0, 0.6);
+      border: 3px solid #dc2626;
+      border-radius: 12px;
+      padding: 2rem 4rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      min-width: 400px;
+      text-align: center;
+    }
+    .hp-label {
+      font-size: 1.5rem;
+      color: #9ca3af;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .hp-value {
+      font-size: 5rem;
+      font-weight: bold;
+      color: #dc2626;
+      text-shadow: 0 0 15px rgba(220, 38, 38, 0.8);
+      font-family: 'Georgia', serif;
+      line-height: 1;
+    }
+    .hp-change {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-left: 1rem;
+      animation: pulse 0.5s ease-in-out;
+      display: inline-block;
+    }
+    .hp-change.damage {
+      color: #ef4444;
+    }
+    .hp-change.heal {
+      color: #10b981;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .actions-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin-top: 1rem;
+      width: 100%;
+    }
+    .action-display {
+      background: rgba(0, 0, 0, 0.8);
+      border: 3px solid #4b5563;
+      border-radius: 12px;
+      padding: 1.5rem 3rem;
+      min-width: 200px;
+      text-align: center;
+      transition: all 0.3s ease;
+      display: none;
+    }
+    .action-display.visible {
+      display: block;
+    }
+    .action-display.active {
+      border-color: #facc15;
+      background: rgba(250, 204, 21, 0.2);
+      box-shadow: 0 0 30px rgba(250, 204, 21, 0.5);
+      transform: scale(1.05);
+    }
+    .action-display.melee.active {
+      border-color: #dc2626;
+      background: rgba(220, 38, 38, 0.2);
+      box-shadow: 0 0 30px rgba(220, 38, 38, 0.5);
+    }
+    .action-display.ranged.active {
+      border-color: #3b82f6;
+      background: rgba(59, 130, 246, 0.2);
+      box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+    }
+    .action-display.skill.active {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.2);
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+    }
+    .action-label {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #e5e7eb;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .action-icon {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+    @media (max-width: 768px) {
+      .portrait {
+        width: 200px;
+        height: 200px;
+      }
+      .name {
+        font-size: 2rem;
+      }
+      .hp-value {
+        font-size: 3.5rem;
+      }
+      .hp-section {
+        min-width: 300px;
+        padding: 1.5rem 2rem;
+      }
+      .actions-section {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .action-display {
+        min-width: 150px;
+        padding: 1rem 2rem;
+      }
+      .action-label {
+        font-size: 1.3rem;
+      }
+      .action-icon {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+  <!-- Poster Screen (shown when not activated) -->
+  <div class="poster-screen" id="poster-screen">
+    <img src="Portrait/poster.png" alt="Tomb of Annihilation" class="poster-image">
+  </div>
+
+  <!-- Main Content (shown when activated) -->
+  <div class="main-container" id="main-container">
+    <div class="portrait-section">
+      <img src="Portrait/Acererak.png" alt="Acererak" class="portrait">
+      <div class="name">The Tomb Builder</div>
+    </div>
+
+    <div class="hp-section">
+      <div class="hp-label">HP Deducted</div>
+      <div>
+        <span class="hp-value" id="hp-deducted">0</span>
+        <span class="hp-change" id="hp-change" style="display: none;"></span>
+      </div>
+    </div>
+
+    <div class="actions-section">
+      <div class="action-display melee" id="action-melee">
+        <div class="action-icon">⚔️</div>
+        <div class="action-label">Melee</div>
+      </div>
+      <div class="action-display ranged" id="action-ranged">
+        <div class="action-icon">🏹</div>
+        <div class="action-label">Ranged</div>
+      </div>
+      <div class="action-display skill" id="action-skill">
+        <div class="action-icon">✨</div>
+        <div class="action-label">Skill</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'acererak-control';
+    let lastProcessedTimestamp = 0;
+    let totalHpDeducted = 0;
+    let isActivated = false;
+
+    const hpDeductedElement = document.getElementById('hp-deducted');
+    const hpChangeElement = document.getElementById('hp-change');
+    const actionMelee = document.getElementById('action-melee');
+    const actionRanged = document.getElementById('action-ranged');
+    const actionSkill = document.getElementById('action-skill');
+    const posterScreen = document.getElementById('poster-screen');
+    const mainContainer = document.getElementById('main-container');
+
+    function activateTombBuilder() {
+      isActivated = true;
+      posterScreen.classList.add('hidden');
+      mainContainer.classList.add('active');
+      
+      // Remove poster from DOM after transition
+      setTimeout(() => {
+        posterScreen.style.display = 'none';
+      }, 500);
+    }
+
+    function deactivateTombBuilder() {
+      isActivated = false;
+      mainContainer.classList.remove('active');
+      
+      // Wait for main container to fade out before showing poster
+      setTimeout(() => {
+        posterScreen.style.display = 'flex';
+        // Small delay to ensure display is set before removing hidden class
+        setTimeout(() => {
+          posterScreen.classList.remove('hidden');
+        }, 10);
+      }, 500);
+    }
+
+    function updateHpDisplay() {
+      hpDeductedElement.textContent = totalHpDeducted;
+    }
+
+    function showHpChange(change) {
+      if (change === 0) return;
+      
+      // For healing (negative change, reduces HP deducted), show green with +
+      // For damage (positive change, increases HP deducted), show red with -
+      if (change < 0) {
+        // Healing
+        hpChangeElement.textContent = `+${Math.abs(change)}`;
+        hpChangeElement.className = 'hp-change heal';
+      } else {
+        // Damage
+        hpChangeElement.textContent = `-${change}`;
+        hpChangeElement.className = 'hp-change damage';
+      }
+      
+      hpChangeElement.style.display = 'inline-block';
+      
+      // Remove and re-add animation
+      hpChangeElement.style.animation = 'none';
+      setTimeout(() => {
+        hpChangeElement.style.animation = 'pulse 0.5s ease-in-out';
+      }, 10);
+
+      // Hide after delay (5 seconds)
+      setTimeout(() => {
+        hpChangeElement.style.display = 'none';
+      }, 5000);
+    }
+
+    function setActiveAction(action) {
+      // Remove all active and visible states
+      actionMelee.classList.remove('active', 'visible');
+      actionRanged.classList.remove('active', 'visible');
+      actionSkill.classList.remove('active', 'visible');
+
+      // Set active and visible state
+      if (action === 'melee') {
+        actionMelee.classList.add('active', 'visible');
+      } else if (action === 'ranged') {
+        actionRanged.classList.add('active', 'visible');
+      } else if (action === 'skill') {
+        actionSkill.classList.add('active', 'visible');
+      }
+      // No auto-clear - must be manually cleared from server.html
+    }
+
+    function processCommand(command) {
+      if (!command || command.timestamp <= lastProcessedTimestamp) return;
+      lastProcessedTimestamp = command.timestamp;
+
+      if (command.type === 'activate') {
+        activateTombBuilder();
+      } else if (command.type === 'deactivate') {
+        deactivateTombBuilder();
+      } else if (command.type === 'hpChange') {
+        const change = command.change || 0;
+        totalHpDeducted += change;
+        // Don't allow negative HP deducted
+        if (totalHpDeducted < 0) {
+          totalHpDeducted = 0;
+        }
+        updateHpDisplay();
+        showHpChange(change);
+      } else if (command.type === 'action') {
+        setActiveAction(command.action);
+      } else if (command.type === 'clearAction') {
+        setActiveAction(null); // Clear all actions
+      } else if (command.type === 'reset') {
+        totalHpDeducted = 0;
+        updateHpDisplay();
+      }
+    }
+
+    // Listen for storage events from server.html
+    window.addEventListener('storage', (e) => {
+      if (e.key === STORAGE_KEY && e.newValue) {
+        try {
+          const command = JSON.parse(e.newValue);
+          processCommand(command);
+        } catch (err) {
+          console.error('Failed to parse command:', err);
+        }
+      }
+    });
+
+    // Also check localStorage periodically (for same-window testing)
+    setInterval(() => {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          const command = JSON.parse(stored);
+          processCommand(command);
+        } catch (err) {
+          console.error('Failed to parse stored command:', err);
+        }
+      }
+    }, 100);
+
+    // Initial render
+    updateHpDisplay();
+  </script>
+</body>
+</html>

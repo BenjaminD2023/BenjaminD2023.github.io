@@ -69,6 +69,47 @@
       border-radius: 8px;
       border: 2px solid #10b981;
     }
+    .acererak-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #1f2937;
+      border-radius: 8px;
+      border: 2px solid #dc2626;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .action-buttons button {
+      flex: 1;
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
+    .action-btn.melee-action {
+      background: #dc2626;
+    }
+    .action-btn.melee-action:hover {
+      background: #b91c1c;
+    }
+    .action-btn.ranged-action {
+      background: #3b82f6;
+    }
+    .action-btn.ranged-action:hover {
+      background: #2563eb;
+    }
+    .action-btn.skill-action {
+      background: #10b981;
+    }
+    .action-btn.skill-action:hover {
+      background: #059669;
+    }
+    .action-btn.reset-action {
+      background: #6b7280;
+    }
+    .action-btn.reset-action:hover {
+      background: #4b5563;
+    }
     .input-field {
       padding: 0.5rem;
       border-radius: 6px;
@@ -141,6 +182,34 @@
       </div>
     </div>
 
+    <div class="acererak-section">
+      <h2 class="text-xl font-semibold mb-3">⚠️ Acererak - The Tomb Builder <kbd class="px-2 py-1 bg-gray-700 rounded text-xs ml-2">K</kbd></h2>
+      
+      <label class="text-sm text-gray-300">Activation</label>
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+        <button class="action-btn activate" id="acererak-activate-btn" style="flex: 1;">Reveal Tomb Builder</button>
+        <button class="action-btn deactivate" id="acererak-deactivate-btn" style="flex: 1;">Show Poster</button>
+      </div>
+
+      <label class="text-sm text-gray-300">HP Damage Amount</label>
+      <input type="number" id="acererak-hp-amount" class="input-field" value="5" min="1">
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+        <button class="hp-btn damage" id="acererak-damage-btn" style="flex: 1; margin: 0;">Damage (-)</button>
+        <button class="hp-btn heal" id="acererak-heal-btn" style="flex: 1; margin: 0;">Heal (+)</button>
+      </div>
+      
+      <label class="text-sm text-gray-300">Action Type</label>
+      <div class="action-buttons">
+        <button class="action-btn melee-action" id="acererak-melee-btn">⚔️ Melee</button>
+        <button class="action-btn ranged-action" id="acererak-ranged-btn">🏹 Ranged</button>
+        <button class="action-btn skill-action" id="acererak-skill-btn">✨ Skill</button>
+      </div>
+      <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+        <button class="action-btn reset-action" id="acererak-clear-action-btn" style="flex: 1; background: #6b7280;">Clear Action</button>
+        <button class="action-btn reset-action" id="acererak-reset-btn" style="flex: 1;">Reset HP</button>
+      </div>
+    </div>
+
     <div class="status">
       <p id="status-message">Ready...</p>
       <p class="text-sm text-gray-400 mt-2">Selected: <span id="selected-char">None</span></p>
@@ -159,9 +228,15 @@
         <div><kbd class="px-2 py-1 bg-gray-700 rounded">E</kbd> Recover Wild Shape Use</div>
         <div><kbd class="px-2 py-1 bg-gray-700 rounded">R</kbd> Remove Stabilized</div>
         <div><kbd class="px-2 py-1 bg-gray-700 rounded">C</kbd> Clear Selection</div>
-        <div><kbd class="px-2 py-1 bg-gray-700 rounded">-</kbd> Damage</div>
-        <div><kbd class="px-2 py-1 bg-gray-700 rounded">+</kbd> Heal</div>
-        <div><kbd class="px-2 py-1 bg-gray-700 rounded">Enter</kbd> Apply/Activate</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">K</kbd> Toggle Acererak/Player HP</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">A</kbd> Clear Acererak Action</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">M</kbd> Acererak Melee</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">O</kbd> Acererak Ranged</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">S</kbd> Acererak Skill</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">-</kbd> Damage (context-aware)</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">+</kbd> Heal (context-aware)</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">Enter</kbd> Apply Damage</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">Shift+Enter</kbd> Apply Heal</div>
         <div><kbd class="px-2 py-1 bg-gray-700 rounded">Esc</kbd> Deselect</div>
       </div>
     </div>
@@ -169,7 +244,9 @@
 
   <script>
     const STORAGE_KEY = 'hp-tracker-control';
+    const ACERERAK_KEY = 'acererak-control';
     let selectedCharacter = null;
+    let acererakHpDeducted = 0;
 
     // Display current port in status message
     function updatePortDisplay() {
@@ -181,6 +258,18 @@
 
     // Initialize port display on load
     updatePortDisplay();
+    
+    // Initialize Acererak HP display from localStorage if available
+    const storedAcererakData = localStorage.getItem(ACERERAK_KEY);
+    if (storedAcererakData) {
+      try {
+        const data = JSON.parse(storedAcererakData);
+        // We'll track HP locally, but we can't retrieve it from commands
+        // So we'll start fresh or you can add a separate storage key for state
+      } catch (err) {
+        console.error('Failed to parse Acererak data:', err);
+      }
+    }
 
     // Character buttons
     const characterBtns = document.querySelectorAll('.character-btn');
@@ -255,6 +344,33 @@
       }));
     }
 
+    function sendAcererakCommand(command) {
+      // Store command in localStorage for Acererak display to read
+      const timestamp = Date.now();
+      const commandWithTime = { ...command, timestamp };
+      localStorage.setItem(ACERERAK_KEY, JSON.stringify(commandWithTime));
+      
+      // Update local HP counter
+      if (command.type === 'hpChange') {
+        acererakHpDeducted += command.change || 0;
+        if (acererakHpDeducted < 0) {
+          acererakHpDeducted = 0;
+        }
+        document.getElementById('acererak-hp-display').textContent = acererakHpDeducted;
+      } else if (command.type === 'reset') {
+        acererakHpDeducted = 0;
+        document.getElementById('acererak-hp-display').textContent = acererakHpDeducted;
+      }
+      
+      // Also dispatch a storage event for same-origin communication
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: ACERERAK_KEY,
+        newValue: JSON.stringify(commandWithTime),
+        url: window.location.href,
+        storageArea: localStorage
+      }));
+    }
+
     function showStatus(message, type = 'info') {
       const statusEl = document.getElementById('status-message');
       statusEl.textContent = message;
@@ -312,25 +428,149 @@
         characterBtns.forEach(b => b.classList.remove('selected'));
         selectedCharacter = null;
         document.getElementById('selected-char').textContent = 'None';
+      } else if (key === 'a') {
+        // Clear Acererak action
+        document.getElementById('acererak-clear-action-btn').click();
+      } else if (key === 'k') {
+        // Toggle between Acererak HP input and player HP input
+        const activeElement = document.activeElement;
+        if (activeElement.id === 'acererak-hp-amount') {
+          document.getElementById('hp-amount').focus();
+          document.getElementById('hp-amount').select();
+        } else {
+          document.getElementById('acererak-hp-amount').focus();
+          document.getElementById('acererak-hp-amount').select();
+        }
+      } else if (key === 'm') {
+        // Acererak Melee Attack
+        document.getElementById('acererak-melee-btn').click();
+      } else if (key === 'o') {
+        // Acererak Ranged Attack
+        document.getElementById('acererak-ranged-btn').click();
+      } else if (key === 's') {
+        // Acererak Skill
+        document.getElementById('acererak-skill-btn').click();
       } else if (e.key === 'Enter') {
         // Apply HP change or activate wild shape based on focus
         const activeElement = document.activeElement;
         if (activeElement.id === 'wild-shape-hp') {
           document.getElementById('activate-wild-shape').click();
+        } else if (activeElement.id === 'acererak-hp-amount') {
+          // Shift+Enter for heal, Enter for damage on Acererak
+          if (e.shiftKey) {
+            document.getElementById('acererak-heal-btn').click();
+          } else {
+            document.getElementById('acererak-damage-btn').click();
+          }
         } else if (activeElement.id === 'hp-amount') {
           // Default to damage if no specific button context
           document.getElementById('damage-btn').click();
         }
       } else if (e.key === '-' || e.key === '_') {
         e.preventDefault(); // Prevent minus from appearing in input
-        document.getElementById('damage-btn').click();
+        const activeElement = document.activeElement;
+        if (activeElement.id === 'acererak-hp-amount') {
+          // Apply damage to Acererak
+          document.getElementById('acererak-damage-btn').click();
+        } else {
+          // Apply damage to player character
+          document.getElementById('damage-btn').click();
+        }
       } else if (e.key === '+' || e.key === '=') {
         e.preventDefault(); // Prevent plus from appearing in input
-        document.getElementById('heal-btn').click();
+        const activeElement = document.activeElement;
+        if (activeElement.id === 'acererak-hp-amount') {
+          // Apply heal to Acererak
+          document.getElementById('acererak-heal-btn').click();
+        } else {
+          // Apply heal to player character
+          document.getElementById('heal-btn').click();
+        }
       } else if (e.key === 'Escape') {
         characterBtns.forEach(b => b.classList.remove('selected'));
         selectedCharacter = null;
         document.getElementById('selected-char').textContent = 'None';
+      }
+    });
+
+    // Acererak Controls
+    document.getElementById('acererak-activate-btn').addEventListener('click', () => {
+      sendAcererakCommand({
+        type: 'activate'
+      });
+      showStatus('Acererak: Activated (Tomb Builder Revealed)', 'success');
+    });
+
+    document.getElementById('acererak-deactivate-btn').addEventListener('click', () => {
+      sendAcererakCommand({
+        type: 'deactivate'
+      });
+      showStatus('Acererak: Deactivated (Poster Displayed)', 'success');
+    });
+
+    document.getElementById('acererak-damage-btn').addEventListener('click', () => {
+      const damage = parseInt(document.getElementById('acererak-hp-amount').value);
+      if (!damage || damage <= 0) {
+        showStatus('Please enter a valid damage amount', 'error');
+        return;
+      }
+      sendAcererakCommand({
+        type: 'hpChange',
+        change: damage
+      });
+      showStatus(`Dealt ${damage} damage to Acererak`, 'success');
+    });
+
+    document.getElementById('acererak-heal-btn').addEventListener('click', () => {
+      const heal = parseInt(document.getElementById('acererak-hp-amount').value);
+      if (!heal || heal <= 0) {
+        showStatus('Please enter a valid heal amount', 'error');
+        return;
+      }
+      sendAcererakCommand({
+        type: 'hpChange',
+        change: -heal // Negative value reduces HP deducted
+      });
+      showStatus(`Healed ${heal} HP for Acererak`, 'success');
+    });
+
+    document.getElementById('acererak-melee-btn').addEventListener('click', () => {
+      sendAcererakCommand({
+        type: 'action',
+        action: 'melee'
+      });
+      showStatus('Acererak: Melee Attack', 'success');
+    });
+
+    document.getElementById('acererak-ranged-btn').addEventListener('click', () => {
+      sendAcererakCommand({
+        type: 'action',
+        action: 'ranged'
+      });
+      showStatus('Acererak: Ranged Attack', 'success');
+    });
+
+    document.getElementById('acererak-skill-btn').addEventListener('click', () => {
+      sendAcererakCommand({
+        type: 'action',
+        action: 'skill'
+      });
+      showStatus('Acererak: Skill Used', 'success');
+    });
+
+    document.getElementById('acererak-clear-action-btn').addEventListener('click', () => {
+      sendAcererakCommand({
+        type: 'clearAction'
+      });
+      showStatus('Acererak: Action cleared', 'success');
+    });
+
+    document.getElementById('acererak-reset-btn').addEventListener('click', () => {
+      if (confirm('Reset Acererak HP to 0?')) {
+        sendAcererakCommand({
+          type: 'reset'
+        });
+        showStatus('Acererak HP reset', 'success');
       }
     });
   </script>
