@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HP Tracker Control Server</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: #1f2937;
+      color: white;
+      padding: 2rem;
+    }
+    .control-panel {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #374151;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+    .character-btn {
+      padding: 0.75rem 1rem;
+      margin: 0.25rem;
+      border: 2px solid #4b5563;
+      border-radius: 8px;
+      background: #1f2937;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .character-btn:hover {
+      border-color: #facc15;
+    }
+    .character-btn.selected {
+      border-color: #facc15;
+      background: #facc15;
+      color: #1f2937;
+      font-weight: bold;
+    }
+    .hp-btn {
+      padding: 1rem 1.5rem;
+      margin: 0.5rem;
+      border-radius: 8px;
+      font-size: 1.25rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+    .hp-btn.damage {
+      background: #dc2626;
+      color: white;
+    }
+    .hp-btn.damage:hover {
+      background: #b91c1c;
+    }
+    .hp-btn.heal {
+      background: #10b981;
+      color: white;
+    }
+    .hp-btn.heal:hover {
+      background: #059669;
+    }
+    .wild-shape-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #1f2937;
+      border-radius: 8px;
+      border: 2px solid #10b981;
+    }
+    .input-field {
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 2px solid #4b5563;
+      background: #1f2937;
+      color: white;
+      font-size: 1rem;
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+    .action-btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      margin: 0.5rem 0.25rem;
+    }
+    .action-btn.activate {
+      background: #10b981;
+      color: white;
+    }
+    .action-btn.deactivate {
+      background: #f59e0b;
+      color: white;
+    }
+    .status {
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: 8px;
+      background: #1f2937;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="control-panel">
+    <h1 class="text-3xl font-bold mb-6 text-center">HP Tracker Control</h1>
+    
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold mb-3">Select Character</h2>
+      <div class="flex flex-wrap justify-center">
+        <button class="character-btn" data-index="0">Zendith</button>
+        <button class="character-btn" data-index="1">Terra</button>
+        <button class="character-btn" data-index="2">Feathers</button>
+        <button class="character-btn" data-index="3">Immeral</button>
+        <button class="character-btn" data-index="4">Batula</button>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold mb-3">HP Change Amount</h2>
+      <input type="number" id="hp-amount" class="input-field" value="1" min="1">
+    </div>
+
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold mb-3">Apply HP Change</h2>
+      <div class="flex justify-center">
+        <button class="hp-btn damage" id="damage-btn">Damage (-)</button>
+        <button class="hp-btn heal" id="heal-btn">Heal (+)</button>
+      </div>
+    </div>
+
+    <div class="wild-shape-section">
+      <h2 class="text-xl font-semibold mb-3">Wild Shape (Batula)</h2>
+      <input type="number" id="wild-shape-hp" class="input-field" placeholder="Enter Wild Shape Max HP">
+      <div class="flex justify-center">
+        <button class="action-btn activate" id="activate-wild-shape">Activate</button>
+        <button class="action-btn deactivate" id="deactivate-wild-shape">Deactivate</button>
+      </div>
+    </div>
+
+    <div class="status">
+      <p id="status-message">Ready. Listening on port 8888...</p>
+      <p class="text-sm text-gray-400 mt-2">Selected: <span id="selected-char">None</span></p>
+    </div>
+
+    <div class="mt-6 p-4 bg-gray-800 rounded-lg">
+      <h3 class="text-sm font-semibold mb-2 text-center text-gray-300">Keyboard Shortcuts</h3>
+      <div class="grid grid-cols-2 gap-2 text-xs text-gray-400">
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">Z</kbd> Zendith</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">T</kbd> Terra</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">F</kbd> Feathers</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">I</kbd> Immeral</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">B</kbd> Batula</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">W</kbd> Wild Shape Focus</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">D</kbd> Deactivate Wild Shape</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">E</kbd> Recover Wild Shape Use</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">R</kbd> Remove Stabilized</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">C</kbd> Clear Selection</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">-</kbd> Damage</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">+</kbd> Heal</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">Enter</kbd> Apply/Activate</div>
+        <div><kbd class="px-2 py-1 bg-gray-700 rounded">Esc</kbd> Deselect</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'hp-tracker-control';
+    let selectedCharacter = null;
+
+    // Character buttons
+    const characterBtns = document.querySelectorAll('.character-btn');
+    characterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        characterBtns.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedCharacter = parseInt(btn.dataset.index);
+        document.getElementById('selected-char').textContent = btn.textContent;
+      });
+    });
+
+    // HP Change buttons
+    document.getElementById('damage-btn').addEventListener('click', () => {
+      applyHPChange(-1 * parseInt(document.getElementById('hp-amount').value));
+    });
+
+    document.getElementById('heal-btn').addEventListener('click', () => {
+      applyHPChange(parseInt(document.getElementById('hp-amount').value));
+    });
+
+    // Wild Shape buttons
+    document.getElementById('activate-wild-shape').addEventListener('click', () => {
+      const wildHP = parseInt(document.getElementById('wild-shape-hp').value);
+      if (!wildHP || wildHP <= 0) {
+        showStatus('Please enter a valid HP value', 'error');
+        return;
+      }
+      sendCommand({
+        type: 'wildShape',
+        action: 'activate',
+        maxHP: wildHP
+      });
+      showStatus(`Wild Shape activated with ${wildHP} HP`, 'success');
+    });
+
+    document.getElementById('deactivate-wild-shape').addEventListener('click', () => {
+      sendCommand({
+        type: 'wildShape',
+        action: 'deactivate'
+      });
+      showStatus('Wild Shape deactivated', 'success');
+    });
+
+    function applyHPChange(change) {
+      if (selectedCharacter === null) {
+        showStatus('Please select a character first', 'error');
+        return;
+      }
+
+      sendCommand({
+        type: 'hpChange',
+        characterIndex: selectedCharacter,
+        change: change
+      });
+
+      showStatus(`Applied ${change > 0 ? '+' : ''}${change} HP to ${characterBtns[selectedCharacter].textContent}`, 'success');
+    }
+
+    function sendCommand(command) {
+      // Store command in localStorage for the tracker to read
+      const timestamp = Date.now();
+      const commandWithTime = { ...command, timestamp };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(commandWithTime));
+      
+      // Also dispatch a storage event for same-origin communication
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: STORAGE_KEY,
+        newValue: JSON.stringify(commandWithTime),
+        url: window.location.href,
+        storageArea: localStorage
+      }));
+    }
+
+    function showStatus(message, type = 'info') {
+      const statusEl = document.getElementById('status-message');
+      statusEl.textContent = message;
+      statusEl.style.color = type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : 'white';
+      
+      setTimeout(() => {
+        statusEl.textContent = 'Ready. Listening on port 8888...';
+        statusEl.style.color = 'white';
+      }, 3000);
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      const key = e.key.toLowerCase();
+      
+      // Character selection by initials: Z, T, F, I, B
+      if (key === 'z') {
+        characterBtns[0].click(); // Zendith
+      } else if (key === 't') {
+        characterBtns[1].click(); // Terra
+      } else if (key === 'f') {
+        characterBtns[2].click(); // Feathers
+      } else if (key === 'i') {
+        characterBtns[3].click(); // Immeral
+      } else if (key === 'b') {
+        characterBtns[4].click(); // Batula
+      } else if (key === 'w') {
+        // Toggle between Wild Shape HP input and regular HP input
+        const activeElement = document.activeElement;
+        if (activeElement.id === 'wild-shape-hp') {
+          document.getElementById('hp-amount').focus();
+        } else {
+          document.getElementById('wild-shape-hp').focus();
+        }
+      } else if (key === 'd') {
+        // Deactivate Wild Shape
+        document.getElementById('deactivate-wild-shape').click();
+      } else if (key === 'e') {
+        // Recover Wild Shape use
+        sendCommand({
+          type: 'recoverWildShape'
+        });
+        showStatus('Recovered Wild Shape use for Batula', 'success');
+      } else if (key === 'r') {
+        // Remove stabilized status from selected character
+        if (selectedCharacter !== null) {
+          sendCommand({
+            type: 'removeStabilized',
+            characterIndex: selectedCharacter
+          });
+          showStatus(`Removed stabilized status from ${characterBtns[selectedCharacter].textContent}`, 'success');
+        }
+      } else if (key === 'c') {
+        // Clear character selection
+        characterBtns.forEach(b => b.classList.remove('selected'));
+        selectedCharacter = null;
+        document.getElementById('selected-char').textContent = 'None';
+      } else if (e.key === 'Enter') {
+        // Apply HP change or activate wild shape based on focus
+        const activeElement = document.activeElement;
+        if (activeElement.id === 'wild-shape-hp') {
+          document.getElementById('activate-wild-shape').click();
+        } else if (activeElement.id === 'hp-amount') {
+          // Default to damage if no specific button context
+          document.getElementById('damage-btn').click();
+        }
+      } else if (e.key === '-' || e.key === '_') {
+        e.preventDefault(); // Prevent minus from appearing in input
+        document.getElementById('damage-btn').click();
+      } else if (e.key === '+' || e.key === '=') {
+        e.preventDefault(); // Prevent plus from appearing in input
+        document.getElementById('heal-btn').click();
+      } else if (e.key === 'Escape') {
+        characterBtns.forEach(b => b.classList.remove('selected'));
+        selectedCharacter = null;
+        document.getElementById('selected-char').textContent = 'None';
+      }
+    });
+  </script>
+</body>
+</html>
