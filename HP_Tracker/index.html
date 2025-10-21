@@ -39,13 +39,46 @@
       height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      object-position: center top;
+      object-position: center 15%;
       border: 3px solid #4b5563;
       display: block;
       transition: opacity 0.2s ease-in-out, filter 0.2s ease-in-out;
     }
+    /* Custom zoom and positioning for each character */
+    #char-0 .portrait {
+      /* Zendith - zoom in more on face */
+      transform: scale(3.2);
+      object-position: center 20%;
+    }
+    #char-1 .portrait {
+      /* Terra - zoom in more on face */
+      transform: scale(2.8);
+      object-position: center 32%;
+    }
+    #char-2 .portrait {
+      /* Feathers - zoom in more on face */
+      transform: scale(3.2);
+      object-position: center 30%;
+    }
+    #char-3 .portrait {
+      /* Immeral - full screen mode */
+      transform: scale(1);
+      object-position: center center;
+    }
+    #char-4 .portrait {
+      /* Batula - zoom in more on face */
+      transform: scale(3.2);
+      object-position: center 28%;
+    }
     .portrait[src=""], .portrait:not([src]) {
       visibility: hidden;
+    }
+    .portrait-wrapper {
+      overflow: hidden;
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      flex-shrink: 0;
     }
     #character-list {
       display: flex;
@@ -297,7 +330,10 @@
         </div>
         <!-- Immeral -->
         <div class="character-container p-2" id="char-3">
-          <img src="Portrait/Immeral.png" alt="" class="portrait">
+          <div class="portrait-wrapper">
+            <img src="Portrait/Immeral.png" alt="" class="portrait">
+            <div class="skull-overlay" id="skull-3" style="display: none;">💀</div>
+          </div>
           <div class="flex-1">
             <div class="flex items-center">
               <div class="text-lg font-semibold name">Immeral</div>

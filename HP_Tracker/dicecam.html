@@ -199,25 +199,25 @@
     <div class="info-panel">
       <div class="dice-cam-title">🎲 Dice Cam</div>
       
-      <!-- Bar 1: Type -->
-      <div class="info-bar" id="type-bar">
+      <!-- Bar 1: Type (hidden when ready) -->
+      <div class="info-bar" id="type-bar" style="display: none;">
         <div class="bar-label">Roll Type</div>
-        <div class="bar-content" id="type-content">Ready</div>
+        <div class="bar-content" id="type-content"></div>
       </div>
       
       <!-- Bar 2: Status/Result -->
       <div class="info-bar" id="status-bar">
         <div class="bar-label" id="status-label">Status</div>
         <div class="bar-content" id="status-content">
-          <span style="color: #9ca3af;">Awaiting Roll...</span>
+          <span style="color: #10b981;">Ready</span>
         </div>
       </div>
       
-      <!-- Bar 3: Modifier (hidden when type is Save) -->
+      <!-- Bar 3: Roll Result (for ready state) / Modifier (for other states) -->
       <div class="info-bar" id="modifier-bar">
-        <div class="bar-label" id="modifier-label">Modifier</div>
+        <div class="bar-label" id="modifier-label">Roll Result</div>
         <div class="bar-content" id="modifier-content">
-          <span class="modifier-display">+0</span>
+          <span style="color: #9ca3af;">Awaiting Roll...</span>
         </div>
       </div>
     </div>
@@ -329,26 +329,47 @@
       };
       
       const typeInfo = typeMap[type] || { text: 'Ready', class: '' };
-      typeContent.textContent = typeInfo.text;
-      typeContent.className = `bar-content ${typeInfo.class}`;
-      typeBar.classList.add('active');
       
-      // Handle Bar 2 and Bar 3 visibility based on type
+      // Handle visibility and content based on type
       if (type === 'ready') {
+        // Ready state: Hide type bar, show only Status and Roll Result
+        typeBar.style.display = 'none';
+        statusBar.style.display = 'block';
+        modifierBar.style.display = 'block';
+        
         statusLabel.textContent = 'Status';
-        statusContent.innerHTML = '<span style="color: #9ca3af;">Awaiting Roll...</span>';
-        modifierBar.style.display = 'block';
-        modifierContent.innerHTML = '<span class="modifier-display">+0</span>';
+        statusContent.innerHTML = '<span style="color: #10b981;">Ready</span>';
+        modifierLabel.textContent = 'Roll Result';
+        modifierContent.innerHTML = '<span style="color: #9ca3af;">Awaiting Roll...</span>';
       } else if (type === 'save') {
-        statusLabel.textContent = 'Save Results';
+        // Save state: Show all three bars
+        typeBar.style.display = 'block';
+        statusBar.style.display = 'block';
         modifierBar.style.display = 'block';
+        
+        typeContent.textContent = typeInfo.text;
+        typeContent.className = `bar-content ${typeInfo.class}`;
+        typeBar.classList.add('active');
+        
+        statusLabel.textContent = 'Save Results';
+        modifierLabel.textContent = 'Difficulty Class';
         // Display DC instead of modifier
         updateDC(dc || 15);
         displaySaveResults([]);
       } else {
-        statusLabel.textContent = type === 'damage' ? 'Damage' : 'Roll Result';
+        // Other states (check, attack, damage): Show all three bars
+        typeBar.style.display = 'block';
+        statusBar.style.display = 'block';
         modifierBar.style.display = 'block';
+        
+        typeContent.textContent = typeInfo.text;
+        typeContent.className = `bar-content ${typeInfo.class}`;
+        typeBar.classList.add('active');
+        
+        statusLabel.textContent = type === 'damage' ? 'Damage' : 'Roll Result';
+        modifierLabel.textContent = 'Modifier';
         statusContent.innerHTML = '<span style="color: #9ca3af;">Awaiting Roll...</span>';
+        modifierContent.innerHTML = '<span class="modifier-display">+0</span>';
       }
       
       setTimeout(() => typeBar.classList.remove('active'), 300);
@@ -479,6 +500,20 @@
           if (command.dc !== undefined && command.dc !== null) {
             updateDC(command.dc);
           }
+        } else if (command.rollType === 'ready') {
+          // For ready state, display result in the Roll Result bar (modifier bar)
+          modifierBar.classList.add('active');
+          modifierContent.innerHTML = '';
+          const resultDiv = document.createElement('div');
+          resultDiv.className = 'roll-result';
+          
+          const number = document.createElement('div');
+          number.className = 'roll-number';
+          number.textContent = command.result;
+          resultDiv.appendChild(number);
+          
+          modifierContent.appendChild(resultDiv);
+          setTimeout(() => modifierBar.classList.remove('active'), 300);
         } else {
           displayRollResult(command.result, command.modifier);
           // Also update the modifier bar when setting result
@@ -503,12 +538,8 @@
         }
         changeSource(options);
       } else if (command.type === 'reset') {
-        typeContent.textContent = 'Ready';
-        typeContent.className = 'bar-content';
-        statusContent.innerHTML = '<span style="color: #9ca3af;">Awaiting Roll...</span>';
-        modifierContent.innerHTML = '<span class="modifier-display">+0</span>';
-        modifierBar.style.display = 'block';
-        statusLabel.textContent = 'Status';
+        // Reset to ready state
+        updateType('ready');
       }
     }
 
@@ -539,6 +570,11 @@
 
     // Auto-enable camera on load (optional - comment out if you prefer manual enable)
     // window.addEventListener('load', enableCamera);
+
+    // Initialize to ready state on page load
+    window.addEventListener('load', () => {
+      updateType('ready');
+    });
   </script>
 </body>
 </html>

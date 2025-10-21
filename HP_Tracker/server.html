@@ -301,6 +301,13 @@
         <button class="action-btn activate" id="dicecam-update-save-btn" style="margin-top: 1rem;">Update Save Results</button>
       </div>
       
+      <div id="dicecam-ready-controls" style="display: none;">
+        <label class="text-sm text-gray-300 mt-3">Special Roll Result</label>
+        <input type="number" id="dicecam-ready-result" class="input-field" placeholder="Enter roll result (e.g., 20 for nat 20)" value="">
+        
+        <button class="action-btn activate" id="dicecam-update-ready-btn" style="margin-top: 1rem;">Update Roll Result</button>
+      </div>
+      
       <div id="dicecam-roll-controls">
         <label class="text-sm text-gray-300 mt-3">Roll Result</label>
         <input type="number" id="dicecam-result" class="input-field" placeholder="Enter roll result (e.g., 15)" value="">
@@ -553,19 +560,24 @@
       
       // Show/hide controls based on type
       const saveControls = document.getElementById('dicecam-save-controls');
+      const readyControls = document.getElementById('dicecam-ready-controls');
       const rollControls = document.getElementById('dicecam-roll-controls');
       
       if (type === 'ready') {
         saveControls.style.display = 'none';
+        readyControls.style.display = 'block';
         rollControls.style.display = 'none';
+        sendDiceCamCommand({ type: 'setType', rollType: type });
       } else if (type === 'save') {
         saveControls.style.display = 'block';
+        readyControls.style.display = 'none';
         rollControls.style.display = 'none';
         // Send DC when switching to save type
         const dc = parseInt(document.getElementById('dicecam-dc').value) || 15;
         sendDiceCamCommand({ type: 'setType', rollType: type, dc: dc });
       } else {
         saveControls.style.display = 'none';
+        readyControls.style.display = 'none';
         rollControls.style.display = 'block';
         sendDiceCamCommand({ type: 'setType', rollType: type });
       }
@@ -582,6 +594,23 @@
       }
       sendDiceCamCommand({ type: 'setResult', rollType: 'save', saveResults: results, dc: dc });
       showStatus(`Dice Cam: Save results updated (DC ${dc})`, 'success');
+    }
+
+    function updateDiceCamReadyResult() {
+      const result = document.getElementById('dicecam-ready-result').value;
+      
+      if (result === '' || result === null) {
+        showStatus('Please enter a roll result', 'error');
+        return;
+      }
+      
+      sendDiceCamCommand({ 
+        type: 'setResult', 
+        rollType: 'ready',
+        result: result
+      });
+      
+      showStatus(`Dice Cam: Special Roll ${result}`, 'success');
     }
 
     function updateDiceCamRollResult() {
@@ -605,13 +634,14 @@
 
     function resetDiceCam() {
       sendDiceCamCommand({ type: 'reset' });
-      document.getElementById('dicecam-type-select').value = 'save';
+      document.getElementById('dicecam-type-select').value = 'ready';
+      document.getElementById('dicecam-ready-result').value = '';
       document.getElementById('dicecam-result').value = '';
       document.getElementById('dicecam-modifier').value = '0';
       for (let i = 0; i < 5; i++) {
         document.getElementById(`save-result-${i}`).value = 'pending';
       }
-      dicecamCurrentType = 'save';
+      dicecamCurrentType = 'ready';
       updateDiceCamType();
       showStatus('Dice Cam: Reset', 'success');
     }
@@ -843,6 +873,8 @@
     document.getElementById('dicecam-type-select').addEventListener('change', updateDiceCamType);
     
     document.getElementById('dicecam-update-save-btn').addEventListener('click', updateDiceCamSaveResults);
+    
+    document.getElementById('dicecam-update-ready-btn').addEventListener('click', updateDiceCamReadyResult);
     
     document.getElementById('dicecam-update-result-btn').addEventListener('click', updateDiceCamRollResult);
     
