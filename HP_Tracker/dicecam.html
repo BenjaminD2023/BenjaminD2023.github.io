@@ -145,6 +145,17 @@
       font-size: 1.5rem;
       color: #9ca3af;
     }
+    /* Added: total styling */
+    .roll-equals {
+      font-size: 1.5rem;
+      color: #9ca3af;
+    }
+    .roll-total {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #f59e0b;
+      text-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+    }
     
     /* Modifier Display */
     .modifier-display {
@@ -431,17 +442,33 @@
       const resultDiv = document.createElement('div');
       resultDiv.className = 'roll-result';
       
+      const resultNum = parseInt(result);
+      const modNum = parseInt(modifier || 0);
+      const total = isNaN(resultNum) ? null : resultNum + (isNaN(modNum) ? 0 : modNum);
+
       const number = document.createElement('div');
       number.className = 'roll-number';
-      number.textContent = result;
-      
+      number.textContent = isNaN(resultNum) ? '-' : resultNum;
       resultDiv.appendChild(number);
       
-      if (modifier !== undefined && modifier !== null && modifier !== 0) {
+      if (!isNaN(modNum) && modNum !== 0) {
         const modSpan = document.createElement('div');
         modSpan.className = 'roll-modifier';
-        modSpan.textContent = `${modifier >= 0 ? '+' : ''}${modifier}`;
+        modSpan.textContent = `${modNum >= 0 ? '+' : ''}${modNum}`;
         resultDiv.appendChild(modSpan);
+      }
+
+      // Added: show total when we have a valid result
+      if (total !== null) {
+        const equalsSpan = document.createElement('div');
+        equalsSpan.className = 'roll-equals';
+        equalsSpan.textContent = '=';
+        resultDiv.appendChild(equalsSpan);
+
+        const totalSpan = document.createElement('div');
+        totalSpan.className = 'roll-total';
+        totalSpan.textContent = total;
+        resultDiv.appendChild(totalSpan);
       }
       
       statusContent.appendChild(resultDiv);
@@ -525,6 +552,9 @@
       } else if (command.type === 'setModifier') {
         modifierLabel.textContent = 'Modifier';
         updateModifier(command.modifier);
+        // Clear the status bar to show "Awaiting Roll..."
+        statusBar.classList.remove('active');
+        statusContent.innerHTML = '<span style="color: #9ca3af;">Awaiting Roll...</span>';
       } else if (command.type === 'enableCamera') {
         enableCamera();
       } else if (command.type === 'disableCamera') {
