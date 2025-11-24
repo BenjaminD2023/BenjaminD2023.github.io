@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sea Dragon Adventures Character Creator v2.0</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --secondary: #2a9d8f;
+            --accent: #e9c46a;
+            --bg: #f4f7f6;
+            --text: #264653;
+            --panel: #ffffff;
+            --error: #e76f51;
+            --locked: #95a5a6;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+        
+        /* Layout */
+        .top-bar { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-wrap: wrap; gap: 10px; }
+        .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 20px; }
+        .panel { background: var(--panel); padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        
+        /* Buttons */
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: var(--secondary); color: white; }
+        .btn-outline { border: 2px solid var(--primary); color: var(--primary); background: transparent; }
+        .btn:hover { opacity: 0.9; }
+
+        /* Stats */
+        .stats-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
+        .stat-box { text-align: center; background: #eef5f9; padding: 10px; border-radius: 5px; border: 1px solid #dae1e7; }
+        .stat-box input { width: 100%; font-size: 1.5em; text-align: center; border: 1px solid var(--primary); border-radius: 4px; margin-top: 5px; box-sizing: border-box; }
+        .mod-display { font-weight: bold; font-size: 1.2em; color: var(--primary); display: block; margin-top: 5px; }
+
+        /* Skills Control Panel */
+        .skill-category { margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-left: 4px solid var(--secondary); border-radius: 0 4px 4px 0; }
+        .skill-category.locked { border-left: 4px solid var(--locked); opacity: 0.6; pointer-events: none; background: #eee; }
+        .category-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+        .limit-tracker { font-size: 0.85em; background: #fff; padding: 2px 8px; border-radius: 10px; border: 1px solid #ccc; }
+        .limit-tracker.full { background: var(--accent); color: #333; border-color: var(--accent); }
+        .skill-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #eee; position: relative; }
+        
+        /* Tooltip Logic (For the Point Buy Section) */
+        .skill-name-hover { cursor: help; border-bottom: 1px dotted #888; position: relative; }
+        .skill-name-hover:hover::after {
+            content: attr(data-desc);
+            position: absolute;
+            left: 0;
+            top: 100%;
+            width: 250px;
+            background: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            z-index: 100;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            white-space: normal;
+            line-height: 1.4;
+        }
+
+        .skill-controls button { background: var(--primary); color: white; border: none; padding: 2px 10px; border-radius: 3px; cursor: pointer; }
+        .skill-controls button:disabled { background: var(--locked); cursor: not-allowed; }
+        .skill-controls span { margin: 0 10px; font-weight: bold; display: inline-block; width: 20px; text-align: center; }
+
+        /* Character Sheet Preview */
+        #charSheetPreview { background-color: #fff; padding: 30px; border: 1px solid #ddd; font-family: 'Georgia', serif; color: #333; }
+        .sheet-paper-look {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4c494' fill-opacity='0.1'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' /%3E%3C/g%3E%3C/svg%3E");
+            border: 2px solid #c0b080;
+        }
+
+        .cs-header { border-bottom: 2px solid #5a4a42; margin-bottom: 20px; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .cs-name { font-size: 2em; font-weight: bold; color: #5a4a42; }
+        .cs-class { font-size: 1.2em; font-style: italic; }
+        
+        .cs-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+        
+        .cs-stat-block { border: 2px solid #5a4a42; border-radius: 10px; padding: 10px; text-align: center; margin-bottom: 15px; background: rgba(255,255,255,0.7); }
+        .cs-stat-val { font-size: 1.8em; font-weight: bold; line-height: 1; }
+        .cs-stat-label { font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; }
+        .cs-stat-mod { font-weight: bold; color: #8a2be2; }
+
+        .cs-vitals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
+        .cs-vital-box { border: 1px solid #5a4a42; padding: 5px; text-align: center; background: white; }
+
+        .cs-section-title { font-weight: bold; border-bottom: 1px solid #aaa; margin: 15px 0 5px 0; color: #5a4a42; text-transform: uppercase; font-size: 0.9em; }
+        .cs-list { font-size: 0.9em; line-height: 1.4; }
+        .cs-list div { margin-bottom: 8px; }
+        
+        /* New: Description in Sheet - Hidden by Default */
+        .sheet-desc { display: none; margin-left: 10px; margin-top: 2px; }
+
+        /* When printing (generating PDF), we make it visible */
+        .printing .sheet-desc { 
+            display: block; 
+            font-size: 0.85em; 
+            font-style: italic; 
+            color: #555; 
+        }
+
+        /* Trackers */
+        .tracker-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; padding: 4px; background: rgba(255,255,255,0.5); border-bottom: 1px dotted #ccc; flex-wrap: wrap; gap: 8px; }
+        .tracker-name { font-weight: bold; font-size: 0.9em; white-space: nowrap; }
+        .tracker-boxes { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+        .tracker-box { width: 14px; height: 14px; border: 1px solid #333; background: #fff; display: inline-block; border-radius: 2px; cursor: pointer; }
+        .tracker-box.checked { background: #333; }
+
+        @media (max-width: 1100px) { .container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <div>
+        <h1 style="font-size: 1.5em; margin: 0; color: var(--primary);">Sea Dragon Adventures</h1>
+    </div>
+    <div style="display:flex; gap: 10px;">
+        <button class="btn btn-outline" onclick="saveData()">💾 Save</button>
+        <button class="btn btn-outline" onclick="document.getElementById('loadInput').click()">📂 Load</button>
+        <button class="btn btn-primary" onclick="generatePDF()">📄 PDF Sheet</button>
+        <input type="file" id="loadInput" style="display: none;" onchange="loadData(this)">
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Column 1: Core Stats -->
+    <div>
+        <div class="panel">
+            <h2>1. Identity & Stats</h2>
+            <label>Character Name</label>
+            <input type="text" id="charName" placeholder="Enter Name" style="width:100%; padding:8px; margin-bottom:10px;" oninput="updateSheet()">
+            
+            <label>Starting XP</label>
+            <input type="number" id="startXP" value="10" min="0" onchange="updateApp()" style="width:100%; padding:8px; margin-bottom:15px;">
+
+            <div class="stats-container">
+                <div class="stat-box">
+                    <label>STR</label>
+                    <input type="number" id="statStr" value="10" min="1" max="30" onchange="updateApp()">
+                    <span class="mod-display" id="modStr">0</span>
+                </div>
+                <div class="stat-box">
+                    <label>INT</label>
+                    <input type="number" id="statInt" value="10" min="1" max="30" onchange="updateApp()">
+                    <span class="mod-display" id="modInt">0</span>
+                </div>
+                <div class="stat-box">
+                    <label>ATH</label>
+                    <input type="number" id="statAth" value="10" min="1" max="30" onchange="updateApp()">
+                    <span class="mod-display" id="modAth">0</span>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <button onclick="rollStats()" class="btn btn-secondary" style="width: 100%;">🎲 Roll Stats (4d6 drop lowest)</button>
+                <p id="rollMessage" style="font-size: 0.8em; color: #666; margin-top:5px; min-height: 1.2em;"></p>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>2. Class</h2>
+            <select id="classSelect" onchange="resetSkills(); updateApp()" style="width: 100%; padding: 10px;">
+                <option value="fighter">Fighter</option>
+                <option value="archer">Archer</option>
+                <option value="wizard">Wizard</option>
+                <option value="priest">Priest</option>
+                <option value="bard">Bard</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Column 2: Point Buy System -->
+    <div>
+        <div class="panel">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>3. Ability Point Buy</h2>
+                <div style="text-align: right;">
+                    <span id="xpDisplay" style="font-weight: bold; font-size: 1.2em;">0 / 10 XP</span>
+                    <div id="xpAlert" style="font-size: 0.8em; color: var(--error);"></div>
+                </div>
+            </div>
+
+            <!-- Shared Skills -->
+            <div class="skill-category" style="background: #eef; border-color: #77a;">
+                <div class="category-header">
+                    <h3>Shared Store</h3>
+                </div>
+                <div class="skill-row">
+                    <div class="skill-name-hover" data-desc="Permanently increase one ability score by 1 per purchase.">
+                        <strong>Ability Score Increase</strong> (2 XP)<br>
+                        <small>+1 to any score (Manual adjustment)</small>
+                    </div>
+                    <div class="skill-controls">
+                        <button onclick="changeSkill('shared', 'asi', -1)">-</button>
+                        <span id="sl-shared-asi">0</span>
+                        <button onclick="changeSkill('shared', 'asi', 1)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="classSkillsContainer">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Column 3: Beautified Sheet -->
+    <div>
+        <div id="charSheetPreview" class="sheet-paper-look">
+            <!-- Header -->
+            <div class="cs-header">
+                <div class="cs-name" id="sheetName">Name</div>
+                <div class="cs-class" id="sheetClass">Class</div>
+            </div>
+
+            <div class="cs-grid">
+                <!-- Left: Stats -->
+                <div>
+                    <div class="cs-stat-block">
+                        <div class="cs-stat-label">Strength</div>
+                        <div class="cs-stat-val" id="sheetStr">10</div>
+                        <div class="cs-stat-mod" id="sheetModStr">+0</div>
+                    </div>
+                    <div class="cs-stat-block">
+                        <div class="cs-stat-label">Intelligence</div>
+                        <div class="cs-stat-val" id="sheetInt">10</div>
+                        <div class="cs-stat-mod" id="sheetModInt">+0</div>
+                    </div>
+                    <div class="cs-stat-block">
+                        <div class="cs-stat-label">Athletics</div>
+                        <div class="cs-stat-val" id="sheetAth">10</div>
+                        <div class="cs-stat-mod" id="sheetModAth">+0</div>
+                    </div>
+                </div>
+
+                <!-- Right: Info -->
+                <div>
+                    <div class="cs-vitals">
+                        <div class="cs-vital-box">
+                            <div class="cs-stat-label">HP</div>
+                            <div style="font-size:1.4em; font-weight:bold;" id="sheetHP">0</div>
+                        </div>
+                        <div class="cs-vital-box">
+                            <div class="cs-stat-label">Persuasion</div>
+                            <div style="font-size:1.4em; font-weight:bold;" id="sheetPD">d6</div>
+                        </div>
+                        <div class="cs-vital-box">
+                            <div class="cs-stat-label">Init</div>
+                            <div style="font-size:1.4em; font-weight:bold;" id="sheetInit">+0</div>
+                        </div>
+                    </div>
+
+                    <div class="cs-section-title">Equipment</div>
+                    <div class="cs-list" id="sheetGear"></div>
+
+                    <div class="cs-section-title">Skills & Levels</div>
+                    <div class="cs-list" id="sheetSkills"></div>
+                    
+                    <div class="cs-section-title">Abilities & Trackers</div>
+                    <div class="cs-list" id="sheetTrackers">
+                        <!-- Dynamic Checkboxes go here -->
+                    </div>
+
+                    <div class="cs-section-title" id="spellHeader" style="display:none;">Spell Save DC</div>
+                    <div class="cs-list" id="sheetDC" style="display:none;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; text-align: right; font-size: 0.8em; color: #777;">
+                XP Spent: <span id="sheetXP">0</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- Detailed Descriptions ---
+    const skillDescriptions = {
+        "Ferocious Attack": "2 (+1/SL) times/day. Roll >16 on hit to double damage. Roll <10 hits random ally.",
+        "Second Wind": "Once per day, heal SL * 1d6 HP (Max 20) as a reaction.",
+        "Block": "Once/day/SL. Reaction with shield: Gain 1d6+STR armor. Take 1d6 dmg intended for ally. Disadvantage on ATH saves.",
+        "Great Weapon Fighting": "Unlock Greatsword (SL*1d10+STR). Attacks +3 damage. Roll 10 on dmg dice knocks target prone.",
+        "Enchanted Weapon": "Apply enchantment (Defender, Elemental, or Powerful Swing) to a weapon for 3XP.",
+        "Heroic Deed": "SL times/day. Describe a heroic action to change battlefield conditions (GM Discretion).",
+        "Zephyrus' Echo": "Reaction. Summon SL echoes with 1HP that copy your action. Enemies must pass INT check to distinguish.",
+        "Indomitable": "Once/day/SL. Force GM reroll OR make SL*2 creatures pass a check.",
+        
+        "Flexible Shots": "3+SL times/day. Add effect to arrow (Fire, Push, or Poison). Regain 2 uses on damage roll of 6.",
+        "Dash": "2+SL times/day. Reaction to avoid ranged attack. Next shot +2 dmg.",
+        "Covering Fire": "Action. Area 10x10ft. Creatures save DC 12+SL or take dmg and disadv on melee.",
+        "Enchanted Bow": "Apply enchantment (Power, Piercing, or Automation) to Longbow.",
+        "2 Additional Flexible Shots Uses": "Increases flexible shot pool by 2.",
+        "3 Additional Flexible Shots Uses": "Increases flexible shot pool by 3.",
+        "Precision Attack": "SL times/day. Double damage of all arrows in one action.",
+        "Lightning Speed": "Once/day action. For SL turns, gain ATH bonus, free flexible shots, extra arrows, and extra action.",
+        
+        "Immeral's Chaotic Metamagic": "Gain Chaos Points (3 + 2/SL). Spend to double cast, boost armor, or convert slots.",
+        "Lv 3 Spell Slot": "Unlocks Level 3 Spells.",
+        "Lv 4 Spell Slot": "Unlocks Level 4 Spells.",
+        "Lv 5 Spell Slot": "Unlocks Level 5 Spells.",
+        "Opheria's Bardic Magic": "Cast spells via performance. Restore HP equal to % of spell damage.",
+        "Arcane Capstone Spell Slot": "Unlocks powerful capstone magic slot.",
+
+        "Lay on Hands": "Once per combat round. Restore 2d4+INT HP to melee target. If action, make bonus attack.",
+        "Clerical Order (Once)": "Unlock Mass Heal (Healer), Holy Smite (Crusader), or Bulwark (Templar).",
+        "Divine Formation": "Once/day/SL. Allies in sight regain 1d6 HP (stackable).",
+        "Quick Heal": "Once/day/SL. Reaction heal ally for SL * d4+INT.",
+        "Holy Aura": "Reaction. Mark SL enemies. Dealing damage to them causes AOE explosion.",
+        "Holy Light": "Once/day/SL. All opponents -1 Armor for next round.",
+        "2 Additional Divine Formation Uses": "Increases Divine Formation pool by 2.",
+        "3 Additional Divine Formation Uses": "Increases Divine Formation pool by 3.",
+        "Additional Clerical Order (Once)": "Choose another skill from Clerical Orders.",
+        "Clerical Recovery": "Full turn action: Recover 5 expended Divine Formation uses.",
+        "Additional Clerical Order": "Unlock final Clerical Order skill.",
+
+        "Inspiration": "Once/day/SL. Allies get +INT mod to non-combat checks.",
+        "Expertise": "Add SL bonus to specific INT check type.",
+        "Professional Influencer": "Help in persuasion check. Lose own chance but add half roll to target.",
+        "Bardic School (Once)": "Unlock Battle Support (Skald), Deception (Charlatan), or Pacify (Troubador).",
+        "Loremaster": "Once/day/SL. Explain lore to GM to get answer to a question.",
+        "Skald's War Beat": "Action. Allies +SL to attacks. Allies can react to move 10ft.",
+        "Evasion": "Once/day/SL. Reaction to completely evade an attack.",
+        "Soothing Ballad": "Once/day/SL. Deduct INT mod from enemy damage. Add INT mod to ally damage.",
+        "Martial Epic": "SL times/day. Reaction INT check to buff ally attacks.",
+        "Decoy": "Create decoy with 10HP. Blinds enemies when destroyed.",
+        "Additional Bardic School (Once)": "Choose another Bardic School skill.",
+        "Additional Bardic School": "Unlock final Bardic School skill."
+    };
+
+    const classData = {
+        fighter: {
+            name: "Fighter",
+            hd: 10,
+            hdStr: "1d10",
+            statMod: "str",
+            persuasion: "d6",
+            armor: "Scale Mail (2), Shield (2)",
+            weapons: "Longsword (1d8 + STR)",
+            skills: {
+                basic: { cost: 1, limit: 5, req: 0, list: ["Ferocious Attack", "Second Wind"] },
+                inter: { cost: 3, limit: 5, req: 3, list: ["Block", "Great Weapon Fighting"] },
+                adv:   { cost: 5, limit: 5, req: 4, list: ["Enchanted Weapon", "Heroic Deed"] }, 
+                cap:   { cost: 10, limit: 99, req: 5, list: ["Zephyrus' Echo", "Indomitable"] }
+            }
+        },
+        archer: {
+            name: "Archer",
+            hd: 8,
+            hdStr: "1d8",
+            statMod: "ath",
+            persuasion: "d6",
+            armor: "Leather Armor (1)",
+            weapons: "Longbow (1d6 + ATH), Dagger (1d4 + ATH)",
+            skills: {
+                basic: { cost: 1, limit: 5, req: 0, list: ["Flexible Shots", "Dash", "Covering Fire"] },
+                inter: { cost: 3, limit: 5, req: 3, list: ["Enchanted Bow", "2 Additional Flexible Shots Uses", "Precision Attack"] },
+                adv:   { cost: 5, limit: 5, req: 4, list: ["3 Additional Flexible Shots Uses"] },
+                cap:   { cost: 10, limit: 99, req: 5, list: ["Lightning Speed"] }
+            }
+        },
+        wizard: {
+            name: "Wizard",
+            hd: 6,
+            hdStr: "1d6",
+            statMod: "int",
+            persuasion: "d10",
+            armor: "None (Robes)",
+            weapons: "Staff (2 dmg)",
+            skills: {
+                basic: { cost: 1, limit: 5, req: 0, list: ["Immeral's Chaotic Metamagic", "Lv 3 Spell Slot"] },
+                inter: { cost: 3, limit: 5, req: 3, list: ["Lv 4 Spell Slot", "Opheria's Bardic Magic"] },
+                adv:   { cost: 5, limit: 5, req: 4, list: ["Lv 5 Spell Slot"] },
+                cap:   { cost: 10, limit: 99, req: 5, list: ["Arcane Capstone Spell Slot"] }
+            }
+        },
+        priest: {
+            name: "Priest",
+            hd: 8,
+            hdStr: "1d8",
+            statMod: "int",
+            persuasion: "d8",
+            armor: "Leather Armor (1), Shield (1)",
+            weapons: "Mace (1d6 + STR)",
+            skills: {
+                basic: { cost: 1, limit: 5, req: 0, list: ["Lay on Hands", "Clerical Order (Once)", "Divine Formation"] },
+                inter: { cost: 3, limit: 5, req: 3, list: ["Quick Heal", "Holy Aura", "Holy Light", "2 Additional Divine Formation Uses"] },
+                adv:   { cost: 5, limit: 5, req: 4, list: ["3 Additional Divine Formation Uses", "Additional Clerical Order (Once)", "Clerical Recovery"] },
+                cap:   { cost: 10, limit: 99, req: 5, list: ["Additional Clerical Order"] }
+            }
+        },
+        bard: {
+            name: "Bard",
+            hd: 6,
+            hdStr: "1d6",
+            statMod: "int",
+            persuasion: "d12",
+            armor: "Leather Armor (1)",
+            weapons: "Shortsword (1d6 + STR), Dagger (1d4 + ATH)",
+            skills: {
+                basic: { cost: 1, limit: 5, req: 0, list: ["Inspiration", "Expertise", "Professional Influencer", "Bardic School (Once)", "Lv 3 Spell Slot"] },
+                inter: { cost: 3, limit: 5, req: 3, list: ["Lv 4 Spell Slot", "Loremaster", "Skald's War Beat", "Evasion"] },
+                adv:   { cost: 5, limit: 5, req: 4, list: ["Lv 5 Spell Slot", "Soothing Ballad", "Martial Epic", "Decoy", "Additional Bardic School (Once)"] },
+                cap:   { cost: 10, limit: 99, req: 5, list: ["Additional Bardic School"] }
+            }
+        }
+    };
+
+    let userSkills = {};
+
+    function getModifier(score) {
+        if (score <= 1) return -5;
+        if (score <= 3) return -4;
+        if (score <= 5) return -3;
+        if (score <= 7) return -2;
+        if (score <= 9) return -1;
+        if (score <= 11) return 0;
+        if (score <= 13) return 1;
+        if (score <= 15) return 2;
+        if (score <= 17) return 3;
+        if (score <= 19) return 4;
+        if (score <= 21) return 5;
+        if (score <= 23) return 6;
+        if (score <= 25) return 7;
+        if (score <= 27) return 8;
+        if (score <= 29) return 9;
+        return 10;
+    }
+
+    function rollDie(sides) { return Math.floor(Math.random() * sides) + 1; }
+
+    function rollStats() {
+        const stats = ['statStr', 'statInt', 'statAth'];
+        let values = [];
+        for (let i = 0; i < 3; i++) {
+            let rolls = [rollDie(6), rollDie(6), rollDie(6), rollDie(6)];
+            rolls.sort((a, b) => a - b);
+            values.push(rolls[1] + rolls[2] + rolls[3]);
+        }
+        if (values[0] < 16 && values[1] < 16 && values[2] < 16) {
+            document.getElementById('rollMessage').innerText = `Rolled ${values.join(', ')} (All <16). Rerolling...`;
+            setTimeout(rollStats, 500);
+            return;
+        }
+        document.getElementById('statStr').value = values[0];
+        document.getElementById('statInt').value = values[1];
+        document.getElementById('statAth').value = values[2];
+        document.getElementById('rollMessage').innerText = `Rolled: ${values.join(', ')}`;
+        updateApp();
+    }
+
+    function init() {
+        resetSkills();
+        updateApp();
+    }
+
+    function resetSkills() {
+        userSkills = { shared: { asi: 0 } };
+        const cls = document.getElementById('classSelect').value;
+        const data = classData[cls].skills;
+        ['basic', 'inter', 'adv', 'cap'].forEach(tier => {
+            data[tier].list.forEach(skill => {
+                userSkills[skill] = 0;
+            });
+        });
+        renderSkillList();
+    }
+
+    function getTierTotal(tierKey) {
+        const cls = document.getElementById('classSelect').value;
+        const data = classData[cls].skills[tierKey];
+        let total = 0;
+        data.list.forEach(skill => {
+            total += (userSkills[skill] || 0);
+        });
+        return total;
+    }
+
+    function renderSkillList() {
+        const cls = document.getElementById('classSelect').value;
+        const data = classData[cls].skills;
+        const container = document.getElementById('classSkillsContainer');
+        container.innerHTML = '';
+
+        const tiers = [
+            { id: 'basic', label: 'Basic', cost: 1, prev: null },
+            { id: 'inter', label: 'Intermediate', cost: 3, prev: 'basic' },
+            { id: 'adv', label: 'Advanced', cost: 5, prev: 'inter' },
+            { id: 'cap', label: 'Capstone', cost: 10, prev: 'adv' }
+        ];
+
+        tiers.forEach(tier => {
+            const tierData = data[tier.id];
+            const currentTotal = getTierTotal(tier.id);
+            const limit = tierData.limit;
+            const req = tierData.req;
+            
+            let isLocked = false;
+            let lockMsg = "";
+            if (tier.prev) {
+                const prevTotal = getTierTotal(tier.prev);
+                if (prevTotal < req) {
+                    isLocked = true;
+                    lockMsg = `(Need ${req} SL in ${tiers.find(t=>t.id===tier.prev).label})`;
+                }
+            }
+
+            const section = document.createElement('div');
+            section.className = `skill-category ${isLocked ? 'locked' : ''}`;
+            const limitText = limit > 90 ? "∞" : limit;
+            
+            section.innerHTML = `
+                <div class="category-header">
+                    <div>
+                        <h3>${tier.label} Skills <span style="font-size:0.8em; font-weight:normal;">(${tierData.cost} XP/SL)</span></h3>
+                        <small style="color:${isLocked ? 'red' : '#666'}">${isLocked ? lockMsg : ''}</small>
+                    </div>
+                    <div class="limit-tracker ${currentTotal >= limit ? 'full' : ''}">
+                        ${currentTotal} / ${limitText} SL Used
+                    </div>
+                </div>
+            `;
+            
+            if (!isLocked) {
+                tierData.list.forEach(skillName => {
+                    const sl = userSkills[skillName] || 0;
+                    const canAdd = (limit > 90 || currentTotal < limit);
+                    const desc = skillDescriptions[skillName] || "No description available.";
+                    const safeName = skillName.replace(/'/g, "\\'");
+                    
+                    const row = document.createElement('div');
+                    row.className = 'skill-row';
+                    row.innerHTML = `
+                        <div class="skill-name-hover" data-desc="${desc}">${skillName}</div>
+                        <div class="skill-controls">
+                            <button onclick="changeSkill('${tier.id}', '${safeName}', -1)">-</button>
+                            <span id="sl-${skillName.replace(/\W/g,'')}">${sl}</span>
+                            <button onclick="changeSkill('${tier.id}', '${safeName}', 1)" ${canAdd ? '' : 'disabled'}>+</button>
+                        </div>
+                    `;
+                    section.appendChild(row);
+                });
+            }
+            container.appendChild(section);
+        });
+    }
+
+    function changeSkill(tierId, skillName, change) {
+        if (tierId === 'shared') {
+            const current = userSkills.shared.asi;
+            if (current + change < 0) return;
+            userSkills.shared.asi += change;
+            document.getElementById('sl-shared-asi').innerText = userSkills.shared.asi;
+            updateApp();
+            return;
+        }
+
+        const cls = document.getElementById('classSelect').value;
+        const tierData = classData[cls].skills[tierId];
+        const currentTierTotal = getTierTotal(tierId);
+        
+        if (change > 0) {
+            if (tierData.limit <= 20 && currentTierTotal >= tierData.limit) return;
+        }
+        
+        if (change < 0) {
+            if ((userSkills[skillName] || 0) <= 0) return;
+            // UP Logic Check
+            const tiers = ['basic', 'inter', 'adv', 'cap'];
+            const myIndex = tiers.indexOf(tierId);
+            if (myIndex < 3) {
+                const nextTier = tiers[myIndex + 1];
+                const nextTotal = getTierTotal(nextTier);
+                if (nextTotal > 0) {
+                    const nextReq = classData[cls].skills[nextTier].req;
+                    if (currentTierTotal - 1 < nextReq) {
+                        alert(`Cannot reduce this tier below ${nextReq} SL while you have higher tier skills.`);
+                        return;
+                    }
+                }
+            }
+        }
+
+        userSkills[skillName] += change;
+        updateApp();
+        renderSkillList();
+    }
+
+    function updateApp() {
+        const str = parseInt(document.getElementById('statStr').value) || 10;
+        const int = parseInt(document.getElementById('statInt').value) || 10;
+        const ath = parseInt(document.getElementById('statAth').value) || 10;
+        
+        const modStr = getModifier(str);
+        const modInt = getModifier(int);
+        const modAth = getModifier(ath);
+
+        document.getElementById('modStr').innerText = (modStr >= 0 ? "+" : "") + modStr;
+        document.getElementById('modInt').innerText = (modInt >= 0 ? "+" : "") + modInt;
+        document.getElementById('modAth').innerText = (modAth >= 0 ? "+" : "") + modAth;
+
+        const startXP = parseInt(document.getElementById('startXP').value) || 0;
+        let spentXP = (userSkills.shared.asi * 2);
+
+        const cls = document.getElementById('classSelect').value;
+        const data = classData[cls].skills;
+
+        ['basic', 'inter', 'adv', 'cap'].forEach(t => {
+            spentXP += getTierTotal(t) * data[t].cost;
+        });
+
+        document.getElementById('xpDisplay').innerText = `${spentXP} / ${startXP} XP`;
+        const alertBox = document.getElementById('xpAlert');
+        alertBox.innerText = spentXP > startXP ? "⚠️ Over Budget!" : "";
+
+        updateSheet(modStr, modInt, modAth, spentXP);
+    }
+
+    function updateSheet(mStr, mInt, mAth, spentXP) {
+        if (mStr === undefined) return;
+        
+        const name = document.getElementById('charName').value || "Unnamed Hero";
+        const clsKey = document.getElementById('classSelect').value;
+        const clsData = classData[clsKey];
+
+        document.getElementById('sheetName').innerText = name;
+        document.getElementById('sheetClass').innerText = clsData.name;
+        document.getElementById('sheetXP').innerText = `${spentXP} XP`;
+
+        document.getElementById('sheetStr').innerText = document.getElementById('statStr').value;
+        document.getElementById('sheetModStr').innerText = (mStr>=0?"+":"")+mStr;
+        document.getElementById('sheetInt').innerText = document.getElementById('statInt').value;
+        document.getElementById('sheetModInt').innerText = (mInt>=0?"+":"")+mInt;
+        document.getElementById('sheetAth').innerText = document.getElementById('statAth').value;
+        document.getElementById('sheetModAth').innerText = (mAth>=0?"+":"")+mAth;
+
+        const startXP = parseInt(document.getElementById('startXP').value) || 0;
+        const extraDice = Math.floor(startXP / 3);
+        let hpMod = 0;
+        if(clsData.statMod === 'str') hpMod = mStr;
+        if(clsData.statMod === 'int') hpMod = mInt;
+        if(clsData.statMod === 'ath') hpMod = mAth;
+        
+        const baseHP = clsData.hd + hpMod;
+        const avgDie = (clsData.hd / 2) + 0.5;
+        const extraHP = Math.floor(extraDice * avgDie);
+        let totalHP = baseHP + extraHP;
+        if (totalHP < 1) totalHP = 1;
+
+        document.getElementById('sheetHP').innerText = totalHP;
+        document.getElementById('sheetPD').innerText = clsData.persuasion;
+        document.getElementById('sheetInit').innerText = (mAth>=0?"+":"")+mAth;
+
+        document.getElementById('sheetGear').innerHTML = `
+            <div><strong>Armor:</strong> ${clsData.armor}</div>
+            <div><strong>Weapon:</strong> ${clsData.weapons}</div>
+        `;
+
+        let skillsHTML = "";
+        if (userSkills.shared.asi > 0) skillsHTML += `<div>• Ability Score Increase (+${userSkills.shared.asi})</div>`;
+        
+        Object.keys(userSkills).forEach(k => {
+            if (k !== 'shared' && userSkills[k] > 0) {
+                const desc = skillDescriptions[k] || "";
+                skillsHTML += `
+                    <div>
+                        <strong>• ${k}</strong> <span style='color:#666'>(SL ${userSkills[k]})</span>
+                        <span class="sheet-desc">${desc}</span>
+                    </div>`;
+            }
+        });
+        document.getElementById('sheetSkills').innerHTML = skillsHTML || "<em>No skills learned.</em>";
+
+        // Spell DC Header Check
+        const dcDiv = document.getElementById('sheetDC');
+        const dcHead = document.getElementById('spellHeader');
+        if (["Wizard", "Priest", "Bard"].includes(clsData.name)) {
+            let maxSlot = 0;
+            if (userSkills["Lv 5 Spell Slot"] > 0) maxSlot = 5;
+            else if (userSkills["Lv 4 Spell Slot"] > 0) maxSlot = 4;
+            else if (userSkills["Lv 3 Spell Slot"] > 0) maxSlot = 3;
+            if (maxSlot === 0) maxSlot = 1; 
+
+            const dc = 10 + mInt + maxSlot;
+            dcDiv.innerText = dc;
+            dcDiv.style.display = "block";
+            dcHead.style.display = "block";
+        } else {
+            dcDiv.style.display = "none";
+            dcHead.style.display = "none";
+        }
+
+        generateTrackers(clsKey, mStr, mInt, mAth);
+    }
+
+    function generateTrackers(clsKey, mStr, mInt, mAth) {
+        const container = document.getElementById('sheetTrackers');
+        container.innerHTML = '';
+        
+        const addTracker = (name, max) => {
+            if (max <= 0) return;
+            const row = document.createElement('div');
+            row.className = 'tracker-row';
+            let boxes = '';
+            for(let i=0; i<max; i++) boxes += `<span class="tracker-box" onclick="this.classList.toggle('checked')"></span>`;
+            row.innerHTML = `<span class="tracker-name">${name}</span> <span class="tracker-boxes">${boxes}</span>`;
+            container.appendChild(row);
+        };
+
+        // --- Class Specific Resource Logic ---
+        
+        if (clsKey === 'fighter') {
+            const ferociousSL = userSkills['Ferocious Attack'] || 0;
+            if (ferociousSL > 0) addTracker('Ferocious Attack (Daily)', 2 + ferociousSL);
+            
+            const windSL = userSkills['Second Wind'] || 0;
+            if (windSL > 0) addTracker('Second Wind (Daily)', 1); 
+            
+            const blockSL = userSkills['Block'] || 0;
+            if (blockSL > 0) addTracker('Block (Daily)', blockSL);
+            
+            const heroicSL = userSkills['Heroic Deed'] || 0;
+            if (heroicSL > 0) addTracker('Heroic Deed (Daily)', heroicSL);
+
+            const echoSL = userSkills["Zephyrus' Echo"] || 0;
+            if (echoSL > 0) addTracker("Zephyrus' Echo (Uses)", echoSL); 
+        }
+
+        if (clsKey === 'archer') {
+            const flexSL = userSkills['Flexible Shots'] || 0;
+            const addFlex2SL = userSkills['2 Additional Flexible Shots Uses'] || 0;
+            const addFlex3SL = userSkills['3 Additional Flexible Shots Uses'] || 0;
+            
+            if (flexSL > 0) {
+                let totalFlex = 3 + flexSL; 
+                totalFlex += (addFlex2SL * 2); 
+                totalFlex += (addFlex3SL * 3);
+                addTracker('Flexible Shots', totalFlex);
+            }
+
+            const dashSL = userSkills['Dash'] || 0;
+            if (dashSL > 0) addTracker('Dash (Daily)', 2 + dashSL);
+
+            const precSL = userSkills['Precision Attack'] || 0;
+            if (precSL > 0) addTracker('Precision Attack (Daily)', precSL);
+
+            const lightSL = userSkills['Lightning Speed'] || 0;
+            if (lightSL > 0) addTracker('Lightning Speed (Daily)', 1);
+        }
+
+        if (clsKey === 'wizard') {
+            const metaSL = userSkills["Immeral's Chaotic Metamagic"] || 0;
+            if (metaSL > 0) {
+                addTracker('Chaos Points (Daily)', 3 + (2 * metaSL));
+            }
+        }
+
+        if (clsKey === 'priest') {
+            // New: Lay on Hands (1/Combat Round)
+            const lohSL = userSkills['Lay on Hands'] || 0;
+            if (lohSL > 0) addTracker('Lay on Hands (Per Combat)', 1);
+
+            // New: Clerical Order Ability (Daily)
+            const orderSL = userSkills['Clerical Order (Once)'] || 0;
+            if (orderSL > 0) addTracker('Clerical Order: Mass Heal (Daily)', 1);
+
+            const divSL = userSkills['Divine Formation'] || 0;
+            const addDiv2SL = userSkills['2 Additional Divine Formation Uses'] || 0;
+            const addDiv3SL = userSkills['3 Additional Divine Formation Uses'] || 0;
+
+            if (divSL > 0) {
+                let totalDiv = divSL;
+                totalDiv += (addDiv2SL * 2); 
+                totalDiv += (addDiv3SL * 3); 
+                addTracker('Divine Formation (Daily)', totalDiv);
+            }
+
+            const healSL = userSkills['Quick Heal'] || 0;
+            if (healSL > 0) addTracker('Quick Heal (Daily)', healSL);
+            
+            const holyLightSL = userSkills['Holy Light'] || 0;
+            if (holyLightSL > 0) addTracker('Holy Light (Daily)', holyLightSL);
+        }
+        
+        if (clsKey === 'bard') {
+            // New: Bardic School (Daily) - Battle Support
+            const schoolSL = userSkills['Bardic School (Once)'] || 0;
+            if (schoolSL > 0) addTracker('Bardic School: Battle Support (Daily)', 1);
+
+            const inspSL = userSkills['Inspiration'] || 0;
+            if (inspSL > 0) addTracker('Inspiration (Daily)', inspSL); 
+            
+            const loreSL = userSkills['Loremaster'] || 0;
+            if (loreSL > 0) addTracker('Loremaster (Daily)', loreSL);
+
+            const soothSL = userSkills['Soothing Ballad'] || 0;
+            if (soothSL > 0) addTracker('Soothing Ballad (Daily)', soothSL);
+            
+            const decoySL = userSkills['Decoy'] || 0;
+            if (decoySL > 0) addTracker('Decoy (Daily)', mAth + decoySL);
+        }
+
+        // --- Spell Slots (Wizard, Priest, Bard) ---
+        if (["Wizard", "Priest", "Bard"].includes(classData[clsKey].name)) {
+            // Base Slots
+            addTracker('Level 1 Spell Slots', 3);
+            addTracker('Level 2 Spell Slots', 3);
+
+            // Unlocked Slots
+            if ((userSkills["Lv 3 Spell Slot"] || 0) > 0) addTracker('Level 3 Spell Slots', 2);
+            if ((userSkills["Lv 4 Spell Slot"] || 0) > 0) addTracker('Level 4 Spell Slots', 2);
+            if ((userSkills["Lv 5 Spell Slot"] || 0) > 0) addTracker('Level 5 Spell Slots', 1);
+            if ((userSkills["Arcane Capstone Spell Slot"] || 0) > 0) addTracker('Capstone Spell Slots', 1);
+        }
+    }
+
+    // --- Save/Load Features ---
+
+    function generatePDF() {
+        const element = document.getElementById('charSheetPreview');
+        // Add specific class to reveal descriptions for PDF generation
+        element.classList.add('printing');
+        
+        const opt = {
+            margin:       0.3,
+            filename:     `${document.getElementById('charName').value || 'character'}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+        
+        html2pdf().set(opt).from(element).save().then(() => {
+            // Remove class to hide descriptions again on screen
+            element.classList.remove('printing');
+        });
+    }
+
+    function saveData() {
+        const data = {
+            name: document.getElementById('charName').value,
+            xp: document.getElementById('startXP').value,
+            class: document.getElementById('classSelect').value,
+            stats: {
+                str: document.getElementById('statStr').value,
+                int: document.getElementById('statInt').value,
+                ath: document.getElementById('statAth').value
+            },
+            skills: userSkills
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", (data.name || "character") + "_save.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    }
+
+    function loadData(input) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                document.getElementById('charName').value = data.name || "";
+                document.getElementById('startXP').value = data.xp || 10;
+                document.getElementById('classSelect').value = data.class || "fighter";
+                
+                document.getElementById('statStr').value = data.stats.str;
+                document.getElementById('statInt').value = data.stats.int;
+                document.getElementById('statAth').value = data.stats.ath;
+
+                document.getElementById('classSelect').onchange(); 
+                userSkills = data.skills;
+                updateApp();
+                renderSkillList(); 
+                alert("Character loaded!");
+            } catch (err) {
+                alert("Error parsing file.");
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    init();
+</script>
+
+</body>
+</html>
