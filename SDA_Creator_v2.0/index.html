@@ -158,6 +158,15 @@
                     <span class="mod-display" id="modAth">0</span>
                 </div>
             </div>
+            <!-- Assignment UI (shown after rolling) -->
+            <div id="assignContainer" style="margin-top:10px; display:none; text-align:center;">
+                <div style="font-size:0.9em; color:#444; margin-bottom:6px;">Assign rolled values to stats.</div>
+                <div id="assignRows"></div>
+                <div style="margin-top:8px; display:flex; gap:8px; justify-content:center;">
+                    <button class="btn btn-outline" onclick="confirmAssignments()">Confirm</button>
+                    <button class="btn" onclick="clearRollAssignments()">Clear Roll</button>
+                </div>
+            </div>
             <div style="text-align: center;">
                 <button onclick="rollStats()" class="btn btn-secondary" style="width: 100%;">🎲 Roll Stats (4d6 drop lowest)</button>
                 <p id="rollMessage" style="font-size: 0.8em; color: #666; margin-top:5px; min-height: 1.2em;"></p>
@@ -449,16 +458,150 @@
             setTimeout(rollStats, 500);
             return;
         }
-        document.getElementById('statStr').value = values[0];
-        document.getElementById('statInt').value = values[1];
-        document.getElementById('statAth').value = values[2];
-        document.getElementById('rollMessage').innerText = `Rolled: ${values.join(', ')}`;
+        // Store the rolled values and show the assignment UI
+        window.lastRolls = values.slice();
+        // mapping: statId -> index in lastRolls or null
+        window.assignedMapping = { statStr: null, statInt: null, statAth: null };
+        document.getElementById('rollMessage').innerText = `Rolled: ${values.join(', ')} — assign them below.`;
+        buildAssignUI();
+    }
+
+    // Build the assign UI after rolling
+    function buildAssignUI() {
+        const container = document.getElementById('assignContainer');
+        const rows = document.getElementById('assignRows');
+        rows.innerHTML = '';
+        if (!window.lastRolls || !Array.isArray(window.lastRolls)) {
+            container.style.display = 'none';
+            return;
+        }
+        container.style.display = 'block';
+
+        // Center the rows
+        rows.style.display = 'flex';
+        rows.style.gap = '20px';
+        rows.style.justifyContent = 'center';
+        rows.style.marginBottom = '10px';
+
+        const stats = [ {id: 'statStr', label: 'STR'}, {id: 'statInt', label: 'INT'}, {id: 'statAth', label: 'ATH'} ];
+
+        // Create a card for each rolled value
+        window.lastRolls.forEach((val, idx) => {
+            const card = document.createElement('div');
+            card.style.background = '#fff';
+            card.style.border = '1px solid #ccc';
+            card.style.borderRadius = '6px';
+            card.style.padding = '10px';
+            card.style.textAlign = 'center';
+            card.style.minWidth = '80px';
+            card.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+
+            // The Value
+            const valDiv = document.createElement('div');
+            valDiv.innerText = val;
+            valDiv.style.fontSize = '1.6em';
+            valDiv.style.fontWeight = 'bold';
+            valDiv.style.color = 'var(--primary)';
+            valDiv.style.marginBottom = '8px';
+            card.appendChild(valDiv);
+
+            // The Buttons (STR, INT, ATH)
+            const btnRow = document.createElement('div');
+            btnRow.style.display = 'flex';
+            btnRow.style.gap = '4px';
+            btnRow.style.justifyContent = 'center';
+
+            stats.forEach(s => {
+                const btn = document.createElement('button');
+                btn.innerText = s.label;
+                btn.style.fontSize = '0.7em';
+                btn.style.padding = '4px 6px';
+                btn.style.cursor = 'pointer';
+                btn.style.border = '1px solid var(--primary)';
+                btn.style.borderRadius = '4px';
+                btn.style.background = '#fff';
+                btn.style.color = 'var(--primary)';
+                btn.style.fontWeight = 'bold';
+
+                // Highlight if assigned
+                if (window.assignedMapping[s.id] === idx) {
+                    btn.style.background = 'var(--primary)';
+                    btn.style.color = '#fff';
+                }
+
+                btn.onclick = () => assignValueToStat(s.id, idx);
+                btnRow.appendChild(btn);
+            });
+            card.appendChild(btnRow);
+            rows.appendChild(card);
+        });
+    }
+
+    function assignValueToStat(statId, idx) {
+        if (!window.lastRolls) return;
+
+        // If this value is assigned to another stat, free it
+        const other = Object.keys(window.assignedMapping).find(k => window.assignedMapping[k] === idx);
+        if (other && other !== statId) {
+            window.assignedMapping[other] = null;
+        }
+
+        // If this stat already had a different assignment, free previous index
+        const prev = window.assignedMapping[statId];
+        if (prev === idx) {
+            // clicking same value will unassign
+            window.assignedMapping[statId] = null;
+            document.getElementById(statId).value = '';
+        } else {
+            window.assignedMapping[statId] = idx;
+            document.getElementById(statId).value = window.lastRolls[idx];
+        }
+
+        // If user manually edits the input afterwards, we'll clear mapping in that input's handler
         updateApp();
+        buildAssignUI();
+    }
+
+    function clearAssignment(statId) {
+        if (!window.assignedMapping) return;
+        const prev = window.assignedMapping[statId];
+        if (prev !== null) {
+            window.assignedMapping[statId] = null;
+            document.getElementById(statId).value = '';
+            updateApp();
+            buildAssignUI();
+        }
+    }
+
+    function confirmAssignments() {
+        // finalize: keep values, hide assign UI but don't prevent manual changes
+        document.getElementById('assignContainer').style.display = 'none';
+        document.getElementById('rollMessage').innerText = 'Assigned rolls applied.';
+        // Keep lastRolls intact in case user clears later
+    }
+
+    function clearRollAssignments() {
+        window.lastRolls = null;
+        window.assignedMapping = { statStr: null, statInt: null, statAth: null };
+        document.getElementById('assignContainer').style.display = 'none';
+        document.getElementById('rollMessage').innerText = '';
+        buildAssignUI();
     }
 
     function init() {
         resetSkills();
         updateApp();
+        // If user manually edits a stat input, clear any automatic assignment mapping for that stat
+        ['statStr','statInt','statAth'].forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('input', () => {
+                if (window.assignedMapping && window.assignedMapping[id] !== null) {
+                    window.assignedMapping[id] = null;
+                    buildAssignUI();
+                }
+            });
+        });
     }
 
     function resetSkills() {
