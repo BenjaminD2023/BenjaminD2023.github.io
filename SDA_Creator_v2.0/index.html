@@ -951,16 +951,17 @@
         }
 
         // --- Spell Slots (Wizard, Priest, Bard) ---
-        if (["Wizard", "Priest", "Bard"].includes(classData[clsKey].name)) {
-            // Base Slots
-            addTracker('Level 1 Spell Slots', 3);
-            addTracker('Level 2 Spell Slots', 3);
-
+        if (["Wizard", "Bard"].includes(classData[clsKey].name)) {
+            if (["Wizard"].includes(classData[clsKey].name)) {
+                // Base Slots
+                addTracker('Level 1 Spell Slots', 6);
+                addTracker('Level 2 Spell Slots', 5);
+            }
             // Unlocked Slots
-            if ((userSkills["Lv 3 Spell Slot"] || 0) > 0) addTracker('Level 3 Spell Slots', 2);
-            if ((userSkills["Lv 4 Spell Slot"] || 0) > 0) addTracker('Level 4 Spell Slots', 2);
-            if ((userSkills["Lv 5 Spell Slot"] || 0) > 0) addTracker('Level 5 Spell Slots', 1);
-            if ((userSkills["Arcane Capstone Spell Slot"] || 0) > 0) addTracker('Capstone Spell Slots', 1);
+            if ((userSkills["Lv 3 Spell Slot"] || 0) > 0) addTracker('Level 3 Spell Slots', (userSkills["Lv 3 Spell Slot"] || 0));
+            if ((userSkills["Lv 4 Spell Slot"] || 0) > 0) addTracker('Level 4 Spell Slots', (userSkills["Lv 4 Spell Slot"] || 0));
+            if ((userSkills["Lv 5 Spell Slot"] || 0) > 0) addTracker('Level 5 Spell Slots', (userSkills["Lv 5 Spell Slot"] || 0));
+            if ((userSkills["Arcane Capstone Spell Slot"] || 0) > 0) addTracker('Arcane Capstone Spell Slots', (userSkills["Arcane Capstone Spell Slot"] || 0));
         }
     }
 
