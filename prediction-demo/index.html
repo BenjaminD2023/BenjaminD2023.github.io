@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premier League Odds Prediction - AI Powered Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚽ Premier League Odds Prediction</h1>
+            <p class="subtitle">AI-Powered Moneyline Odds Analysis Demo</p>
+        </header>
+
+        <div id="sampleDataBanner" class="sample-banner">
+            📚 Displaying curated sample fixtures, statistics, and odds from October 2022 for demo purposes.
+        </div>
+
+        <section class="controls">
+            <button id="loadFixturesBtn" class="btn btn-primary">Load Sample Fixtures</button>
+            <div class="info-box">
+                <p><strong>How it works:</strong></p>
+                <ol>
+                    <li>Load sample Premier League fixtures from October 2022</li>
+                    <li>Select a match to analyze</li>
+                    <li>View AI-generated odds predictions based on team statistics</li>
+                    <li>Compare AI predictions with actual betting odds</li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="fixtures-section" id="fixturesSection" style="display: none;">
+            <h2>Sample Fixtures (October 2022)</h2>
+            <div id="fixturesContainer" class="fixtures-container">
+                <!-- Fixtures will be loaded here -->
+            </div>
+        </section>
+
+        <section class="prediction-section" id="predictionSection" style="display: none;">
+            <h2>Match Analysis</h2>
+            <div id="matchInfo" class="match-info">
+                <!-- Match information will be displayed here -->
+            </div>
+
+            <div class="prediction-container">
+                <div class="prediction-box">
+                    <h3>🤖 AI Moneyline Prediction</h3>
+                    <div id="aiPrediction" class="prediction-content">
+                        <button id="generatePredictionBtn" class="btn btn-success">Generate AI Moneyline</button>
+                    </div>
+                </div>
+
+                <div class="prediction-box">
+                    <h3>📊 Actual Moneyline Odds</h3>
+                    <div id="actualOdds" class="prediction-content">
+                        <p class="placeholder">Load moneyline odds from bookmakers</p>
+                        <button id="loadOddsBtn" class="btn btn-secondary">Load Actual Moneyline Odds</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="comparisonSection" class="comparison-section" style="display: none;">
+                <h3>📈 Accuracy Comparison</h3>
+                <div id="comparisonResults" class="comparison-results">
+                    <!-- Comparison results will be displayed here -->
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Built with ❤️ - Demo Version with Sample Data from October 2022</p>
+            <p class="api-info">
+                This is a demonstration showing how AI can predict betting odds based on team statistics.
+            </p>
+        </footer>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
