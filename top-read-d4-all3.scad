@@ -13,9 +13,9 @@ tip_margin = 9.0;
 die_height = die_radius * sqrt(2); 
 face_apothem = die_radius / 3;          // In a regular tetrahedron each side face centroid is R/3 from center
 face_center_height = die_height / 3;    // Face centroids sit one-third of the way up from the base
-tilt_angle = acos(1/3);                 // Angle between a face normal and the vertical axis of a tetrahedron
+tilt_angle = acos(1/3);                 // Angle between a face normal and the vertical axis of a tetrahedron (~70.53°)
 
-// The distance from face center to vertex (matches die_radius for this equilateral layout)
+// The distance from a face centroid to any vertex (equal to die_radius for each equilateral face)
 face_radius = die_radius; 
 
 // --- Module: Face Numbers (3 numbers per face) ---
@@ -41,7 +41,7 @@ difference() {
 
     // 2. The Side Faces (Loop to apply to all 3 sides)
     for (i = [0 : 2]) {
-        face_angle = 180 - (i * 120);     // Centers side faces at 180, 60, -60 around Z
+        face_angle = 180 - (i * 120);     // Centers side faces at 180, 60, 300(-60) around Z
         rotate([0, 0, face_angle])   
         translate([face_apothem, 0, face_center_height]) 
         rotate([0, tilt_angle, 0]) 
