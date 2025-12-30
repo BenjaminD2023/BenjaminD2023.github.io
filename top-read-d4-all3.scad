@@ -1,7 +1,7 @@
 // --- Printable Top-Read D4 (All 3s) ---
 
 // --- Settings ---
-die_radius = 20;       // Size of the die
+die_radius = 20;       // Distance from center to a base vertex (equilateral triangle circumradius)
 font_size = 6;         // Size of the number
 text_depth = 1.2;      // How deep to carve
 
@@ -10,9 +10,9 @@ text_depth = 1.2;      // How deep to carve
 tip_margin = 9.0;      
 
 // --- Geometry Calculations ---
-die_height = die_radius * sqrt(2); 
-face_apothem = die_radius / 3;          // Radial distance from center to a side-face centroid (R/3 for a tetrahedron)
-face_center_height = die_height / 3;    // Face centroids sit one-third of the way up from the base
+die_height = die_radius * sqrt(2);      // Regular tetrahedron height when base circumradius is die_radius
+face_centroid_radius = die_radius / 3;  // Radial distance from center to a side-face centroid (R/3 for this layout)
+face_center_height = die_height / 3;    // Face centroids sit one-third of the way up from the base (average of face vertices)
 tilt_angle = acos(1/3);                 // Angle between a face normal and the vertical axis of a tetrahedron (~70.53°)
 
 // The distance from a face centroid to any vertex (equal to die_radius for each equilateral face)
@@ -43,7 +43,7 @@ difference() {
     for (i = [0 : 2]) {
         face_angle = 180 - (i * 120);     // Centers side faces at 180, 60, and 300 (equiv. -60) around Z
         rotate([0, 0, face_angle])   
-        translate([face_apothem, 0, face_center_height]) 
+        translate([face_centroid_radius, 0, face_center_height]) 
         rotate([0, tilt_angle, 0]) 
         rotate([0, 0, 180]) 
         face_numbers();
